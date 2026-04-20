@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
+
+@layer base {
+  :root {
+    --background: 40 26% 93%;
+    --foreground: 220 25% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 25% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 25% 12%;
+
+    --primary: 220 60% 18%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 215 25% 94%;
+    --secondary-foreground: 220 25% 12%;
+
+    --muted: 215 20% 95%;
+    --muted-foreground: 215 15% 47%;
+
+    --accent: 32 95% 52%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214 25% 90%;
+    --input: 214 25% 90%;
+    --ring: 220 60% 18%;
+
+    --radius: 0.75rem;
+
+    --sale: 0 80% 55%;
+    --success: 142 70% 40%;
+    --warning: 38 92% 50%;
+    --info: 210 90% 55%;
+
+    --sidebar-background: 220 60% 14%;
+    --sidebar-foreground: 210 20% 90%;
+    --sidebar-primary: 32 95% 52%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 50% 22%;
+    --sidebar-accent-foreground: 210 20% 90%;
+    --sidebar-border: 220 40% 25%;
+    --sidebar-ring: 32 95% 52%;
+  }
+
+  .dark {
+    --background: 222 30% 8%;
+    --foreground: 210 20% 95%;
+    --card: 222 25% 12%;
+    --card-foreground: 210 20% 95%;
+    --popover: 222 25% 12%;
+    --popover-foreground: 210 20% 95%;
+    --primary: 32 95% 52%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 20% 18%;
+    --secondary-foreground: 210 20% 95%;
+    --muted: 220 15% 18%;
+    --muted-foreground: 215 15% 60%;
+    --accent: 32 95% 52%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 220 15% 22%;
+    --input: 220 15% 22%;
+    --ring: 32 95% 52%;
+    --sidebar-background: 222 30% 6%;
+    --sidebar-foreground: 210 20% 90%;
+    --sidebar-primary: 32 95% 52%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 222 25% 14%;
+    --sidebar-accent-foreground: 210 20% 90%;
+    --sidebar-border: 222 20% 16%;
+    --sidebar-ring: 32 95% 52%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}
+
+@layer components {
+  .glass-input {
+    @apply bg-white/50 dark:bg-white/10 backdrop-blur-xl border border-black/[0.06] dark:border-white/15 shadow-[0_1px_2px_rgba(0,0,0,0.04)];
+    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  }
+  .glass-input:hover {
+    @apply bg-white/[0.65] dark:bg-white/[0.12] border-black/[0.1] dark:border-white/20 shadow-[0_2px_8px_rgba(0,0,0,0.06)];
+  }
+  .glass-input:focus,
+  .glass-input:focus-within {
+    @apply bg-white/80 dark:bg-white/15 border-primary/30 dark:border-white/25 shadow-[0_0_0_3px_rgba(30,58,95,0.08),0_2px_8px_rgba(0,0,0,0.06)];
+  }
+  .glass-surface {
+    @apply bg-white/60 dark:bg-white/10 backdrop-blur-2xl border border-black/[0.06] dark:border-white/15 shadow-[0_4px_24px_rgba(0,0,0,0.06)];
+  }
+  .glass-checkbox {
+    @apply bg-white/50 dark:bg-white/10 backdrop-blur-xl border-[1.5px] border-black/[0.1] dark:border-white/15 shadow-[0_1px_2px_rgba(0,0,0,0.04)];
+    transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.15s ease;
+  }
+  .glass-checkbox:hover {
+    @apply border-black/[0.18] dark:border-white/25 shadow-[0_2px_6px_rgba(0,0,0,0.06)];
+    transform: scale(1.05);
+  }
+  .glass-checkbox[data-state="checked"] {
+    @apply bg-primary border-primary shadow-[0_2px_8px_rgba(30,58,95,0.2)];
+    transform: scale(1);
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}

@@ -1,0 +1,467 @@
+{
+  "common": {
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "delete": "Удалить",
+    "edit": "Редактировать",
+    "view": "Просмотр",
+    "add": "Добавить",
+    "back": "Назад",
+    "close": "Закрыть",
+    "search": "Поиск",
+    "loading": "Загрузка...",
+    "actions": "Действия",
+    "status": "Статус",
+    "active": "Активный",
+    "inactive": "Неактивный",
+    "yes": "Да",
+    "no": "Нет",
+    "confirm": "Подтвердить",
+    "continue": "Продолжить",
+    "reset": "Сбросить",
+    "prev": "Назад",
+    "next": "Далее",
+    "all": "Все",
+    "name": "Название",
+    "email": "Эл. почта",
+    "phone": "Телефон",
+    "price": "Цена",
+    "total": "Итого",
+    "subtotal": "Подитог",
+    "date": "Дата",
+    "qty": "Кол-во",
+    "sku": "Артикул",
+    "stock": "Остаток",
+    "slug": "Слаг",
+    "product": "Товар",
+    "category": "Категория",
+    "customer": "Клиент",
+    "payment": "Оплата",
+    "delivery": "Доставка",
+    "default": "По умолчанию",
+    "description": "Описание",
+    "noData": "Нет данных",
+    "required": "Обязательно",
+    "selected": "выбрано",
+    "signOut": "Выйти"
+  },
+  "nav": {
+    "home": "Главная",
+    "catalog": "Каталог",
+    "search": "Поиск",
+    "cart": "Корзина",
+    "profile": "Профиль",
+    "adminPanel": "Админ панель",
+    "myOrders": "Мои заказы",
+    "toggleMenu": "Меню"
+  },
+  "header": {
+    "freeShipping": "Бесплатная доставка при заказе от $500",
+    "phone": "+1 (800) 123-4567",
+    "searchPlaceholder": "Поиск бытовой техники...",
+    "brand": "baytech"
+  },
+  "footer": {
+    "brand": "baytech",
+    "tagline": "Ваш надёжный магазин бытовой техники. Качественные товары по доступным ценам.",
+    "categories": "Категории",
+    "customerService": "Служба поддержки",
+    "trackOrder": "Отследить заказ",
+    "shoppingCart": "Корзина",
+    "returnsExchanges": "Возврат и обмен",
+    "faq": "Вопросы и ответы",
+    "contactUs": "Связаться с нами",
+    "address": "123 Tech Avenue, Suite 100",
+    "copyright": "© {{year}} baytech. Все права защищены."
+  },
+  "auth": {
+    "signIn": "Войти",
+    "signingIn": "Вход...",
+    "password": "Пароль",
+    "rememberMe": "Запомнить меня",
+    "forgotPassword": "Забыли пароль?",
+    "noAccount": "Нет аккаунта?",
+    "register": "Регистрация",
+    "createAccount": "Создать аккаунт",
+    "firstName": "Имя",
+    "lastName": "Фамилия",
+    "confirmPassword": "Подтвердите пароль",
+    "agreeTerms": "Я согласен с Условиями использования",
+    "hasAccount": "Уже есть аккаунт?",
+    "demo": "Демо: admin@test.com / admin123 или manager@test.com / manager123",
+    "forgotPasswordTitle": "Забыли пароль",
+    "sendResetLink": "Отправить ссылку для сброса",
+    "backToSignIn": "Назад к входу",
+    "resetHint": "Если эта почта зарегистрирована, вы получите ссылку для сброса пароля.",
+    "errors": {
+      "invalidCredentials": "Неверный email или пароль",
+      "invalidInput": "Введите корректный email и пароль (мин. 8 символов)",
+      "validEmail": "Введите корректный email",
+      "minPassword": "Минимум 8 символов",
+      "passwordMismatch": "Пароли не совпадают",
+      "agreeRequired": "Необходимо согласиться с условиями",
+      "fieldRequired": "Обязательное поле"
+    },
+    "success": {
+      "welcome": "С возвращением!",
+      "accountCreated": "Аккаунт успешно создан!",
+      "resetSent": "Если эта почта зарегистрирована, вы получите ссылку для сброса."
+    }
+  },
+  "dashboard": {
+    "title": "Панель управления",
+    "todaysOrders": "Заказы за сегодня",
+    "revenue": "Доход",
+    "pendingOrders": "Ожидающие заказы",
+    "totalProducts": "Всего товаров",
+    "ordersChart": "Заказы (за 7 дней)",
+    "revenueChart": "Доход (за 7 дней)",
+    "recentOrders": "Последние заказы",
+    "orderNumber": "Заказ №",
+    "lowStock": "Товары с малым остатком"
+  },
+  "products": {
+    "title": "Товары",
+    "addProduct": "Добавить товар",
+    "searchPlaceholder": "Поиск...",
+    "allCategories": "Все категории",
+    "allStatus": "Все статусы",
+    "editProduct": "Редактировать товар",
+    "newProduct": "Новый товар",
+    "basicInfo": "Основная информация",
+    "pricingStock": "Цена и остаток",
+    "images": "Изображения",
+    "imageUrl": "URL изображения",
+    "addImage": "+ Добавить изображение",
+    "specifications": "Характеристики",
+    "key": "Ключ",
+    "value": "Значение",
+    "addSpec": "+ Добавить характеристику",
+    "seo": "SEO",
+    "metaTitle": "Мета заголовок",
+    "metaDescription": "Мета описание",
+    "basePrice": "Базовая цена",
+    "salePrice": "Цена со скидкой",
+    "htmlSupported": "Поддерживается HTML",
+    "select": "Выберите",
+    "syncWarning": "Этот товар синхронизирован из внешнего источника. Цена и остаток могут быть обновлены при следующей синхронизации.",
+    "errors": {
+      "nameMin": "Название должно содержать минимум 3 символа",
+      "skuRequired": "Артикул обязателен",
+      "categoryRequired": "Категория обязательна",
+      "validPrice": "Введите корректную цену",
+      "salePriceLess": "Цена со скидкой должна быть ниже базовой"
+    },
+    "success": {
+      "updated": "Товар обновлён",
+      "created": "Товар создан"
+    }
+  },
+  "categories": {
+    "title": "Категории",
+    "addCategory": "Добавить категорию",
+    "editCategory": "Редактировать категорию",
+    "imageUrl": "URL изображения",
+    "deleteConfirm": "Удалить эту категорию?",
+    "products": "Товары"
+  },
+  "customers": {
+    "title": "Клиенты",
+    "searchPlaceholder": "Поиск...",
+    "registered": "Зарегистрирован",
+    "orders": "Заказы",
+    "notFound": "Клиент не найден",
+    "backButton": "← Назад",
+    "blocked": "Заблокирован",
+    "block": "Заблокировать",
+    "unblock": "Разблокировать",
+    "orderHistory": "История заказов ({{count}})",
+    "noOrders": "Нет заказов",
+    "reviews": "Отзывы ({{count}})",
+    "success": {
+      "blocked": "Клиент заблокирован",
+      "unblocked": "Клиент разблокирован"
+    }
+  },
+  "orders": {
+    "title": "Заказы",
+    "searchPlaceholder": "Поиск...",
+    "allStatus": "Все статусы",
+    "new": "Новый",
+    "accepted": "Принят",
+    "inTransit": "В пути",
+    "delivered": "Доставлен",
+    "cancelled": "Отменён",
+    "orderNumber": "Заказ №",
+    "notFound": "Заказ не найден",
+    "backToOrders": "← К заказам",
+    "viewCustomer": "Просмотр клиента",
+    "statusControl": "Управление статусом",
+    "provider": "Провайдер:",
+    "statusLabel": "Статус:",
+    "statusHistory": "История статусов",
+    "items": "Товары",
+    "internalNotes": "Внутренние заметки",
+    "addNotePlaceholder": "Добавить заметку...",
+    "success": {
+      "statusUpdated": "Статус заказа обновлён на {{status}}"
+    },
+    "wasCancelled": "Заказ отменён"
+  },
+  "discounts": {
+    "title": "Скидки",
+    "addDiscount": "Добавить скидку",
+    "newDiscount": "Новая скидка",
+    "type": "Тип",
+    "value": "Значение",
+    "period": "Период",
+    "percentage": "Процент (%)",
+    "fixedAmount": "Фиксированная сумма ($)",
+    "start": "Начало",
+    "end": "Конец",
+    "allProducts": "Все товары",
+    "byCategory": "По категории",
+    "specificProducts": "Определённые товары"
+  },
+  "reviews": {
+    "title": "Отзывы",
+    "pending": "Ожидающие",
+    "approved": "Одобренные",
+    "rejected": "Отклонённые",
+    "approveSelected": "Одобрить выбранные",
+    "rejectSelected": "Отклонить выбранные",
+    "rating": "Рейтинг",
+    "review": "Отзыв",
+    "approve": "Одобрить",
+    "reject": "Отклонить",
+    "success": {
+      "bulkUpdate": "{{count}} отзыв(ов) {{status}}"
+    }
+  },
+  "users": {
+    "title": "Пользователи",
+    "addUser": "Добавить пользователя",
+    "role": "Роль",
+    "lastLogin": "Последний вход",
+    "createUser": "Создать пользователя",
+    "manager": "Менеджер",
+    "admin": "Администратор",
+    "errors": {
+      "allRequired": "Все поля обязательны",
+      "minPassword": "Пароль должен содержать минимум 8 символов",
+      "emailExists": "Такой email уже существует",
+      "cantBlockSelf": "Нельзя заблокировать себя"
+    },
+    "success": {
+      "created": "Пользователь создан",
+      "statusUpdated": "Статус пользователя обновлён"
+    }
+  },
+  "syncLogs": {
+    "title": "Логи синхронизации",
+    "runSync": "Запустить синхронизацию",
+    "syncing": "Синхронизация...",
+    "timestamp": "Время",
+    "source": "Источник",
+    "updated": "Обновлено",
+    "duration": "Длительность",
+    "viewDetails": "Подробнее",
+    "errorDetails": "Детали ошибки",
+    "success": {
+      "completed": "Синхронизация завершена. Обновлено товаров: {{count}}."
+    }
+  },
+  "cart": {
+    "empty": "Ваша корзина пуста",
+    "emptyHint": "Добавьте товары для начала",
+    "continueShopping": "Продолжить покупки",
+    "title": "Корзина ({{count}} товаров)",
+    "orderSummary": "Итого заказа",
+    "deliveryHint": "Стоимость доставки рассчитывается при оформлении",
+    "proceedToCheckout": "Оформить заказ"
+  },
+  "checkout": {
+    "title": "Оформление заказа",
+    "address": "Адрес",
+    "summary": "Сводка",
+    "payment": "Оплата",
+    "deliveryAddress": "Адрес доставки",
+    "addNewAddress": "+ Добавить новый адрес",
+    "city": "Город",
+    "district": "Район",
+    "street": "Улица",
+    "house": "Дом",
+    "notes": "Примечания",
+    "orderSummary": "Сводка заказа",
+    "estDelivery": "Ожидаемая доставка",
+    "businessDays": "3–5 рабочих дней",
+    "backButton": "Назад",
+    "continueToPayment": "Перейти к оплате",
+    "paymentMethod": "Способ оплаты",
+    "creditCard": "Кредитная / дебетовая карта",
+    "placeOrder": "Оформить заказ",
+    "errors": {
+      "fillAddress": "Пожалуйста, заполните все поля адреса",
+      "selectAddress": "Пожалуйста, выберите адрес"
+    }
+  },
+  "checkoutSuccess": {
+    "title": "Заказ успешно оформлен!",
+    "orderNumber": "Номер вашего заказа",
+    "goToOrders": "Перейти к заказам",
+    "continueShopping": "Продолжить покупки"
+  },
+  "categoryPage": {
+    "allProducts": "Все товары",
+    "filters": "Фильтры",
+    "priceRange": "Ценовой диапазон",
+    "min": "Мин",
+    "max": "Макс",
+    "onSaleOnly": "Только со скидкой",
+    "inStockOnly": "Только в наличии",
+    "resetFilters": "Сбросить фильтры",
+    "newestFirst": "Сначала новые",
+    "priceLowHigh": "Цена: по возрастанию",
+    "priceHighLow": "Цена: по убыванию",
+    "highestRated": "По рейтингу",
+    "productsFound": "{{count}} товар(ов) найдено",
+    "noProducts": "Нет товаров по вашим фильтрам"
+  },
+  "productPage": {
+    "notFound": "Товар не найден",
+    "goHome": "На главную",
+    "outOfStock": "Нет в наличии",
+    "onlyLeft": "Осталось {{count}} шт!",
+    "inStock": "В наличии",
+    "addToCart": "В корзину",
+    "specifications": "Характеристики",
+    "reviewsCount": "Отзывы ({{count}})",
+    "relatedProducts": "Похожие товары",
+    "writeReview": "Написать отзыв",
+    "reviewPlaceholder": "Поделитесь вашим опытом...",
+    "submitReview": "Отправить отзыв",
+    "errors": {
+      "ratingRequired": "Пожалуйста, добавьте оценку и текст отзыва"
+    },
+    "success": {
+      "addedToCart": "{{name}} добавлен в корзину",
+      "reviewSubmitted": "Ваш отзыв отправлен и ожидает модерации."
+    }
+  },
+  "searchPage": {
+    "placeholder": "Поиск бытовой техники...",
+    "recentSearches": "Недавние запросы",
+    "results": "{{count}} результат(ов) по запросу '{{query}}'",
+    "noResults": "Товары не найдены",
+    "tryDifferent": "Попробуйте другой запрос"
+  },
+  "profile": {
+    "myInfo": "Мои данные",
+    "myOrders": "Мои заказы",
+    "myAddresses": "Мои адреса",
+    "wishlist": "Избранное",
+    "saveChanges": "Сохранить изменения",
+    "success": {
+      "updated": "Профиль успешно обновлён"
+    }
+  },
+  "addresses": {
+    "title": "Мои адреса",
+    "addAddress": "Добавить адрес",
+    "editAddress": "Редактировать адрес",
+    "noAddresses": "Нет сохранённых адресов",
+    "addFirst": "Добавьте ваш первый адрес",
+    "setDefault": "Сделать основным",
+    "deleteConfirm": "Удалить адрес?",
+    "deleteWarning": "Это действие нельзя отменить.",
+    "city": "Город",
+    "district": "Район",
+    "street": "Улица",
+    "house": "Дом",
+    "notes": "Примечания"
+  },
+  "profileOrders": {
+    "noOrders": "Заказов пока нет",
+    "startShopping": "Начать покупки",
+    "title": "Мои заказы",
+    "items": "товар(ов)",
+    "backToOrders": "К заказам",
+    "estDelivery": "Ожидаемая доставка:",
+    "method": "Способ:"
+  },
+  "wishlist": {
+    "empty": "Ваш список желаний пуст",
+    "browse": "Просмотреть товары",
+    "title": "Избранное",
+    "addToCart": "В корзину"
+  },
+  "hero": {
+    "slide1Title": "Умный дом, умная жизнь",
+    "slide1Desc": "Откройте новейшие технологии бытовой техники",
+    "slide1Btn": "За покупками",
+    "slide2Title": "Весенняя распродажа — скидки до 40%",
+    "slide2Desc": "Стиральные машины, сушилки и другое по лучшим ценам",
+    "slide2Btn": "Смотреть акции",
+    "slide3Title": "Новые 4K телевизоры уже здесь",
+    "slide3Desc": "Кристально чёткое изображение от лучших брендов",
+    "slide3Btn": "Смотреть ТВ",
+    "previous": "Назад",
+    "nextSlide": "Далее",
+    "slideN": "Слайд {{n}}"
+  },
+  "promo": {
+    "title": "Бесплатная установка",
+    "desc": "На всю крупную технику — ограниченное предложение",
+    "cta": "Подробнее",
+    "alt": "Специальная акция"
+  },
+  "productSection": {
+    "viewAll": "Смотреть все →"
+  },
+  "categoryGrid": {
+    "title": "Покупки по категориям",
+    "productCount": "{{count}} товаров"
+  },
+  "productCard": {
+    "toggleWishlist": "В избранное",
+    "outOfStock": "Нет в наличии",
+    "onlyLeft": "Осталось {{count}} шт!",
+    "addToCart": "В корзину",
+    "success": {
+      "addedToCart": "{{name}} добавлен в корзину"
+    }
+  },
+  "admin": {
+    "sidebar": {
+      "brand": "baytech",
+      "dashboard": "Панель управления",
+      "products": "Товары",
+      "categories": "Категории",
+      "orders": "Заказы",
+      "customers": "Клиенты",
+      "reviews": "Отзывы",
+      "discounts": "Скидки",
+      "syncLogs": "Логи синхронизации",
+      "users": "Пользователи",
+      "title": "Админ панель"
+    }
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Страница не найдена",
+    "goHome": "На главную"
+  },
+  "statusLabels": {
+    "new": "Новый",
+    "accepted": "Принят",
+    "inTransit": "В пути",
+    "delivered": "Доставлен",
+    "cancelled": "Отменён",
+    "pending": "Ожидает",
+    "approved": "Одобрен",
+    "rejected": "Отклонён",
+    "active": "Активный",
+    "inactive": "Неактивный",
+    "blocked": "Заблокирован"
+  }
+}

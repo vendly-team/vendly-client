@@ -1,0 +1,467 @@
+{
+  "common": {
+    "save": "Saqlash",
+    "cancel": "Bekor qilish",
+    "delete": "O'chirish",
+    "edit": "Tahrirlash",
+    "view": "Ko'rish",
+    "add": "Qo'shish",
+    "back": "Orqaga",
+    "close": "Yopish",
+    "search": "Qidirish",
+    "loading": "Yuklanmoqda...",
+    "actions": "Amallar",
+    "status": "Holat",
+    "active": "Faol",
+    "inactive": "Nofaol",
+    "yes": "Ha",
+    "no": "Yo'q",
+    "confirm": "Tasdiqlash",
+    "continue": "Davom etish",
+    "reset": "Tozalash",
+    "prev": "Oldingi",
+    "next": "Keyingi",
+    "all": "Barchasi",
+    "name": "Nomi",
+    "email": "Elektron pochta",
+    "phone": "Telefon",
+    "price": "Narx",
+    "total": "Jami",
+    "subtotal": "Oraliq jami",
+    "date": "Sana",
+    "qty": "Soni",
+    "sku": "Artikul",
+    "stock": "Qoldiq",
+    "slug": "Slug",
+    "product": "Mahsulot",
+    "category": "Kategoriya",
+    "customer": "Mijoz",
+    "payment": "To'lov",
+    "delivery": "Yetkazib berish",
+    "default": "Asosiy",
+    "description": "Tavsif",
+    "noData": "Ma'lumot yo'q",
+    "required": "Majburiy",
+    "selected": "tanlandi",
+    "signOut": "Chiqish"
+  },
+  "nav": {
+    "home": "Bosh sahifa",
+    "catalog": "Katalog",
+    "search": "Qidirish",
+    "cart": "Savat",
+    "profile": "Profil",
+    "adminPanel": "Admin panel",
+    "myOrders": "Buyurtmalarim",
+    "toggleMenu": "Menyu"
+  },
+  "header": {
+    "freeShipping": "$500 dan ortiq buyurtmalarga bepul yetkazib berish",
+    "phone": "+1 (800) 123-4567",
+    "searchPlaceholder": "Maishiy texnika qidirish...",
+    "brand": "baytech"
+  },
+  "footer": {
+    "brand": "baytech",
+    "tagline": "Sifatli maishiy texnika do'koni. Arzon narxlarda eng yaxshi mahsulotlar.",
+    "categories": "Kategoriyalar",
+    "customerService": "Mijozlarga xizmat",
+    "trackOrder": "Buyurtmani kuzatish",
+    "shoppingCart": "Savat",
+    "returnsExchanges": "Qaytarish va almashtirish",
+    "faq": "Ko'p so'raladigan savollar",
+    "contactUs": "Biz bilan bog'lanish",
+    "address": "123 Tech Avenue, Suite 100",
+    "copyright": "© {{year}} baytech. Barcha huquqlar himoyalangan."
+  },
+  "auth": {
+    "signIn": "Kirish",
+    "signingIn": "Kirilmoqda...",
+    "password": "Parol",
+    "rememberMe": "Meni eslab qol",
+    "forgotPassword": "Parolni unutdingizmi?",
+    "noAccount": "Hisobingiz yo'qmi?",
+    "register": "Ro'yxatdan o'tish",
+    "createAccount": "Hisob yaratish",
+    "firstName": "Ism",
+    "lastName": "Familiya",
+    "confirmPassword": "Parolni tasdiqlash",
+    "agreeTerms": "Foydalanish shartlariga roziman",
+    "hasAccount": "Hisobingiz bormi?",
+    "demo": "Demo: admin@test.com / admin123 yoki manager@test.com / manager123",
+    "forgotPasswordTitle": "Parolni unutdingizmi",
+    "sendResetLink": "Tiklash havolasini yuborish",
+    "backToSignIn": "Kirishga qaytish",
+    "resetHint": "Agar bu elektron pochta tizimda mavjud bo'lsa, parolni tiklash havolasini olasiz.",
+    "errors": {
+      "invalidCredentials": "Noto'g'ri email yoki parol",
+      "invalidInput": "To'g'ri email va parol kiriting (kamida 8 belgi)",
+      "validEmail": "To'g'ri email kiriting",
+      "minPassword": "Kamida 8 belgi",
+      "passwordMismatch": "Parollar mos kelmaydi",
+      "agreeRequired": "Shartlarga rozilik kerak",
+      "fieldRequired": "Majburiy maydon"
+    },
+    "success": {
+      "welcome": "Xush kelibsiz!",
+      "accountCreated": "Hisob muvaffaqiyatli yaratildi!",
+      "resetSent": "Agar bu email tizimda mavjud bo'lsa, tiklash havolasini olasiz."
+    }
+  },
+  "dashboard": {
+    "title": "Boshqaruv paneli",
+    "todaysOrders": "Bugungi buyurtmalar",
+    "revenue": "Daromad",
+    "pendingOrders": "Kutilayotgan buyurtmalar",
+    "totalProducts": "Jami mahsulotlar",
+    "ordersChart": "Buyurtmalar (oxirgi 7 kun)",
+    "revenueChart": "Daromad (oxirgi 7 kun)",
+    "recentOrders": "So'nggi buyurtmalar",
+    "orderNumber": "Buyurtma №",
+    "lowStock": "Qoldig'i kam mahsulotlar"
+  },
+  "products": {
+    "title": "Mahsulotlar",
+    "addProduct": "Mahsulot qo'shish",
+    "searchPlaceholder": "Qidirish...",
+    "allCategories": "Barcha kategoriyalar",
+    "allStatus": "Barcha holatlar",
+    "editProduct": "Mahsulotni tahrirlash",
+    "newProduct": "Yangi mahsulot",
+    "basicInfo": "Asosiy ma'lumotlar",
+    "pricingStock": "Narx va qoldiq",
+    "images": "Rasmlar",
+    "imageUrl": "Rasm URL",
+    "addImage": "+ Rasm qo'shish",
+    "specifications": "Xususiyatlar",
+    "key": "Kalit",
+    "value": "Qiymat",
+    "addSpec": "+ Xususiyat qo'shish",
+    "seo": "SEO",
+    "metaTitle": "Meta sarlavha",
+    "metaDescription": "Meta tavsif",
+    "basePrice": "Asosiy narx",
+    "salePrice": "Chegirma narxi",
+    "htmlSupported": "HTML qo'llab-quvvatlanadi",
+    "select": "Tanlang",
+    "syncWarning": "Bu mahsulot tashqi manbadan sinxronlangan. Narx va qoldiq keyingi sinxronlashda yangilanishi mumkin.",
+    "errors": {
+      "nameMin": "Nom kamida 3 belgidan iborat bo'lishi kerak",
+      "skuRequired": "Artikul majburiy",
+      "categoryRequired": "Kategoriya majburiy",
+      "validPrice": "To'g'ri narx kiriting",
+      "salePriceLess": "Chegirma narxi asosiy narxdan past bo'lishi kerak"
+    },
+    "success": {
+      "updated": "Mahsulot yangilandi",
+      "created": "Mahsulot yaratildi"
+    }
+  },
+  "categories": {
+    "title": "Kategoriyalar",
+    "addCategory": "Kategoriya qo'shish",
+    "editCategory": "Kategoriyani tahrirlash",
+    "imageUrl": "Rasm URL",
+    "deleteConfirm": "Bu kategoriyani o'chirishni xohlaysizmi?",
+    "products": "Mahsulotlar"
+  },
+  "customers": {
+    "title": "Mijozlar",
+    "searchPlaceholder": "Qidirish...",
+    "registered": "Ro'yxatdan o'tgan",
+    "orders": "Buyurtmalar",
+    "notFound": "Mijoz topilmadi",
+    "backButton": "← Orqaga",
+    "blocked": "Bloklangan",
+    "block": "Bloklash",
+    "unblock": "Blokdan chiqarish",
+    "orderHistory": "Buyurtmalar tarixi ({{count}})",
+    "noOrders": "Buyurtmalar yo'q",
+    "reviews": "Sharhlar ({{count}})",
+    "success": {
+      "blocked": "Mijoz bloklandi",
+      "unblocked": "Mijoz blokdan chiqarildi"
+    }
+  },
+  "orders": {
+    "title": "Buyurtmalar",
+    "searchPlaceholder": "Qidirish...",
+    "allStatus": "Barcha holatlar",
+    "new": "Yangi",
+    "accepted": "Qabul qilingan",
+    "inTransit": "Yo'lda",
+    "delivered": "Yetkazilgan",
+    "cancelled": "Bekor qilingan",
+    "orderNumber": "Buyurtma №",
+    "notFound": "Buyurtma topilmadi",
+    "backToOrders": "← Buyurtmalarga",
+    "viewCustomer": "Mijozni ko'rish",
+    "statusControl": "Holat boshqaruvi",
+    "provider": "Provayder:",
+    "statusLabel": "Holat:",
+    "statusHistory": "Holat tarixi",
+    "items": "Mahsulotlar",
+    "internalNotes": "Ichki eslatmalar",
+    "addNotePlaceholder": "Eslatma qo'shish...",
+    "success": {
+      "statusUpdated": "Buyurtma holati {{status}} ga o'zgartirildi"
+    },
+    "wasCancelled": "Buyurtma bekor qilindi"
+  },
+  "discounts": {
+    "title": "Chegirmalar",
+    "addDiscount": "Chegirma qo'shish",
+    "newDiscount": "Yangi chegirma",
+    "type": "Turi",
+    "value": "Qiymati",
+    "period": "Davr",
+    "percentage": "Foiz (%)",
+    "fixedAmount": "Belgilangan summa ($)",
+    "start": "Boshlanish",
+    "end": "Tugash",
+    "allProducts": "Barcha mahsulotlar",
+    "byCategory": "Kategoriya bo'yicha",
+    "specificProducts": "Tanlangan mahsulotlar"
+  },
+  "reviews": {
+    "title": "Sharhlar",
+    "pending": "Kutilmoqda",
+    "approved": "Tasdiqlangan",
+    "rejected": "Rad etilgan",
+    "approveSelected": "Tanlanganlarni tasdiqlash",
+    "rejectSelected": "Tanlanganlarni rad etish",
+    "rating": "Reyting",
+    "review": "Sharh",
+    "approve": "Tasdiqlash",
+    "reject": "Rad etish",
+    "success": {
+      "bulkUpdate": "{{count}} ta sharh {{status}}"
+    }
+  },
+  "users": {
+    "title": "Foydalanuvchilar",
+    "addUser": "Foydalanuvchi qo'shish",
+    "role": "Rol",
+    "lastLogin": "Oxirgi kirish",
+    "createUser": "Foydalanuvchi yaratish",
+    "manager": "Menejer",
+    "admin": "Administrator",
+    "errors": {
+      "allRequired": "Barcha maydonlar majburiy",
+      "minPassword": "Parol kamida 8 belgidan iborat bo'lishi kerak",
+      "emailExists": "Bu email allaqachon mavjud",
+      "cantBlockSelf": "O'zingizni bloklolmaysiz"
+    },
+    "success": {
+      "created": "Foydalanuvchi yaratildi",
+      "statusUpdated": "Foydalanuvchi holati yangilandi"
+    }
+  },
+  "syncLogs": {
+    "title": "Sinxronlash loglari",
+    "runSync": "Qo'lda sinxronlash",
+    "syncing": "Sinxronlanmoqda...",
+    "timestamp": "Vaqt",
+    "source": "Manba",
+    "updated": "Yangilangan",
+    "duration": "Davomiyligi",
+    "viewDetails": "Batafsil",
+    "errorDetails": "Xato tafsilotlari",
+    "success": {
+      "completed": "Sinxronlash yakunlandi. {{count}} ta mahsulot yangilandi."
+    }
+  },
+  "cart": {
+    "empty": "Savatingiz bo'sh",
+    "emptyHint": "Boshlash uchun mahsulot qo'shing",
+    "continueShopping": "Xarid davom ettirish",
+    "title": "Savat ({{count}} ta mahsulot)",
+    "orderSummary": "Buyurtma xulosasi",
+    "deliveryHint": "Yetkazib berish narxi rasmiylashtirish vaqtida hisoblanadi",
+    "proceedToCheckout": "Rasmiylashtirish"
+  },
+  "checkout": {
+    "title": "Buyurtmani rasmiylashtirish",
+    "address": "Manzil",
+    "summary": "Xulosa",
+    "payment": "To'lov",
+    "deliveryAddress": "Yetkazib berish manzili",
+    "addNewAddress": "+ Yangi manzil qo'shish",
+    "city": "Shahar",
+    "district": "Tuman",
+    "street": "Ko'cha",
+    "house": "Uy",
+    "notes": "Izohlar",
+    "orderSummary": "Buyurtma xulosasi",
+    "estDelivery": "Taxminiy yetkazib berish",
+    "businessDays": "3–5 ish kuni",
+    "backButton": "Orqaga",
+    "continueToPayment": "To'lovga o'tish",
+    "paymentMethod": "To'lov usuli",
+    "creditCard": "Kredit / debit karta",
+    "placeOrder": "Buyurtma berish",
+    "errors": {
+      "fillAddress": "Iltimos, barcha manzil maydonlarini to'ldiring",
+      "selectAddress": "Iltimos, manzilni tanlang"
+    }
+  },
+  "checkoutSuccess": {
+    "title": "Buyurtma muvaffaqiyatli rasmiylashtirildi!",
+    "orderNumber": "Buyurtma raqamingiz",
+    "goToOrders": "Buyurtmalarimga o'tish",
+    "continueShopping": "Xarid davom ettirish"
+  },
+  "categoryPage": {
+    "allProducts": "Barcha mahsulotlar",
+    "filters": "Filtrlar",
+    "priceRange": "Narx oralig'i",
+    "min": "Min",
+    "max": "Maks",
+    "onSaleOnly": "Faqat chegirmadagilar",
+    "inStockOnly": "Faqat mavjudlari",
+    "resetFilters": "Filtrlarni tozalash",
+    "newestFirst": "Avval yangilari",
+    "priceLowHigh": "Narx: pastdan yuqoriga",
+    "priceHighLow": "Narx: yuqoridan pastga",
+    "highestRated": "Reyting bo'yicha",
+    "productsFound": "{{count}} ta mahsulot topildi",
+    "noProducts": "Filtrlaringizga mos mahsulot yo'q"
+  },
+  "productPage": {
+    "notFound": "Mahsulot topilmadi",
+    "goHome": "Bosh sahifaga",
+    "outOfStock": "Mavjud emas",
+    "onlyLeft": "Faqat {{count}} ta qoldi!",
+    "inStock": "Mavjud",
+    "addToCart": "Savatga qo'shish",
+    "specifications": "Xususiyatlar",
+    "reviewsCount": "Sharhlar ({{count}})",
+    "relatedProducts": "O'xshash mahsulotlar",
+    "writeReview": "Sharh yozish",
+    "reviewPlaceholder": "Tajribangizni baham ko'ring...",
+    "submitReview": "Sharh yuborish",
+    "errors": {
+      "ratingRequired": "Iltimos, baho va sharh matnini qo'shing"
+    },
+    "success": {
+      "addedToCart": "{{name}} savatga qo'shildi",
+      "reviewSubmitted": "Sharhingiz yuborildi va moderatsiyani kutmoqda."
+    }
+  },
+  "searchPage": {
+    "placeholder": "Maishiy texnika qidirish...",
+    "recentSearches": "So'nggi qidiruvlar",
+    "results": "'{{query}}' bo'yicha {{count}} ta natija",
+    "noResults": "Mahsulot topilmadi",
+    "tryDifferent": "Boshqa so'z bilan qidiring"
+  },
+  "profile": {
+    "myInfo": "Mening ma'lumotlarim",
+    "myOrders": "Buyurtmalarim",
+    "myAddresses": "Manzillarim",
+    "wishlist": "Istaklar ro'yxati",
+    "saveChanges": "O'zgarishlarni saqlash",
+    "success": {
+      "updated": "Profil muvaffaqiyatli yangilandi"
+    }
+  },
+  "addresses": {
+    "title": "Manzillarim",
+    "addAddress": "Manzil qo'shish",
+    "editAddress": "Manzilni tahrirlash",
+    "noAddresses": "Saqlangan manzillar yo'q",
+    "addFirst": "Birinchi manzilingizni qo'shing",
+    "setDefault": "Asosiy qilish",
+    "deleteConfirm": "Manzilni o'chirishni xohlaysizmi?",
+    "deleteWarning": "Bu amalni qaytarib bo'lmaydi.",
+    "city": "Shahar",
+    "district": "Tuman",
+    "street": "Ko'cha",
+    "house": "Uy",
+    "notes": "Izohlar"
+  },
+  "profileOrders": {
+    "noOrders": "Hali buyurtmalar yo'q",
+    "startShopping": "Xarid boshlash",
+    "title": "Buyurtmalarim",
+    "items": "ta mahsulot",
+    "backToOrders": "Buyurtmalarga",
+    "estDelivery": "Taxminiy yetkazish:",
+    "method": "Usul:"
+  },
+  "wishlist": {
+    "empty": "Istaklar ro'yxatingiz bo'sh",
+    "browse": "Mahsulotlarni ko'rish",
+    "title": "Istaklar ro'yxati",
+    "addToCart": "Savatga qo'shish"
+  },
+  "hero": {
+    "slide1Title": "Aqlli uy, aqlli hayot",
+    "slide1Desc": "Maishiy texnikadagi eng so'nggi texnologiyalarni kashf eting",
+    "slide1Btn": "Xarid qilish",
+    "slide2Title": "Bahorgi aksiya — 40% gacha chegirma",
+    "slide2Desc": "Kir yuvish mashinalari, quritgichlar va boshqalar eng yaxshi narxlarda",
+    "slide2Btn": "Aksiyalarni ko'rish",
+    "slide3Title": "Yangi 4K televizorlar yetib keldi",
+    "slide3Desc": "Eng yaxshi brendlardan kristall toza tasvir sifati",
+    "slide3Btn": "TV larni ko'rish",
+    "previous": "Oldingi",
+    "nextSlide": "Keyingi",
+    "slideN": "Slayd {{n}}"
+  },
+  "promo": {
+    "title": "Bepul o'rnatish",
+    "desc": "Barcha yirik maishiy texnikaga — cheklangan taklif",
+    "cta": "Batafsil",
+    "alt": "Maxsus aksiya"
+  },
+  "productSection": {
+    "viewAll": "Barchasini ko'rish →"
+  },
+  "categoryGrid": {
+    "title": "Kategoriya bo'yicha xarid",
+    "productCount": "{{count}} ta mahsulot"
+  },
+  "productCard": {
+    "toggleWishlist": "Istaklarga qo'shish",
+    "outOfStock": "Mavjud emas",
+    "onlyLeft": "Faqat {{count}} ta qoldi!",
+    "addToCart": "Savatga qo'shish",
+    "success": {
+      "addedToCart": "{{name}} savatga qo'shildi"
+    }
+  },
+  "admin": {
+    "sidebar": {
+      "brand": "baytech",
+      "dashboard": "Boshqaruv paneli",
+      "products": "Mahsulotlar",
+      "categories": "Kategoriyalar",
+      "orders": "Buyurtmalar",
+      "customers": "Mijozlar",
+      "reviews": "Sharhlar",
+      "discounts": "Chegirmalar",
+      "syncLogs": "Sinxronlash loglari",
+      "users": "Foydalanuvchilar",
+      "title": "Admin panel"
+    }
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Sahifa topilmadi",
+    "goHome": "Bosh sahifaga"
+  },
+  "statusLabels": {
+    "new": "Yangi",
+    "accepted": "Qabul qilingan",
+    "inTransit": "Yo'lda",
+    "delivered": "Yetkazilgan",
+    "cancelled": "Bekor qilingan",
+    "pending": "Kutilmoqda",
+    "approved": "Tasdiqlangan",
+    "rejected": "Rad etilgan",
+    "active": "Faol",
+    "inactive": "Nofaol",
+    "blocked": "Bloklangan"
+  }
+}

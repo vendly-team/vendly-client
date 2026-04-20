@@ -1,0 +1,467 @@
+{
+  "common": {
+    "save": "Сақлаш",
+    "cancel": "Бекор қилиш",
+    "delete": "Ўчириш",
+    "edit": "Таҳрирлаш",
+    "view": "Кўриш",
+    "add": "Қўшиш",
+    "back": "Орқага",
+    "close": "Ёпиш",
+    "search": "Қидириш",
+    "loading": "Юкланмоқда...",
+    "actions": "Амаллар",
+    "status": "Ҳолат",
+    "active": "Фаол",
+    "inactive": "Нофаол",
+    "yes": "Ҳа",
+    "no": "Йўқ",
+    "confirm": "Тасдиқлаш",
+    "continue": "Давом этиш",
+    "reset": "Тозалаш",
+    "prev": "Олдинги",
+    "next": "Кейинги",
+    "all": "Барчаси",
+    "name": "Номи",
+    "email": "Электрон почта",
+    "phone": "Телефон",
+    "price": "Нарх",
+    "total": "Жами",
+    "subtotal": "Оралиқ жами",
+    "date": "Сана",
+    "qty": "Сони",
+    "sku": "Артикул",
+    "stock": "Қолдиқ",
+    "slug": "Slug",
+    "product": "Маҳсулот",
+    "category": "Категория",
+    "customer": "Мижоз",
+    "payment": "Тўлов",
+    "delivery": "Етказиб бериш",
+    "default": "Асосий",
+    "description": "Тавсиф",
+    "noData": "Маълумот йўқ",
+    "required": "Мажбурий",
+    "selected": "танланди",
+    "signOut": "Чиқиш"
+  },
+  "nav": {
+    "home": "Бош саҳифа",
+    "catalog": "Каталог",
+    "search": "Қидириш",
+    "cart": "Сават",
+    "profile": "Профил",
+    "adminPanel": "Админ панел",
+    "myOrders": "Буюртмаларим",
+    "toggleMenu": "Меню"
+  },
+  "header": {
+    "freeShipping": "$500 дан ортиқ буюртмаларга бепул етказиб бериш",
+    "phone": "+1 (800) 123-4567",
+    "searchPlaceholder": "Маиший техника қидириш...",
+    "brand": "baytech"
+  },
+  "footer": {
+    "brand": "baytech",
+    "tagline": "Сифатли маиший техника дўкони. Арзон нархларда энг яхши маҳсулотлар.",
+    "categories": "Категориялар",
+    "customerService": "Мижозларга хизмат",
+    "trackOrder": "Буюртмани кузатиш",
+    "shoppingCart": "Сават",
+    "returnsExchanges": "Қайтариш ва алмаштириш",
+    "faq": "Кўп сўраладиган саволлар",
+    "contactUs": "Биз билан боғланиш",
+    "address": "123 Tech Avenue, Suite 100",
+    "copyright": "© {{year}} baytech. Барча ҳуқуқлар ҳимояланган."
+  },
+  "auth": {
+    "signIn": "Кириш",
+    "signingIn": "Кирилмоқда...",
+    "password": "Парол",
+    "rememberMe": "Мени эслаб қол",
+    "forgotPassword": "Паролни унутдингизми?",
+    "noAccount": "Ҳисобингиз йўқми?",
+    "register": "Рўйхатдан ўтиш",
+    "createAccount": "Ҳисоб яратиш",
+    "firstName": "Исм",
+    "lastName": "Фамилия",
+    "confirmPassword": "Паролни тасдиқлаш",
+    "agreeTerms": "Фойдаланиш шартларига розиман",
+    "hasAccount": "Ҳисобингиз борми?",
+    "demo": "Демо: admin@test.com / admin123 ёки manager@test.com / manager123",
+    "forgotPasswordTitle": "Паролни унутдингизми",
+    "sendResetLink": "Тиклаш ҳаволасини юбориш",
+    "backToSignIn": "Киришга қайтиш",
+    "resetHint": "Агар бу электрон почта тизимда мавжуд бўлса, паролни тиклаш ҳаволасини оласиз.",
+    "errors": {
+      "invalidCredentials": "Нотўғри email ёки парол",
+      "invalidInput": "Тўғри email ва парол киритинг (камида 8 белги)",
+      "validEmail": "Тўғри email киритинг",
+      "minPassword": "Камида 8 белги",
+      "passwordMismatch": "Пароллар мос келмайди",
+      "agreeRequired": "Шартларга розилик керак",
+      "fieldRequired": "Мажбурий майдон"
+    },
+    "success": {
+      "welcome": "Хуш келибсиз!",
+      "accountCreated": "Ҳисоб муваффақиятли яратилди!",
+      "resetSent": "Агар бу email тизимда мавжуд бўлса, тиклаш ҳаволасини оласиз."
+    }
+  },
+  "dashboard": {
+    "title": "Бошқарув панели",
+    "todaysOrders": "Бугунги буюртмалар",
+    "revenue": "Даромад",
+    "pendingOrders": "Кутилаётган буюртмалар",
+    "totalProducts": "Жами маҳсулотлар",
+    "ordersChart": "Буюртмалар (охирги 7 кун)",
+    "revenueChart": "Даромад (охирги 7 кун)",
+    "recentOrders": "Сўнгги буюртмалар",
+    "orderNumber": "Буюртма №",
+    "lowStock": "Қолдиғи кам маҳсулотлар"
+  },
+  "products": {
+    "title": "Маҳсулотлар",
+    "addProduct": "Маҳсулот қўшиш",
+    "searchPlaceholder": "Қидириш...",
+    "allCategories": "Барча категориялар",
+    "allStatus": "Барча ҳолатлар",
+    "editProduct": "Маҳсулотни таҳрирлаш",
+    "newProduct": "Янги маҳсулот",
+    "basicInfo": "Асосий маълумотлар",
+    "pricingStock": "Нарх ва қолдиқ",
+    "images": "Расмлар",
+    "imageUrl": "Расм URL",
+    "addImage": "+ Расм қўшиш",
+    "specifications": "Хусусиятлар",
+    "key": "Калит",
+    "value": "Қиймат",
+    "addSpec": "+ Хусусият қўшиш",
+    "seo": "SEO",
+    "metaTitle": "Мета сарлавҳа",
+    "metaDescription": "Мета тавсиф",
+    "basePrice": "Асосий нарх",
+    "salePrice": "Чегирма нархи",
+    "htmlSupported": "HTML қўллаб-қувватланади",
+    "select": "Танланг",
+    "syncWarning": "Бу маҳсулот ташқи манбадан синхронланган. Нарх ва қолдиқ кейинги синхронлашда янгиланиши мумкин.",
+    "errors": {
+      "nameMin": "Ном камида 3 белгидан иборат бўлиши керак",
+      "skuRequired": "Артикул мажбурий",
+      "categoryRequired": "Категория мажбурий",
+      "validPrice": "Тўғри нарх киритинг",
+      "salePriceLess": "Чегирма нархи асосий нархдан паст бўлиши керак"
+    },
+    "success": {
+      "updated": "Маҳсулот янгиланди",
+      "created": "Маҳсулот яратилди"
+    }
+  },
+  "categories": {
+    "title": "Категориялар",
+    "addCategory": "Категория қўшиш",
+    "editCategory": "Категорияни таҳрирлаш",
+    "imageUrl": "Расм URL",
+    "deleteConfirm": "Бу категорияни ўчиришни хоҳлайсизми?",
+    "products": "Маҳсулотлар"
+  },
+  "customers": {
+    "title": "Мижозлар",
+    "searchPlaceholder": "Қидириш...",
+    "registered": "Рўйхатдан ўтган",
+    "orders": "Буюртмалар",
+    "notFound": "Мижоз топилмади",
+    "backButton": "← Орқага",
+    "blocked": "Блокланган",
+    "block": "Блоклаш",
+    "unblock": "Блокдан чиқариш",
+    "orderHistory": "Буюртмалар тарихи ({{count}})",
+    "noOrders": "Буюртмалар йўқ",
+    "reviews": "Шарҳлар ({{count}})",
+    "success": {
+      "blocked": "Мижоз блокланди",
+      "unblocked": "Мижоз блокдан чиқарилди"
+    }
+  },
+  "orders": {
+    "title": "Буюртмалар",
+    "searchPlaceholder": "Қидириш...",
+    "allStatus": "Барча ҳолатлар",
+    "new": "Янги",
+    "accepted": "Қабул қилинган",
+    "inTransit": "Йўлда",
+    "delivered": "Етказилган",
+    "cancelled": "Бекор қилинган",
+    "orderNumber": "Буюртма №",
+    "notFound": "Буюртма топилмади",
+    "backToOrders": "← Буюртмаларга",
+    "viewCustomer": "Мижозни кўриш",
+    "statusControl": "Ҳолат бошқаруви",
+    "provider": "Провайдер:",
+    "statusLabel": "Ҳолат:",
+    "statusHistory": "Ҳолат тарихи",
+    "items": "Маҳсулотлар",
+    "internalNotes": "Ички эслатмалар",
+    "addNotePlaceholder": "Эслатма қўшиш...",
+    "success": {
+      "statusUpdated": "Буюртма ҳолати {{status}} га ўзгартирилди"
+    },
+    "wasCancelled": "Буюртма бекор қилинди"
+  },
+  "discounts": {
+    "title": "Чегирмалар",
+    "addDiscount": "Чегирма қўшиш",
+    "newDiscount": "Янги чегирма",
+    "type": "Тури",
+    "value": "Қиймати",
+    "period": "Давр",
+    "percentage": "Фоиз (%)",
+    "fixedAmount": "Белгиланган сумма ($)",
+    "start": "Бошланиш",
+    "end": "Тугаш",
+    "allProducts": "Барча маҳсулотлар",
+    "byCategory": "Категория бўйича",
+    "specificProducts": "Танланган маҳсулотлар"
+  },
+  "reviews": {
+    "title": "Шарҳлар",
+    "pending": "Кутилмоқда",
+    "approved": "Тасдиқланган",
+    "rejected": "Рад этилган",
+    "approveSelected": "Танланганларни тасдиқлаш",
+    "rejectSelected": "Танланганларни рад этиш",
+    "rating": "Рейтинг",
+    "review": "Шарҳ",
+    "approve": "Тасдиқлаш",
+    "reject": "Рад этиш",
+    "success": {
+      "bulkUpdate": "{{count}} та шарҳ {{status}}"
+    }
+  },
+  "users": {
+    "title": "Фойдаланувчилар",
+    "addUser": "Фойдаланувчи қўшиш",
+    "role": "Рол",
+    "lastLogin": "Охирги кириш",
+    "createUser": "Фойдаланувчи яратиш",
+    "manager": "Менежер",
+    "admin": "Администратор",
+    "errors": {
+      "allRequired": "Барча майдонлар мажбурий",
+      "minPassword": "Парол камида 8 белгидан иборат бўлиши керак",
+      "emailExists": "Бу email аллақачон мавжуд",
+      "cantBlockSelf": "Ўзингизни блоклолмайсиз"
+    },
+    "success": {
+      "created": "Фойдаланувчи яратилди",
+      "statusUpdated": "Фойдаланувчи ҳолати янгиланди"
+    }
+  },
+  "syncLogs": {
+    "title": "Синхронлаш логлари",
+    "runSync": "Қўлда синхронлаш",
+    "syncing": "Синхронланмоқда...",
+    "timestamp": "Вақт",
+    "source": "Манба",
+    "updated": "Янгиланган",
+    "duration": "Давомийлиги",
+    "viewDetails": "Батафсил",
+    "errorDetails": "Хато тафсилотлари",
+    "success": {
+      "completed": "Синхронлаш якунланди. {{count}} та маҳсулот янгиланди."
+    }
+  },
+  "cart": {
+    "empty": "Саватингиз бўш",
+    "emptyHint": "Бошлаш учун маҳсулот қўшинг",
+    "continueShopping": "Харид давом эттириш",
+    "title": "Сават ({{count}} та маҳсулот)",
+    "orderSummary": "Буюртма хулосаси",
+    "deliveryHint": "Етказиб бериш нархи расмийлаштириш вақтида ҳисобланади",
+    "proceedToCheckout": "Расмийлаштириш"
+  },
+  "checkout": {
+    "title": "Буюртмани расмийлаштириш",
+    "address": "Манзил",
+    "summary": "Хулоса",
+    "payment": "Тўлов",
+    "deliveryAddress": "Етказиб бериш манзили",
+    "addNewAddress": "+ Янги манзил қўшиш",
+    "city": "Шаҳар",
+    "district": "Туман",
+    "street": "Кўча",
+    "house": "Уй",
+    "notes": "Изоҳлар",
+    "orderSummary": "Буюртма хулосаси",
+    "estDelivery": "Тахминий етказиб бериш",
+    "businessDays": "3–5 иш куни",
+    "backButton": "Орқага",
+    "continueToPayment": "Тўловга ўтиш",
+    "paymentMethod": "Тўлов усули",
+    "creditCard": "Кредит / дебит карта",
+    "placeOrder": "Буюртма бериш",
+    "errors": {
+      "fillAddress": "Илтимос, барча манзил майдонларини тўлдиринг",
+      "selectAddress": "Илтимос, манзилни танланг"
+    }
+  },
+  "checkoutSuccess": {
+    "title": "Буюртма муваффақиятли расмийлаштирилди!",
+    "orderNumber": "Буюртма рақамингиз",
+    "goToOrders": "Буюртмаларимга ўтиш",
+    "continueShopping": "Харид давом эттириш"
+  },
+  "categoryPage": {
+    "allProducts": "Барча маҳсулотлар",
+    "filters": "Филтрлар",
+    "priceRange": "Нарх оралиғи",
+    "min": "Мин",
+    "max": "Макс",
+    "onSaleOnly": "Фақат чегирмадагилар",
+    "inStockOnly": "Фақат мавжудлари",
+    "resetFilters": "Филтрларни тозалаш",
+    "newestFirst": "Аввал янгилари",
+    "priceLowHigh": "Нарх: пастдан юқорига",
+    "priceHighLow": "Нарх: юқоридан пастга",
+    "highestRated": "Рейтинг бўйича",
+    "productsFound": "{{count}} та маҳсулот топилди",
+    "noProducts": "Филтрларингизга мос маҳсулот йўқ"
+  },
+  "productPage": {
+    "notFound": "Маҳсулот топилмади",
+    "goHome": "Бош саҳифага",
+    "outOfStock": "Мавжуд эмас",
+    "onlyLeft": "Фақат {{count}} та қолди!",
+    "inStock": "Мавжуд",
+    "addToCart": "Саватга қўшиш",
+    "specifications": "Хусусиятлар",
+    "reviewsCount": "Шарҳлар ({{count}})",
+    "relatedProducts": "Ўхшаш маҳсулотлар",
+    "writeReview": "Шарҳ ёзиш",
+    "reviewPlaceholder": "Тажрибангизни баҳам кўринг...",
+    "submitReview": "Шарҳ юбориш",
+    "errors": {
+      "ratingRequired": "Илтимос, баҳо ва шарҳ матнини қўшинг"
+    },
+    "success": {
+      "addedToCart": "{{name}} саватга қўшилди",
+      "reviewSubmitted": "Шарҳингиз юборилди ва модерацияни кутмоқда."
+    }
+  },
+  "searchPage": {
+    "placeholder": "Маиший техника қидириш...",
+    "recentSearches": "Сўнгги қидирувлар",
+    "results": "'{{query}}' бўйича {{count}} та натижа",
+    "noResults": "Маҳсулот топилмади",
+    "tryDifferent": "Бошқа сўз билан қидиринг"
+  },
+  "profile": {
+    "myInfo": "Менинг маълумотларим",
+    "myOrders": "Буюртмаларим",
+    "myAddresses": "Манзилларим",
+    "wishlist": "Истаклар рўйхати",
+    "saveChanges": "Ўзгаришларни сақлаш",
+    "success": {
+      "updated": "Профил муваффақиятли янгиланди"
+    }
+  },
+  "addresses": {
+    "title": "Манзилларим",
+    "addAddress": "Манзил қўшиш",
+    "editAddress": "Манзилни таҳрирлаш",
+    "noAddresses": "Сақланган манзиллар йўқ",
+    "addFirst": "Биринчи манзилингизни қўшинг",
+    "setDefault": "Асосий қилиш",
+    "deleteConfirm": "Манзилни ўчиришни хоҳлайсизми?",
+    "deleteWarning": "Бу амални қайтариб бўлмайди.",
+    "city": "Шаҳар",
+    "district": "Туман",
+    "street": "Кўча",
+    "house": "Уй",
+    "notes": "Изоҳлар"
+  },
+  "profileOrders": {
+    "noOrders": "Ҳали буюртмалар йўқ",
+    "startShopping": "Харид бошлаш",
+    "title": "Буюртмаларим",
+    "items": "та маҳсулот",
+    "backToOrders": "Буюртмаларга",
+    "estDelivery": "Тахминий етказиш:",
+    "method": "Усул:"
+  },
+  "wishlist": {
+    "empty": "Истаклар рўйхатингиз бўш",
+    "browse": "Маҳсулотларни кўриш",
+    "title": "Истаклар рўйхати",
+    "addToCart": "Саватга қўшиш"
+  },
+  "hero": {
+    "slide1Title": "Ақлли уй, ақлли ҳаёт",
+    "slide1Desc": "Маиший техникадаги энг сўнгги технологияларни кашф этинг",
+    "slide1Btn": "Харид қилиш",
+    "slide2Title": "Баҳорги акция — 40% гача чегирма",
+    "slide2Desc": "Кир ювиш машиналари, қуритгичлар ва бошқалар энг яхши нархларда",
+    "slide2Btn": "Акцияларни кўриш",
+    "slide3Title": "Янги 4K телевизорлар етиб келди",
+    "slide3Desc": "Энг яхши брендлардан кристалл тоза тасвир сифати",
+    "slide3Btn": "ТВ ларни кўриш",
+    "previous": "Олдинги",
+    "nextSlide": "Кейинги",
+    "slideN": "Слайд {{n}}"
+  },
+  "promo": {
+    "title": "Бепул ўрнатиш",
+    "desc": "Барча йирик маиший техникага — чекланган таклиф",
+    "cta": "Батафсил",
+    "alt": "Махсус акция"
+  },
+  "productSection": {
+    "viewAll": "Барчасини кўриш →"
+  },
+  "categoryGrid": {
+    "title": "Категория бўйича харид",
+    "productCount": "{{count}} та маҳсулот"
+  },
+  "productCard": {
+    "toggleWishlist": "Истакларга қўшиш",
+    "outOfStock": "Мавжуд эмас",
+    "onlyLeft": "Фақат {{count}} та қолди!",
+    "addToCart": "Саватга қўшиш",
+    "success": {
+      "addedToCart": "{{name}} саватга қўшилди"
+    }
+  },
+  "admin": {
+    "sidebar": {
+      "brand": "baytech",
+      "dashboard": "Бошқарув панели",
+      "products": "Маҳсулотлар",
+      "categories": "Категориялар",
+      "orders": "Буюртмалар",
+      "customers": "Мижозлар",
+      "reviews": "Шарҳлар",
+      "discounts": "Чегирмалар",
+      "syncLogs": "Синхронлаш логлари",
+      "users": "Фойдаланувчилар",
+      "title": "Админ панел"
+    }
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Саҳифа топилмади",
+    "goHome": "Бош саҳифага"
+  },
+  "statusLabels": {
+    "new": "Янги",
+    "accepted": "Қабул қилинган",
+    "inTransit": "Йўлда",
+    "delivered": "Етказилган",
+    "cancelled": "Бекор қилинган",
+    "pending": "Кутилмоқда",
+    "approved": "Тасдиқланган",
+    "rejected": "Рад этилган",
+    "active": "Фаол",
+    "inactive": "Нофаол",
+    "blocked": "Блокланган"
+  }
+}

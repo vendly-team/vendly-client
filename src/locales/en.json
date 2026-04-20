@@ -1,0 +1,467 @@
+{
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "add": "Add",
+    "back": "Back",
+    "close": "Close",
+    "search": "Search",
+    "loading": "Loading...",
+    "actions": "Actions",
+    "status": "Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "yes": "Yes",
+    "no": "No",
+    "confirm": "Confirm",
+    "continue": "Continue",
+    "reset": "Reset",
+    "prev": "Prev",
+    "next": "Next",
+    "all": "All",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "price": "Price",
+    "total": "Total",
+    "subtotal": "Subtotal",
+    "date": "Date",
+    "qty": "Qty",
+    "sku": "SKU",
+    "stock": "Stock",
+    "slug": "Slug",
+    "product": "Product",
+    "category": "Category",
+    "customer": "Customer",
+    "payment": "Payment",
+    "delivery": "Delivery",
+    "default": "Default",
+    "description": "Description",
+    "noData": "No data",
+    "required": "Required",
+    "selected": "selected",
+    "signOut": "Sign Out"
+  },
+  "nav": {
+    "home": "Home",
+    "catalog": "Catalog",
+    "search": "Search",
+    "cart": "Cart",
+    "profile": "Profile",
+    "adminPanel": "Admin Panel",
+    "myOrders": "My Orders",
+    "toggleMenu": "Toggle menu"
+  },
+  "header": {
+    "freeShipping": "Free shipping on orders over $500",
+    "phone": "+1 (800) 123-4567",
+    "searchPlaceholder": "Search for appliances...",
+    "brand": "baytech"
+  },
+  "footer": {
+    "brand": "baytech",
+    "tagline": "Your trusted destination for premium home appliances. Quality products, competitive prices.",
+    "categories": "Categories",
+    "customerService": "Customer Service",
+    "trackOrder": "Track Order",
+    "shoppingCart": "Shopping Cart",
+    "returnsExchanges": "Returns & Exchanges",
+    "faq": "FAQ",
+    "contactUs": "Contact Us",
+    "address": "123 Tech Avenue, Suite 100",
+    "copyright": "© {{year}} baytech. All rights reserved."
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signingIn": "Signing in...",
+    "password": "Password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "noAccount": "Don't have an account?",
+    "register": "Register",
+    "createAccount": "Create Account",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "confirmPassword": "Confirm Password",
+    "agreeTerms": "I agree to the Terms and Conditions",
+    "hasAccount": "Already have an account?",
+    "demo": "Demo: admin@test.com / admin123 or manager@test.com / manager123",
+    "forgotPasswordTitle": "Forgot Password",
+    "sendResetLink": "Send Reset Link",
+    "backToSignIn": "Back to Sign In",
+    "resetHint": "If this email exists in our system, you will receive a password reset link.",
+    "errors": {
+      "invalidCredentials": "Invalid email or password",
+      "invalidInput": "Please enter a valid email and password (min 8 chars)",
+      "validEmail": "Valid email required",
+      "minPassword": "Min 8 characters",
+      "passwordMismatch": "Passwords do not match",
+      "agreeRequired": "You must agree to terms",
+      "fieldRequired": "Required"
+    },
+    "success": {
+      "welcome": "Welcome back!",
+      "accountCreated": "Account created successfully!",
+      "resetSent": "If this email exists, you will receive a reset link."
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "todaysOrders": "Today's Orders",
+    "revenue": "Revenue",
+    "pendingOrders": "Pending Orders",
+    "totalProducts": "Total Products",
+    "ordersChart": "Orders (Last 7 Days)",
+    "revenueChart": "Revenue (Last 7 Days)",
+    "recentOrders": "Recent Orders",
+    "orderNumber": "Order #",
+    "lowStock": "Low Stock Products"
+  },
+  "products": {
+    "title": "Products",
+    "addProduct": "Add Product",
+    "searchPlaceholder": "Search...",
+    "allCategories": "All Categories",
+    "allStatus": "All Status",
+    "editProduct": "Edit Product",
+    "newProduct": "New Product",
+    "basicInfo": "Basic Info",
+    "pricingStock": "Pricing & Stock",
+    "images": "Images",
+    "imageUrl": "Image URL",
+    "addImage": "+ Add Image",
+    "specifications": "Specifications",
+    "key": "Key",
+    "value": "Value",
+    "addSpec": "+ Add Specification",
+    "seo": "SEO",
+    "metaTitle": "Meta Title",
+    "metaDescription": "Meta Description",
+    "basePrice": "Base Price",
+    "salePrice": "Sale Price",
+    "htmlSupported": "HTML is supported",
+    "select": "Select",
+    "syncWarning": "This product is synced from an external source. Price and stock fields may be overwritten on the next sync.",
+    "errors": {
+      "nameMin": "Name must be at least 3 characters",
+      "skuRequired": "SKU is required",
+      "categoryRequired": "Category is required",
+      "validPrice": "Valid price required",
+      "salePriceLess": "Sale price must be less than base price"
+    },
+    "success": {
+      "updated": "Product updated",
+      "created": "Product created"
+    }
+  },
+  "categories": {
+    "title": "Categories",
+    "addCategory": "Add Category",
+    "editCategory": "Edit Category",
+    "imageUrl": "Image URL",
+    "deleteConfirm": "Delete this category?",
+    "products": "Products"
+  },
+  "customers": {
+    "title": "Customers",
+    "searchPlaceholder": "Search...",
+    "registered": "Registered",
+    "orders": "Orders",
+    "notFound": "Customer not found",
+    "backButton": "← Back",
+    "blocked": "Blocked",
+    "block": "Block",
+    "unblock": "Unblock",
+    "orderHistory": "Order History ({{count}})",
+    "noOrders": "No orders",
+    "reviews": "Reviews ({{count}})",
+    "success": {
+      "blocked": "Customer blocked",
+      "unblocked": "Customer unblocked"
+    }
+  },
+  "orders": {
+    "title": "Orders",
+    "searchPlaceholder": "Search...",
+    "allStatus": "All Status",
+    "new": "New",
+    "accepted": "Accepted",
+    "inTransit": "In Transit",
+    "delivered": "Delivered",
+    "cancelled": "Cancelled",
+    "orderNumber": "Order #",
+    "notFound": "Order not found",
+    "backToOrders": "← Back to Orders",
+    "viewCustomer": "View Customer",
+    "statusControl": "Status Control",
+    "provider": "Provider:",
+    "statusLabel": "Status:",
+    "statusHistory": "Status History",
+    "items": "Items",
+    "internalNotes": "Internal Notes",
+    "addNotePlaceholder": "Add a note...",
+    "success": {
+      "statusUpdated": "Order status updated to {{status}}"
+    },
+    "wasCancelled": "Order was cancelled"
+  },
+  "discounts": {
+    "title": "Discounts",
+    "addDiscount": "Add Discount",
+    "newDiscount": "New Discount",
+    "type": "Type",
+    "value": "Value",
+    "period": "Period",
+    "percentage": "Percentage (%)",
+    "fixedAmount": "Fixed Amount ($)",
+    "start": "Start",
+    "end": "End",
+    "allProducts": "All Products",
+    "byCategory": "By Category",
+    "specificProducts": "Specific Products"
+  },
+  "reviews": {
+    "title": "Reviews",
+    "pending": "Pending",
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "approveSelected": "Approve Selected",
+    "rejectSelected": "Reject Selected",
+    "rating": "Rating",
+    "review": "Review",
+    "approve": "Approve",
+    "reject": "Reject",
+    "success": {
+      "bulkUpdate": "{{count}} review(s) {{status}}"
+    }
+  },
+  "users": {
+    "title": "Users",
+    "addUser": "Add User",
+    "role": "Role",
+    "lastLogin": "Last Login",
+    "createUser": "Create User",
+    "manager": "Manager",
+    "admin": "Admin",
+    "errors": {
+      "allRequired": "All fields required",
+      "minPassword": "Password must be at least 8 characters",
+      "emailExists": "Email already exists",
+      "cantBlockSelf": "You can't block yourself"
+    },
+    "success": {
+      "created": "User created",
+      "statusUpdated": "User status updated"
+    }
+  },
+  "syncLogs": {
+    "title": "Sync Logs",
+    "runSync": "Run Manual Sync",
+    "syncing": "Syncing...",
+    "timestamp": "Timestamp",
+    "source": "Source",
+    "updated": "Updated",
+    "duration": "Duration",
+    "viewDetails": "View Details",
+    "errorDetails": "Error Details",
+    "success": {
+      "completed": "Sync completed successfully. {{count}} products updated."
+    }
+  },
+  "cart": {
+    "empty": "Your cart is empty",
+    "emptyHint": "Add some products to get started",
+    "continueShopping": "Continue Shopping",
+    "title": "Shopping Cart ({{count}} items)",
+    "orderSummary": "Order Summary",
+    "deliveryHint": "Delivery cost calculated at checkout",
+    "proceedToCheckout": "Proceed to Checkout"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "address": "Address",
+    "summary": "Summary",
+    "payment": "Payment",
+    "deliveryAddress": "Delivery Address",
+    "addNewAddress": "+ Add new address",
+    "city": "City",
+    "district": "District",
+    "street": "Street",
+    "house": "House",
+    "notes": "Notes",
+    "orderSummary": "Order Summary",
+    "estDelivery": "Est. Delivery",
+    "businessDays": "3–5 business days",
+    "backButton": "Back",
+    "continueToPayment": "Continue to Payment",
+    "paymentMethod": "Payment Method",
+    "creditCard": "Credit / Debit Card",
+    "placeOrder": "Place Order",
+    "errors": {
+      "fillAddress": "Please fill all address fields",
+      "selectAddress": "Please select an address"
+    }
+  },
+  "checkoutSuccess": {
+    "title": "Order Placed Successfully!",
+    "orderNumber": "Your order number is",
+    "goToOrders": "Go to My Orders",
+    "continueShopping": "Continue Shopping"
+  },
+  "categoryPage": {
+    "allProducts": "All Products",
+    "filters": "Filters",
+    "priceRange": "Price Range",
+    "min": "Min",
+    "max": "Max",
+    "onSaleOnly": "On Sale Only",
+    "inStockOnly": "In Stock Only",
+    "resetFilters": "Reset Filters",
+    "newestFirst": "Newest First",
+    "priceLowHigh": "Price: Low to High",
+    "priceHighLow": "Price: High to Low",
+    "highestRated": "Highest Rated",
+    "productsFound": "{{count}} product(s) found",
+    "noProducts": "No products match your filters"
+  },
+  "productPage": {
+    "notFound": "Product not found",
+    "goHome": "Go Home",
+    "outOfStock": "Out of Stock",
+    "onlyLeft": "Only {{count}} left!",
+    "inStock": "In Stock",
+    "addToCart": "Add to Cart",
+    "specifications": "Specifications",
+    "reviewsCount": "Reviews ({{count}})",
+    "relatedProducts": "Related Products",
+    "writeReview": "Write a Review",
+    "reviewPlaceholder": "Share your experience...",
+    "submitReview": "Submit Review",
+    "errors": {
+      "ratingRequired": "Please add a rating and review text"
+    },
+    "success": {
+      "addedToCart": "{{name}} added to cart",
+      "reviewSubmitted": "Your review has been submitted and is awaiting moderation."
+    }
+  },
+  "searchPage": {
+    "placeholder": "Search for appliances...",
+    "recentSearches": "Recent Searches",
+    "results": "{{count}} result(s) for '{{query}}'",
+    "noResults": "No products found",
+    "tryDifferent": "Try a different search term"
+  },
+  "profile": {
+    "myInfo": "My Information",
+    "myOrders": "My Orders",
+    "myAddresses": "My Addresses",
+    "wishlist": "Wishlist",
+    "saveChanges": "Save Changes",
+    "success": {
+      "updated": "Profile updated successfully"
+    }
+  },
+  "addresses": {
+    "title": "My Addresses",
+    "addAddress": "Add Address",
+    "editAddress": "Edit Address",
+    "noAddresses": "No addresses saved",
+    "addFirst": "Add your first address",
+    "setDefault": "Set as Default",
+    "deleteConfirm": "Delete Address?",
+    "deleteWarning": "This action cannot be undone.",
+    "city": "City",
+    "district": "District",
+    "street": "Street",
+    "house": "House",
+    "notes": "Notes"
+  },
+  "profileOrders": {
+    "noOrders": "No orders yet",
+    "startShopping": "Start Shopping",
+    "title": "My Orders",
+    "items": "item(s)",
+    "backToOrders": "Back to Orders",
+    "estDelivery": "Est. Delivery:",
+    "method": "Method:"
+  },
+  "wishlist": {
+    "empty": "Your wishlist is empty",
+    "browse": "Browse Products",
+    "title": "Wishlist",
+    "addToCart": "Add to Cart"
+  },
+  "hero": {
+    "slide1Title": "Smart Home, Smart Living",
+    "slide1Desc": "Discover the latest in home appliance technology",
+    "slide1Btn": "Shop Now",
+    "slide2Title": "Spring Sale — Up to 40% Off",
+    "slide2Desc": "Premium washers, dryers & more at unbeatable prices",
+    "slide2Btn": "View Deals",
+    "slide3Title": "New 4K TVs Are Here",
+    "slide3Desc": "Crystal clear picture quality from top brands",
+    "slide3Btn": "Explore TVs",
+    "previous": "Previous",
+    "nextSlide": "Next",
+    "slideN": "Slide {{n}}"
+  },
+  "promo": {
+    "title": "Free Installation",
+    "desc": "On all large appliances — limited time offer",
+    "cta": "Learn More",
+    "alt": "Special promotion"
+  },
+  "productSection": {
+    "viewAll": "View All →"
+  },
+  "categoryGrid": {
+    "title": "Shop by Category",
+    "productCount": "{{count}} products"
+  },
+  "productCard": {
+    "toggleWishlist": "Toggle wishlist",
+    "outOfStock": "Out of Stock",
+    "onlyLeft": "Only {{count}} left!",
+    "addToCart": "Add to Cart",
+    "success": {
+      "addedToCart": "{{name}} added to cart"
+    }
+  },
+  "admin": {
+    "sidebar": {
+      "brand": "baytech",
+      "dashboard": "Dashboard",
+      "products": "Products",
+      "categories": "Categories",
+      "orders": "Orders",
+      "customers": "Customers",
+      "reviews": "Reviews",
+      "discounts": "Discounts",
+      "syncLogs": "Sync Logs",
+      "users": "Users",
+      "title": "Admin Panel"
+    }
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Oops! Page not found",
+    "goHome": "Go Home"
+  },
+  "statusLabels": {
+    "new": "New",
+    "accepted": "Accepted",
+    "inTransit": "In Transit",
+    "delivered": "Delivered",
+    "cancelled": "Cancelled",
+    "pending": "Pending",
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "active": "Active",
+    "inactive": "Inactive",
+    "blocked": "Blocked"
+  }
+}
