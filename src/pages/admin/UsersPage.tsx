@@ -1,72 +1,131 @@
-import { useState } from 'react';
-import { adminUsers as initial } from '@/shared/data/users';
-import { useAuthStore } from '@/shared/store/authStore';
-import { toast } from 'sonner';
-import { Plus, X } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { useState } from "react";
+import { Plus } from "lucide-react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { AssignRoleModal } from "@/features/users/components/AssignRoleModal";
+import { UserForm } from "@/features/users/components/UserForm";
+import { UserList } from "@/features/users/components/UserList";
+import { useUsers } from "@/features/users/hooks/useUsers";
+import type { CreateUserRequest, UpdateUserRequest, User, UserRole } from "@/features/users/types";
+import { userService } from "@/services/user.service";
+import { useAuthStore } from "@/shared/store/authStore";
 
-const UsersPage = () => {
-  const { t } = useTranslation();
-  const [users, setUsers] = useState(initial);
+export const UsersPage = () => {
+  const { users, loading, error, fetchUsers } = useUsers();
   const { user: currentUser } = useAuthStore();
-  const [modalOpen, setModalOpen] = useState(false);
-  const [form, setForm] = useState({ firstName: '', lastName: '', email: '', password: '', role: 'manager' as 'admin' | 'manager' });
+  const [createOpen, setCreateOpen] = useState(false);
+  const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [roleUser, setRoleUser] = useState<User | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSave = () => {
-    if (!form.firstName || !form.lastName || !form.email || !form.password) { toast.error(t('users.errors.allRequired')); return; }
-    if (form.password.length < 8) { toast.error(t('users.errors.minPassword')); return; }
-    if (users.some(u => u.email === form.email)) { toast.error(t('users.errors.emailExists')); return; }
-    setUsers([...users, { id: String(Date.now()), ...form, lastLogin: new Date().toISOString(), isBlocked: false }]);
-    setModalOpen(false);
-    toast.success(t('users.success.created'));
+  const handleCreate = async (data: CreateUserRequest | UpdateUserRequest) => {
+    setSubmitting(true);
+
+    try {
+      await userService.create(data as CreateUserRequest);
+      await fetchUsers();
+      setCreateOpen(false);
+      toast.success("User created");
+    } catch (requestError) {
+      toast.error(requestError instanceof Error ? requestError.message : "Failed to create user");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
-  const toggleBlock = (id: string) => {
-    if (id === currentUser?.id) { toast.error(t('users.errors.cantBlockSelf')); return; }
-    setUsers(users.map(u => u.id === id ? { ...u, isBlocked: !u.isBlocked } : u));
-    toast.success(t('users.success.statusUpdated'));
+  const handleUpdate = async (data: CreateUserRequest | UpdateUserRequest) => {
+    if (!editingUser) return;
+    setSubmitting(true);
+
+    try {
+      await userService.update(editingUser.id, data as UpdateUserRequest);
+      await fetchUsers();
+      setEditingUser(null);
+      toast.success("User updated");
+    } catch (requestError) {
+      toast.error(requestError instanceof Error ? requestError.message : "Failed to update user");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleToggleBlock = async (targetUser: User) => {
+    if (String(targetUser.id) === currentUser?.id) {
+      toast.error("You cannot block yourself");
+      return;
+    }
+
+    try {
+      await userService.block(targetUser.id);
+      await fetchUsers();
+      toast.success(targetUser.isBlocked ? "User unblocked" : "User blocked");
+    } catch (requestError) {
+      toast.error(requestError instanceof Error ? requestError.message : "Failed to update block status");
+    }
+  };
+
+  const handleAssignRole = async (role: UserRole) => {
+    if (!roleUser) return;
+    setSubmitting(true);
+
+    try {
+      await userService.assignRole(roleUser.id, role);
+      await fetchUsers();
+      setRoleUser(null);
+      toast.success("Role updated");
+    } catch (requestError) {
+      toast.error(requestError instanceof Error ? requestError.message : "Failed to assign role");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-display font-bold">{t('users.title')}</h1>
-        <button onClick={() => { setForm({ firstName: '', lastName: '', email: '', password: '', role: 'manager' }); setModalOpen(true); }} className="flex items-center gap-2 h-10 px-4 bg-accent text-accent-foreground rounded-lg text-sm font-medium"><Plus size={16} /> {t('users.addUser')}</button>
+      <div className="mb-6 flex items-center justify-between">
+        <h1 className="text-2xl font-display font-bold">Users</h1>
+        <Button type="button" className="bg-accent text-accent-foreground hover:bg-accent/90" onClick={() => setCreateOpen(true)}>
+          <Plus size={16} />
+          Create User
+        </Button>
       </div>
-      <div className="bg-card border border-border rounded-lg overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead><tr className="border-b border-border bg-muted/50"><th className="text-left px-4 py-3 font-medium text-muted-foreground">{t('common.name')}</th><th className="text-left px-4 py-3 font-medium text-muted-foreground">{t('common.email')}</th><th className="text-left px-4 py-3 font-medium text-muted-foreground">{t('users.role')}</th><th className="text-left px-4 py-3 font-medium text-muted-foreground">{t('users.lastLogin')}</th><th className="text-left px-4 py-3 font-medium text-muted-foreground">{t('common.status')}</th><th className="text-left px-4 py-3 font-medium text-muted-foreground">{t('common.actions')}</th></tr></thead>
-          <tbody>{users.map(u => (
-            <tr key={u.id} className="border-b border-border last:border-0">
-              <td className="px-4 py-3 font-medium">{u.firstName} {u.lastName}</td>
-              <td className="px-4 py-3 text-muted-foreground">{u.email}</td>
-              <td className="px-4 py-3"><span className={`text-xs px-2 py-0.5 rounded font-medium ${u.role === 'admin' ? 'bg-accent/10 text-accent' : 'bg-info/10 text-info'}`}>{u.role}</span></td>
-              <td className="px-4 py-3 text-muted-foreground">{new Date(u.lastLogin).toLocaleDateString()}</td>
-              <td className="px-4 py-3"><span className={`text-xs px-2 py-0.5 rounded font-medium ${u.isBlocked ? 'bg-destructive/10 text-destructive' : 'bg-success/10 text-success'}`}>{u.isBlocked ? t('customers.blocked') : t('common.active')}</span></td>
-              <td className="px-4 py-3"><button onClick={() => toggleBlock(u.id)} className="text-xs text-accent hover:underline">{u.isBlocked ? t('customers.unblock') : t('customers.block')}</button></td>
-            </tr>
-          ))}</tbody>
-        </table>
-      </div>
-      {modalOpen && (
-        <div className="fixed inset-0 z-50 bg-foreground/50 flex items-center justify-center p-4" onClick={() => setModalOpen(false)}>
-          <div className="bg-card border border-border rounded-lg p-6 w-full max-w-md" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-4"><h3 className="font-semibold">{t('users.addUser')}</h3><button onClick={() => setModalOpen(false)}><X size={20} /></button></div>
-            <div className="space-y-3">
-              <div className="grid grid-cols-2 gap-3">
-                <input placeholder={`${t('auth.firstName')} *`} value={form.firstName} onChange={e => setForm({...form, firstName: e.target.value})} className="h-10 px-3 glass-input rounded-md text-sm" />
-                <input placeholder={`${t('auth.lastName')} *`} value={form.lastName} onChange={e => setForm({...form, lastName: e.target.value})} className="h-10 px-3 glass-input rounded-md text-sm" />
-              </div>
-              <input placeholder={`${t('common.email')} *`} type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})} className="w-full h-10 px-3 glass-input rounded-md text-sm" />
-              <input placeholder={`${t('auth.password')} *`} type="password" value={form.password} onChange={e => setForm({...form, password: e.target.value})} className="w-full h-10 px-3 glass-input rounded-md text-sm" />
-              <select value={form.role} onChange={e => setForm({...form, role: e.target.value as any})} className="w-full h-10 px-3 glass-input rounded-md text-sm"><option value="manager">{t('users.manager')}</option><option value="admin">{t('users.admin')}</option></select>
-            </div>
-            <button onClick={handleSave} className="w-full h-11 bg-accent text-accent-foreground rounded-lg font-semibold text-sm mt-4">{t('users.createUser')}</button>
-          </div>
-        </div>
-      )}
+
+      <UserList
+        users={users.filter(user => user.role !== 0)}
+        currentRole={currentUser?.role}
+        loading={loading}
+        error={error}
+        onEdit={setEditingUser}
+        onToggleBlock={user => void handleToggleBlock(user)}
+        onAssignRole={setRoleUser}
+      />
+
+      <Dialog open={createOpen} onOpenChange={setCreateOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Create User</DialogTitle>
+          </DialogHeader>
+          <UserForm mode="create" submitting={submitting} onSubmit={handleCreate} />
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={Boolean(editingUser)} onOpenChange={open => { if (!open) setEditingUser(null); }}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit User</DialogTitle>
+          </DialogHeader>
+          <UserForm mode="update" user={editingUser} submitting={submitting} onSubmit={handleUpdate} />
+        </DialogContent>
+      </Dialog>
+
+      <AssignRoleModal
+        user={roleUser}
+        open={Boolean(roleUser)}
+        submitting={submitting}
+        onOpenChange={open => { if (!open) setRoleUser(null); }}
+        onSubmit={handleAssignRole}
+      />
     </div>
   );
 };
-
-export default UsersPage;

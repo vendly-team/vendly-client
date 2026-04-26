@@ -1,6 +1,7 @@
 import ProductCard from "./ProductCard";
 import type { Product } from "@/shared/types";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 interface ProductSectionProps {
   title: string;
@@ -15,9 +16,9 @@ const ProductSection = ({ title, products, viewAllLink }: ProductSectionProps) =
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl sm:text-2xl font-display font-bold text-foreground">{title}</h2>
         {viewAllLink && (
-          <a href={viewAllLink} className="text-sm font-medium text-accent hover:underline">
+          <Link to={viewAllLink} className="text-sm font-medium text-accent hover:underline">
             {t("productSection.viewAll")}
-          </a>
+          </Link>
         )}
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-3 sm:gap-4">

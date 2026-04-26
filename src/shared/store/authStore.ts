@@ -1,13 +1,16 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { authApi, userFromToken } from '@/shared/api/authApi';
 import type { User } from '../types';
 
 interface AuthState {
   user: User | null;
+  accessToken: string | null;
+  refreshToken: string | null;
   isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<boolean>;
-  register: (data: { firstName: string; lastName: string; email: string; phone: string; password: string }) => void;
-  logout: () => void;
+  login: (login: string, password: string) => Promise<boolean>;
+  register: (data: { firstName: string; lastName: string; email: string; phone: string; password: string }) => Promise<boolean>;
+  logout: () => Promise<void>;
   updateProfile: (data: Partial<User>) => void;
 }
 
@@ -15,32 +18,81 @@ export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
       user: null,
+      accessToken: null,
+      refreshToken: null,
       isAuthenticated: false,
-      login: async (email: string, password: string) => {
-        if (email === 'admin@test.com' && password === 'admin123') {
-          set({ user: { id: 'u1', firstName: 'Admin', lastName: 'User', email, phone: '+1 (800) 000-0001', role: 'admin' }, isAuthenticated: true });
+      login: async (login, password) => {
+        try {
+          const auth = await authApi.login(login, password);
+
+          set({
+            user: userFromToken(auth.accessToken, login),
+            accessToken: auth.accessToken,
+            refreshToken: auth.refreshToken,
+            isAuthenticated: true,
+          });
+
           return true;
+        } catch {
+          set({ user: null, accessToken: null, refreshToken: null, isAuthenticated: false });
+          return false;
         }
-        if (email === 'manager@test.com' && password === 'manager123') {
-          set({ user: { id: 'u2', firstName: 'Manager', lastName: 'User', email, phone: '+1 (800) 000-0002', role: 'manager' }, isAuthenticated: true });
-          return true;
-        }
-        // Any other valid-looking credentials → customer
-        if (email && password && password.length >= 8) {
-          set({ user: { id: 'c1', firstName: 'Alex', lastName: 'Morgan', email, phone: '+1 (555) 100-1001', role: 'customer' }, isAuthenticated: true });
-          return true;
-        }
-        return false;
       },
-      register: (data) => {
-        set({
-          user: { id: 'c-new-' + Date.now(), firstName: data.firstName, lastName: data.lastName, email: data.email, phone: data.phone, role: 'customer' },
-          isAuthenticated: true,
-        });
+      register: async (data) => {
+        try {
+          const auth = await authApi.register(data);
+
+          set({
+            user: {
+              ...userFromToken(auth.accessToken, data.email || data.phone),
+              firstName: data.firstName,
+              lastName: data.lastName,
+              email: data.email,
+              phone: data.phone,
+            },
+            accessToken: auth.accessToken,
+            refreshToken: auth.refreshToken,
+            isAuthenticated: true,
+          });
+
+          return true;
+        } catch {
+          set({ user: null, accessToken: null, refreshToken: null, isAuthenticated: false });
+          return false;
+        }
       },
-      logout: () => set({ user: null, isAuthenticated: false }),
+      logout: async () => {
+        const refreshToken = useAuthStore.getState().refreshToken;
+
+        if (refreshToken) {
+          try {
+            await authApi.logout(refreshToken);
+          } catch {
+            // Local logout should still complete even if the refresh token is expired or revoked.
+          }
+        }
+
+        set({ user: null, accessToken: null, refreshToken: null, isAuthenticated: false });
+      },
       updateProfile: (data) => set((state) => ({ user: state.user ? { ...state.user, ...data } : null })),
     }),
-    { name: 'auth-storage' }
+    {
+      name: 'auth-storage',
+      version: 2,
+      migrate: (persistedState: unknown) => {
+        const state = persistedState as Partial<AuthState> | undefined;
+
+        if (!state?.accessToken) {
+          return {
+            user: null,
+            accessToken: null,
+            refreshToken: null,
+            isAuthenticated: false,
+          };
+        }
+
+        return state;
+      },
+    }
   )
 );

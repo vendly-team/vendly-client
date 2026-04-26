@@ -11,6 +11,7 @@ const RegisterPage = () => {
   const { register } = useAuthStore();
   const navigate = useNavigate();
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(false);
 
   const validate = () => {
     const e: Record<string, string> = {};
@@ -24,14 +25,21 @@ const RegisterPage = () => {
     return e;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const errs = validate();
     setErrors(errs);
     if (Object.keys(errs).length > 0) return;
-    register({ firstName: form.firstName, lastName: form.lastName, email: form.email, phone: form.phone, password: form.password });
-    toast.success(t('auth.success.accountCreated'));
-    navigate('/');
+    setLoading(true);
+    const success = await register({ firstName: form.firstName, lastName: form.lastName, email: form.email, phone: form.phone, password: form.password });
+    setLoading(false);
+
+    if (success) {
+      toast.success(t('auth.success.accountCreated'));
+      navigate('/');
+    } else {
+      toast.error(t('auth.errors.invalidInput'));
+    }
   };
 
   const field = (label: string, key: keyof typeof form, type = 'text') => (
@@ -60,7 +68,9 @@ const RegisterPage = () => {
             {t('auth.agreeTerms')}
           </label>
           {errors.agree && <p className="text-xs text-destructive">{errors.agree}</p>}
-          <button type="submit" className="w-full h-11 bg-accent text-accent-foreground rounded-lg font-semibold text-sm">{t('auth.createAccount')}</button>
+          <button type="submit" disabled={loading} className="w-full h-11 bg-accent text-accent-foreground rounded-lg font-semibold text-sm disabled:opacity-50">
+            {loading ? t('common.loading', { defaultValue: 'Loading...' }) : t('auth.createAccount')}
+          </button>
           <p className="text-sm text-center text-muted-foreground">
             {t('auth.hasAccount')} <Link to="/login" className="text-accent hover:underline">{t('auth.signIn')}</Link>
           </p>

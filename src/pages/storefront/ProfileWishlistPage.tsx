@@ -30,7 +30,7 @@ const ProfileWishlistPage = () => {
         {wishlistProducts.map((p) => (
           <div key={p.id} className="bg-card border border-border rounded-lg overflow-hidden">
             <Link to={`/product/${p.slug}`} className="block aspect-square bg-muted">
-              <img src={p.images[0] || '/placeholder.svg'} alt={p.name} className="w-full h-full object-cover" />
+              <img src={p.images[0] || '/placeholder.svg'} alt={p.name} className="w-full h-full object-contain" />
             </Link>
             <div className="p-3">
               <Link to={`/product/${p.slug}`} className="text-sm font-medium text-foreground hover:text-accent line-clamp-2">{p.name}</Link>

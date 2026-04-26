@@ -123,10 +123,54 @@
     @apply bg-primary border-primary shadow-[0_2px_8px_rgba(30,58,95,0.2)];
     transform: scale(1);
   }
+  .admin-shell table {
+    @apply w-full text-sm;
+  }
+  .admin-shell thead tr {
+    @apply border-b border-border bg-muted/60;
+  }
+  .admin-shell th {
+    @apply h-11 px-4 text-left align-middle text-xs font-semibold uppercase tracking-wide text-muted-foreground;
+  }
+  .admin-shell tbody tr {
+    @apply border-b border-border transition-colors last:border-0 hover:bg-muted/35;
+  }
+  .admin-shell td {
+    @apply px-4 py-3 align-middle text-foreground;
+  }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  @keyframes search-icon-shake {
+    0%, 72%, 100% {
+      transform: translateX(0) rotate(0deg);
+    }
+    78% {
+      transform: translateX(-1px) rotate(-6deg);
+    }
+    84% {
+      transform: translateX(1px) rotate(6deg);
+    }
+    90% {
+      transform: translateX(-0.5px) rotate(-3deg);
+    }
+    96% {
+      transform: translateX(0.5px) rotate(3deg);
+    }
+  }
+
+  .search-icon-shake {
+    animation: search-icon-shake 2.8s ease-in-out infinite;
+    transform-origin: center;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .search-icon-shake {
+      animation: none;
+    }
   }
 }

@@ -1,39 +1,93 @@
-import { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
-import { customers as allCustomers } from '@/shared/data/customers';
-import { Search } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { useMemo, useState } from "react";
+import { Search } from "lucide-react";
+import { toast } from "sonner";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { UserForm } from "@/features/users/components/UserForm";
+import { UserList } from "@/features/users/components/UserList";
+import { useUsers } from "@/features/users/hooks/useUsers";
+import type { CreateUserRequest, UpdateUserRequest, User } from "@/features/users/types";
+import { userService } from "@/services/user.service";
+import { useAuthStore } from "@/shared/store/authStore";
 
-const AdminCustomersPage = () => {
-  const { t } = useTranslation();
-  const [search, setSearch] = useState('');
-  const filtered = useMemo(() => {
-    if (!search) return allCustomers;
-    const s = search.toLowerCase();
-    return allCustomers.filter(c => c.firstName.toLowerCase().includes(s) || c.lastName.toLowerCase().includes(s) || c.email.toLowerCase().includes(s) || c.phone.includes(s));
-  }, [search]);
+export const AdminCustomersPage = () => {
+  const { users, loading, error, fetchUsers } = useUsers();
+  const { user: currentUser } = useAuthStore();
+  const [search, setSearch] = useState("");
+  const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+
+  const customers = useMemo(() => {
+    const normalizedSearch = search.toLowerCase();
+
+    return users
+      .filter(user => user.role === 0)
+      .filter(user => {
+        if (!normalizedSearch) return true;
+
+        return (
+          user.firstName.toLowerCase().includes(normalizedSearch) ||
+          user.lastName.toLowerCase().includes(normalizedSearch) ||
+          user.phone.includes(normalizedSearch) ||
+          (user.email ?? "").toLowerCase().includes(normalizedSearch)
+        );
+      });
+  }, [search, users]);
+
+  const handleUpdate = async (data: CreateUserRequest | UpdateUserRequest) => {
+    if (!editingUser) return;
+    setSubmitting(true);
+
+    try {
+      await userService.update(editingUser.id, data as UpdateUserRequest);
+      await fetchUsers();
+      setEditingUser(null);
+      toast.success("Customer updated");
+    } catch (requestError) {
+      toast.error(requestError instanceof Error ? requestError.message : "Failed to update customer");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleToggleBlock = async (targetUser: User) => {
+    try {
+      await userService.block(targetUser.id);
+      await fetchUsers();
+      toast.success(targetUser.isBlocked ? "Customer unblocked" : "Customer blocked");
+    } catch (requestError) {
+      toast.error(requestError instanceof Error ? requestError.message : "Failed to update block status");
+    }
+  };
 
   return (
     <div>
-      <h1 className="text-2xl font-display font-bold mb-6">{t('customers.title')}</h1>
-      <div className="mb-4"><div className="relative w-64"><Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" /><input placeholder={t('customers.searchPlaceholder')} value={search} onChange={e => setSearch(e.target.value)} className="h-9 pl-9 pr-3 glass-input rounded-md text-sm w-full" /></div></div>
-      <div className="bg-card border border-border rounded-lg overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead><tr className="border-b border-border bg-muted/50"><th className="text-left px-4 py-3 font-medium text-muted-foreground">{t('common.name')}</th><th className="text-left px-4 py-3 font-medium text-muted-foreground">{t('common.email')}</th><th className="text-left px-4 py-3 font-medium text-muted-foreground">{t('common.phone')}</th><th className="text-left px-4 py-3 font-medium text-muted-foreground">{t('customers.registered')}</th><th className="text-left px-4 py-3 font-medium text-muted-foreground">{t('customers.orders')}</th><th className="text-left px-4 py-3 font-medium text-muted-foreground">{t('common.actions')}</th></tr></thead>
-          <tbody>
-            {filtered.map(c => (
-              <tr key={c.id} className="border-b border-border last:border-0 hover:bg-muted/30">
-                <td className="px-4 py-3 font-medium">{c.firstName} {c.lastName}</td>
-                <td className="px-4 py-3 text-muted-foreground">{c.email}</td>
-                <td className="px-4 py-3 text-muted-foreground">{c.phone}</td>
-                <td className="px-4 py-3 text-muted-foreground">{new Date(c.registeredAt).toLocaleDateString()}</td>
-                <td className="px-4 py-3">{c.orderCount}</td>
-                <td className="px-4 py-3"><Link to={`/admin/customers/${c.id}`} className="text-accent hover:underline text-xs">{t('common.view')}</Link></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <h1 className="mb-6 text-2xl font-display font-bold">Customers</h1>
+      <div className="mb-4">
+        <div className="relative w-72">
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+          <Input placeholder="Search customers..." value={search} onChange={event => setSearch(event.target.value)} className="h-9 pl-9" />
+        </div>
       </div>
+      <UserList
+        users={customers}
+        currentRole={currentUser?.role}
+        loading={loading}
+        error={error}
+        allowAssignRole={false}
+        onEdit={setEditingUser}
+        onToggleBlock={user => void handleToggleBlock(user)}
+        onAssignRole={() => undefined}
+      />
+
+      <Dialog open={Boolean(editingUser)} onOpenChange={open => { if (!open) setEditingUser(null); }}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Customer</DialogTitle>
+          </DialogHeader>
+          <UserForm mode="update" user={editingUser} submitting={submitting} onSubmit={handleUpdate} />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

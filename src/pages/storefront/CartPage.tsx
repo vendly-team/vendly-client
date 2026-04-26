@@ -39,7 +39,7 @@ const CartPage = () => {
           <div className="flex-1 space-y-4">
             {items.map((item) => (
               <div key={item.productId} className="flex gap-4 bg-card border border-border rounded-lg p-4">
-                <img src={item.image || '/placeholder.svg'} alt={item.name} className="w-20 h-20 rounded-md object-cover bg-muted" />
+                <img src={item.image || '/placeholder.svg'} alt={item.name} className="w-20 h-20 rounded-md object-contain bg-muted" />
                 <div className="flex-1 min-w-0">
                   <Link to={`/product/${item.productId}`} className="text-sm font-medium text-foreground hover:text-accent line-clamp-1">{item.name}</Link>
                   <p className="text-xs text-muted-foreground">SKU: {item.sku}</p>

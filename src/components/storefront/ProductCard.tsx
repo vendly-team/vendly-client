@@ -32,7 +32,7 @@ const ProductCard = ({ product }: { product: Product }) => {
       </button>
 
       <Link to={`/product/${product.slug}`} className="block aspect-square bg-muted overflow-hidden">
-        <img src={product.images[0] || '/placeholder.svg'} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+        <img src={product.images[0] || '/placeholder.svg'} alt={product.name} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" loading="lazy" />
         {isOutOfStock && (
           <div className="absolute inset-0 bg-foreground/40 flex items-center justify-center">
             <span className="bg-card text-foreground font-bold px-4 py-2 rounded text-sm">{t("productCard.outOfStock")}</span>

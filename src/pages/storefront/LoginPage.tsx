@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 
 const LoginPage = () => {
   const { t } = useTranslation();
-  const [email, setEmail] = useState('');
+  const [loginValue, setLoginValue] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const { login } = useAuthStore();
@@ -17,9 +17,9 @@ const LoginPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || password.length < 8) { toast.error(t('auth.errors.invalidInput')); return; }
+    if (!loginValue || password.length < 4) { toast.error(t('auth.errors.invalidInput')); return; }
     setLoading(true);
-    const success = await login(email, password);
+    const success = await login(loginValue, password);
     setLoading(false);
     if (success) { toast.success(t('auth.success.welcome')); navigate(redirect); }
     else toast.error(t('auth.errors.invalidCredentials'));
@@ -31,12 +31,12 @@ const LoginPage = () => {
         <h1 className="text-2xl font-display font-bold text-foreground mb-6 text-center">{t('auth.signIn')}</h1>
         <form onSubmit={handleSubmit} className="bg-card border border-border rounded-lg p-6 space-y-4">
           <div>
-            <label className="text-sm font-medium text-foreground">{t('common.email')}</label>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required className="w-full h-10 px-3 glass-input rounded-md text-sm mt-1" />
+            <label className="text-sm font-medium text-foreground">{t('common.email')} / {t('common.phone')}</label>
+            <input type="text" value={loginValue} onChange={(e) => setLoginValue(e.target.value)} required className="w-full h-10 px-3 glass-input rounded-md text-sm mt-1" />
           </div>
           <div>
             <label className="text-sm font-medium text-foreground">{t('auth.password')}</label>
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} className="w-full h-10 px-3 glass-input rounded-md text-sm mt-1" />
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={4} className="w-full h-10 px-3 glass-input rounded-md text-sm mt-1" />
           </div>
           <div className="flex items-center justify-between">
             <label className="flex items-center gap-2 text-sm"><input type="checkbox" className="rounded" /> {t('auth.rememberMe')}</label>

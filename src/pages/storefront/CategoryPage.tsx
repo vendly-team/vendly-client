@@ -1,16 +1,20 @@
-import { useState, useMemo } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import StorefrontLayout from '@/components/layout/StorefrontLayout';
 import ProductCard from '@/components/storefront/ProductCard';
-import { products } from '@/shared/data/products';
-import { categories } from '@/shared/data/categories';
 import { SlidersHorizontal, X } from 'lucide-react';
+import { categoriesApi, mapCategoryDto } from '@/shared/api/categoriesApi';
+import { productService } from '@/features/products/services/productService';
+import { mapProductDetailToStorefrontProduct, mapProductListFallback } from '@/features/products/services/storefrontProductMapper';
+import type { Category, Product } from '@/shared/types';
 
 const CategoryPage = () => {
   const { t } = useTranslation();
   const { slug } = useParams();
-  const category = categories.find((c) => c.slug === slug);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const [priceMin, setPriceMin] = useState('');
   const [priceMax, setPriceMax] = useState('');
   const [onSaleOnly, setOnSaleOnly] = useState(false);
@@ -19,6 +23,41 @@ const CategoryPage = () => {
   const [page, setPage] = useState(1);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const perPage = 12;
+  const category = categories.find((c) => c.slug === slug);
+
+  useEffect(() => {
+    const loadCategoryProducts = async () => {
+      setLoading(true);
+      try {
+        const [categoryDtos, productList] = await Promise.all([
+          categoriesApi.getAll(),
+          productService.getAll(),
+        ]);
+        const mappedCategories = categoryDtos.map(mapCategoryDto).filter(item => item.isActive);
+        setCategories(mappedCategories);
+
+        const details = await Promise.all(
+          productList
+            .filter(product => product.isActive)
+            .map(async product => {
+              try {
+                return mapProductDetailToStorefrontProduct(await productService.getById(product.id));
+              } catch {
+                return mapProductListFallback(product);
+              }
+            }),
+        );
+        setProducts(details.filter(product => product.isActive));
+      } catch {
+        setCategories([]);
+        setProducts([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    void loadCategoryProducts();
+  }, []);
 
   const filtered = useMemo(() => {
     let list = category ? products.filter((p) => p.categoryId === category.id && p.isActive) : products.filter((p) => p.isActive);
@@ -33,7 +72,7 @@ const CategoryPage = () => {
       default: list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     }
     return list;
-  }, [category, priceMin, priceMax, onSaleOnly, inStockOnly, sort]);
+  }, [category, inStockOnly, onSaleOnly, priceMax, priceMin, products, sort]);
 
   const totalPages = Math.ceil(filtered.length / perPage);
   const paged = filtered.slice((page - 1) * perPage, page * perPage);
@@ -86,7 +125,11 @@ const CategoryPage = () => {
             <div className="bg-card p-4 rounded-lg border border-border sticky top-24"><FilterPanel /></div>
           </aside>
           <div className="flex-1">
-            {paged.length > 0 ? (
+            {loading ? (
+              <div className="rounded-lg border border-border bg-card p-8 text-center text-sm text-muted-foreground">
+                {t('products.loading', { defaultValue: 'Loading products...' })}
+              </div>
+            ) : paged.length > 0 ? (
               <>
                 <p className="text-sm text-muted-foreground mb-4">{t('categoryPage.productsFound', { count: filtered.length })}</p>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">

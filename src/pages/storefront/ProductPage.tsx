@@ -1,198 +1,273 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import StorefrontLayout from '@/components/layout/StorefrontLayout';
 import ProductCard from '@/components/storefront/ProductCard';
-import { products } from '@/shared/data/products';
-import { categories } from '@/shared/data/categories';
-import { reviews as allReviews } from '@/shared/data/reviews';
 import { useCartStore } from '@/shared/store/cartStore';
 import { useWishlistStore } from '@/shared/store/wishlistStore';
-import { useAuthStore } from '@/shared/store/authStore';
-import { formatPrice, getDiscountPercent } from '@/shared/utils';
-import { Heart, ShoppingCart, Star, Lock, Info, Minus, Plus } from 'lucide-react';
+import { formatPrice } from '@/shared/utils';
+import { Heart, ImagePlus, Info, Minus, Package, Plus, ShoppingCart } from 'lucide-react';
 import { toast } from 'sonner';
+import { productService } from '@/features/products/services/productService';
+import type { ProductAdminDetailResponse, ProductVariantResponse } from '@/features/products/types';
+import {
+  getDisplayVariants,
+  getProductIdFromSlug,
+  getVariantImages,
+  mapProductDetailToStorefrontProduct,
+  resolveProductMediaUrl,
+} from '@/features/products/services/storefrontProductMapper';
+import { createCategorySlug } from '@/shared/api/categoriesApi';
+import type { Product } from '@/shared/types';
 
 const ProductPage = () => {
   const { t } = useTranslation();
   const { slug } = useParams();
-  const product = products.find((p) => p.slug === slug);
   const addItem = useCartStore((s) => s.addItem);
   const toggle = useWishlistStore((s) => s.toggle);
-  const isWishlisted = useWishlistStore((s) => product ? s.productIds.includes(product.id) : false);
-  const { isAuthenticated, user } = useAuthStore();
+  const [product, setProduct] = useState<ProductAdminDetailResponse | null>(null);
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedOptions, setSelectedOptions] = useState<Record<number, number>>({});
   const [mainImage, setMainImage] = useState(0);
   const [qty, setQty] = useState(1);
-  const [tab, setTab] = useState<'description' | 'specs' | 'reviews'>('description');
-  const [reviewRating, setReviewRating] = useState(0);
-  const [reviewText, setReviewText] = useState('');
-  const [reviewPage, setReviewPage] = useState(1);
+  const [tab, setTab] = useState<'description' | 'variants'>('description');
 
-  if (!product) return <StorefrontLayout><div className="container py-20 text-center"><h1 className="text-2xl font-bold">{t('productPage.notFound')}</h1><Link to="/" className="text-accent mt-4 inline-block">{t('productPage.goHome')}</Link></div></StorefrontLayout>;
+  const productId = getProductIdFromSlug(slug);
+  const storeProduct = product ? mapProductDetailToStorefrontProduct(product) : null;
+  const isWishlisted = useWishlistStore((s) => storeProduct ? s.productIds.includes(storeProduct.id) : false);
 
-  const category = categories.find((c) => c.id === product.categoryId);
-  const discount = product.salePrice ? getDiscountPercent(product.price, product.salePrice) : 0;
-  const isOutOfStock = product.stock === 0;
-  const isLowStock = product.stock > 0 && product.stock < 5;
-  const productReviews = allReviews.filter((r) => r.productId === product.id && r.status === 'approved');
-  const relatedProducts = products.filter((p) => p.categoryId === product.categoryId && p.id !== product.id).slice(0, 4);
-  const reviewsPerPage = 5;
-  const pagedReviews = productReviews.slice((reviewPage - 1) * reviewsPerPage, reviewPage * reviewsPerPage);
-  const totalReviewPages = Math.ceil(productReviews.length / reviewsPerPage);
+  useEffect(() => {
+    const loadProduct = async () => {
+      if (!productId) {
+        setProduct(null);
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
+      try {
+        const detail = await productService.getById(productId);
+        setProduct(detail);
+        const firstVariant = getDisplayVariants(detail)[0];
+        setSelectedOptions(Object.fromEntries(firstVariant?.combination.map(item => [item.optionId, item.optionId]) ?? []));
+
+        const all = await productService.getAll();
+        const related = await Promise.all(
+          all
+            .filter(item => item.isActive && item.categoryId === detail.categoryId && item.id !== detail.id)
+            .slice(0, 4)
+            .map(async item => mapProductDetailToStorefrontProduct(await productService.getById(item.id))),
+        );
+        setRelatedProducts(related);
+      } catch {
+        setProduct(null);
+        setRelatedProducts([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    void loadProduct();
+  }, [productId]);
+
+  const selectedVariant = useMemo<ProductVariantResponse | null>(() => {
+    if (!product) return null;
+    const variants = getDisplayVariants(product);
+    return variants.find(variant => variant.combination.every(item => selectedOptions[item.optionId] === item.optionId)) ?? variants[0] ?? null;
+  }, [product, selectedOptions]);
+
+  const images = useMemo(() => {
+    if (!product) return [];
+    const selectedImages = selectedVariant ? getVariantImages([selectedVariant]) : [];
+    const allImages = getVariantImages(getDisplayVariants(product));
+    return Array.from(new Set([...selectedImages, ...allImages]));
+  }, [product, selectedVariant]);
+
+  useEffect(() => {
+    setMainImage(0);
+    setQty(1);
+  }, [selectedVariant?.id]);
+
+  const selectOption = (typeName: string, optionId: number) => {
+    setSelectedOptions(previous => {
+      const next = { ...previous };
+      product?.variantTypes.find(type => type.name === typeName)?.options.forEach(option => {
+        delete next[option.id];
+      });
+      next[optionId] = optionId;
+      return next;
+    });
+  };
 
   const handleAddToCart = () => {
-    addItem(product, qty);
+    if (!product || !storeProduct || !selectedVariant) return;
+    const cartProduct = mapProductDetailToStorefrontProduct(product, selectedVariant);
+    cartProduct.id = `${product.id}:${selectedVariant.id}`;
+    cartProduct.sku = `SKU-${selectedVariant.id}`;
+    cartProduct.stock = selectedVariant.quantity;
+    addItem(cartProduct, qty);
     toast.success(t('productPage.success.addedToCart', { name: product.name }));
   };
 
-  const handleSubmitReview = () => {
-    if (reviewRating === 0 || !reviewText.trim()) { toast.error(t('productPage.errors.ratingRequired')); return; }
-    toast.success(t('productPage.success.reviewSubmitted'));
-    setReviewRating(0);
-    setReviewText('');
-  };
+  if (loading) {
+    return (
+      <StorefrontLayout>
+        <div className="container py-20 text-center text-sm text-muted-foreground">{t('products.loadingDetail', { defaultValue: 'Loading product detail...' })}</div>
+      </StorefrontLayout>
+    );
+  }
+
+  if (!product || !storeProduct || !product.isActive) {
+    return (
+      <StorefrontLayout>
+        <div className="container py-20 text-center">
+          <h1 className="text-2xl font-bold">{t('productPage.notFound')}</h1>
+          <Link to="/" className="mt-4 inline-block text-accent">{t('productPage.goHome')}</Link>
+        </div>
+      </StorefrontLayout>
+    );
+  }
+
+  const isOutOfStock = !selectedVariant || selectedVariant.quantity === 0 || !selectedVariant.isActive;
+  const isLowStock = Boolean(selectedVariant && selectedVariant.quantity > 0 && selectedVariant.quantity < 5);
+  const currentImage = images[mainImage];
 
   return (
     <StorefrontLayout>
       <div className="container py-6 animate-fade-in">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
+        <div className="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
           <Link to="/" className="hover:text-accent">{t('nav.home')}</Link> <span>/</span>
-          {category && <><Link to={`/category/${category.slug}`} className="hover:text-accent">{category.name}</Link> <span>/</span></>}
-          <span className="text-foreground">{product.name}</span>
+          <Link to={`/category/${createCategorySlug(product.categoryName)}`} className="hover:text-accent">{product.categoryName}</Link> <span>/</span>
+          <span className="line-clamp-1 text-foreground">{product.name}</span>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-          {/* Images */}
+        <div className="mb-12 grid grid-cols-1 gap-8 lg:grid-cols-2">
           <div>
-            <div className="aspect-square bg-muted rounded-lg overflow-hidden mb-3">
-              <img src={product.images[mainImage] || '/placeholder.svg'} alt={product.name} className="w-full h-full object-cover" />
+            <div className="mb-3 aspect-square overflow-hidden rounded-lg bg-muted">
+              {currentImage ? (
+                <img src={currentImage} alt={product.name} className="h-full w-full object-contain" />
+              ) : (
+                <div className="grid h-full place-items-center text-muted-foreground">
+                  <Package size={54} />
+                </div>
+              )}
             </div>
-            {product.images.length > 1 && (
-              <div className="flex gap-2">
-                {product.images.map((img, i) => (
-                  <button key={i} onClick={() => setMainImage(i)} className={`w-16 h-16 rounded-md overflow-hidden border-2 ${i === mainImage ? 'border-accent' : 'border-border'}`}>
-                    <img src={img} alt="" className="w-full h-full object-cover" />
+            {images.length > 1 && (
+              <div className="flex flex-wrap gap-2">
+                {images.map((image, index) => (
+                  <button key={image} onClick={() => setMainImage(index)} className={`h-16 w-16 overflow-hidden rounded-md border-2 ${index === mainImage ? 'border-accent' : 'border-border'}`}>
+                    <img src={image} alt="" className="h-full w-full object-contain" />
                   </button>
                 ))}
               </div>
             )}
           </div>
 
-          {/* Info */}
           <div>
-            <h1 className="text-2xl lg:text-3xl font-display font-bold text-foreground mb-2">{product.name}</h1>
-            <div className="flex items-center gap-2 mb-2">
-              <div className="flex">{[...Array(5)].map((_, i) => <Star key={i} size={16} className={i < Math.floor(product.rating) ? "fill-warning text-warning" : "text-border"} />)}</div>
-              <span className="text-sm text-muted-foreground">{product.rating} ({product.reviewCount} reviews)</span>
-            </div>
-            <p className="text-sm text-muted-foreground mb-4">SKU: {product.sku}</p>
+            <h1 className="mb-2 text-2xl font-display font-bold text-foreground lg:text-3xl">{product.name}</h1>
+            <p className="mb-4 text-sm text-muted-foreground">{product.categoryName}</p>
 
-            {product.syncSource === 'external' && (
-              <div className="flex items-center gap-2 bg-warning/10 border border-warning/30 rounded-md px-3 py-2 mb-4 text-sm text-warning">
-                <Info size={16} /> Synced from external source
+            {product.syncSource === 1 && (
+              <div className="mb-4 flex items-center gap-2 rounded-md border border-warning/30 bg-warning/10 px-3 py-2 text-sm text-warning">
+                <Info size={16} /> {t('products.external', { defaultValue: 'External' })}
               </div>
             )}
 
-            <div className="flex items-baseline gap-3 mb-4">
-              {product.salePrice ? (
-                <>
-                  <span className="text-3xl font-bold text-sale">{formatPrice(product.salePrice)}</span>
-                  <span className="text-xl text-muted-foreground line-through">{formatPrice(product.price)}</span>
-                  <span className="bg-sale text-white text-sm font-bold px-2 py-0.5 rounded">−{discount}%</span>
-                </>
-              ) : (
-                <span className="text-3xl font-bold text-foreground">{formatPrice(product.price)}</span>
-              )}
+            <div className="mb-4 flex items-baseline gap-3">
+              <span className="text-3xl font-bold text-foreground">{selectedVariant && selectedVariant.price > 0 ? formatPrice(selectedVariant.price) : t('products.setSkuPrice', { defaultValue: 'Set SKU price' })}</span>
             </div>
 
-            {isOutOfStock && <span className="inline-block bg-destructive/10 text-destructive text-sm font-medium px-3 py-1 rounded mb-4">{t('productPage.outOfStock')}</span>}
-            {isLowStock && <span className="inline-block bg-warning/10 text-warning text-sm font-medium px-3 py-1 rounded mb-4">{t('productPage.onlyLeft', { count: product.stock })}</span>}
-            {!isOutOfStock && !isLowStock && <span className="inline-block bg-success/10 text-success text-sm font-medium px-3 py-1 rounded mb-4">{t('productPage.inStock')}</span>}
+            {isOutOfStock && <span className="mb-4 inline-block rounded bg-destructive/10 px-3 py-1 text-sm font-medium text-destructive">{t('productPage.outOfStock')}</span>}
+            {isLowStock && <span className="mb-4 inline-block rounded bg-warning/10 px-3 py-1 text-sm font-medium text-warning">{t('productPage.onlyLeft', { count: selectedVariant?.quantity ?? 0 })}</span>}
+            {!isOutOfStock && !isLowStock && <span className="mb-4 inline-block rounded bg-success/10 px-3 py-1 text-sm font-medium text-success">{t('productPage.inStock')}</span>}
 
-            <div className="flex items-center gap-3 mb-4">
-              <div className="flex items-center border border-border rounded-md">
-                <button onClick={() => setQty(Math.max(1, qty - 1))} className="w-10 h-10 flex items-center justify-center text-foreground hover:bg-muted"><Minus size={16} /></button>
-                <input type="number" value={qty} onChange={(e) => setQty(Math.max(1, Math.min(product.stock, Number(e.target.value) || 1)))} className="w-14 h-10 text-center border-x border-border bg-background text-sm" />
-                <button onClick={() => setQty(Math.min(product.stock, qty + 1))} className="w-10 h-10 flex items-center justify-center text-foreground hover:bg-muted"><Plus size={16} /></button>
+            <div className="mb-5 space-y-3 border-t border-border pt-4">
+              {product.variantTypes.map(type => (
+                <div key={type.id}>
+                  <p className="mb-2 text-sm font-medium text-foreground">{type.name}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {type.options.map(option => {
+                      const active = selectedOptions[option.id] === option.id;
+                      const optionImage = resolveProductMediaUrl(option.imageUrl);
+                      return (
+                        <button
+                          key={option.id}
+                          type="button"
+                          onClick={() => selectOption(type.name, option.id)}
+                          className={`inline-flex min-h-10 items-center gap-2 rounded-md border px-3 text-sm transition-colors ${active ? 'border-accent bg-accent/10 text-accent' : 'border-border bg-background text-foreground hover:border-accent/50'}`}
+                        >
+                          {optionImage && <img src={optionImage} alt="" className="h-6 w-6 rounded object-contain" />}
+                          {option.name}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mb-4 flex items-center gap-3">
+              <div className="flex items-center rounded-md border border-border">
+                <button onClick={() => setQty(Math.max(1, qty - 1))} className="flex h-10 w-10 items-center justify-center text-foreground hover:bg-muted"><Minus size={16} /></button>
+                <input type="number" value={qty} onChange={(event) => setQty(Math.max(1, Math.min(selectedVariant?.quantity ?? 1, Number(event.target.value) || 1)))} className="h-10 w-14 border-x border-border bg-background text-center text-sm" />
+                <button onClick={() => setQty(Math.min(selectedVariant?.quantity ?? 1, qty + 1))} className="flex h-10 w-10 items-center justify-center text-foreground hover:bg-muted"><Plus size={16} /></button>
               </div>
             </div>
 
-            <div className="flex gap-3 mb-6">
-              <button onClick={handleAddToCart} disabled={isOutOfStock} className="flex-1 h-12 bg-accent text-accent-foreground rounded-lg font-semibold flex items-center justify-center gap-2 hover:bg-accent/90 disabled:opacity-50 disabled:cursor-not-allowed">
+            <div className="mb-6 flex gap-3">
+              <button onClick={handleAddToCart} disabled={isOutOfStock} className="flex h-12 flex-1 items-center justify-center gap-2 rounded-lg bg-accent font-semibold text-accent-foreground hover:bg-accent/90 disabled:cursor-not-allowed disabled:opacity-50">
                 <ShoppingCart size={20} /> {t('productPage.addToCart')}
               </button>
-              <button onClick={() => toggle(product.id)} className={`h-12 w-12 border rounded-lg flex items-center justify-center transition-colors ${isWishlisted ? 'border-sale text-sale' : 'border-border text-muted-foreground hover:text-sale'}`}>
+              <button onClick={() => toggle(storeProduct.id)} className={`flex h-12 w-12 items-center justify-center rounded-lg border transition-colors ${isWishlisted ? 'border-sale text-sale' : 'border-border text-muted-foreground hover:text-sale'}`}>
                 <Heart size={20} fill={isWishlisted ? 'currentColor' : 'none'} />
               </button>
             </div>
           </div>
         </div>
 
-        {/* Tabs */}
-        <div className="border-b border-border mb-6">
+        <div className="mb-6 border-b border-border">
           <div className="flex gap-6">
-            {(['description', 'specs', 'reviews'] as const).map((tabKey) => (
-              <button key={tabKey} onClick={() => setTab(tabKey)} className={`pb-3 text-sm font-medium border-b-2 transition-colors ${tab === tabKey ? 'border-accent text-accent' : 'border-transparent text-muted-foreground hover:text-foreground'}`}>
-                {tabKey === 'description' ? t('common.description') : tabKey === 'specs' ? t('productPage.specifications') : t('productPage.reviewsCount', { count: productReviews.length })}
+            {(['description', 'variants'] as const).map(tabKey => (
+              <button key={tabKey} onClick={() => setTab(tabKey)} className={`border-b-2 pb-3 text-sm font-medium transition-colors ${tab === tabKey ? 'border-accent text-accent' : 'border-transparent text-muted-foreground hover:text-foreground'}`}>
+                {tabKey === 'description' ? t('common.description') : t('products.variants', { defaultValue: 'Variants' })}
               </button>
             ))}
           </div>
         </div>
 
-        {tab === 'description' && <div className="prose max-w-none text-foreground" dangerouslySetInnerHTML={{ __html: product.description }} />}
-
-        {tab === 'specs' && (
-          <table className="w-full text-sm">
-            <tbody>
-              {product.specifications.map((s, i) => (
-                <tr key={i} className={i % 2 === 0 ? 'bg-muted/50' : ''}>
-                  <td className="px-4 py-3 font-medium text-foreground w-1/3">{s.key}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{s.value}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        {tab === 'description' && (
+          <div className="max-w-none whitespace-pre-line text-sm leading-relaxed text-foreground">
+            {product.description || t('common.noData', { defaultValue: 'No data' })}
+          </div>
         )}
 
-        {tab === 'reviews' && (
-          <div>
-            {pagedReviews.map((r) => (
-              <div key={r.id} className="border-b border-border py-4">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="font-medium text-sm text-foreground">{r.userName}</span>
-                  <div className="flex">{[...Array(5)].map((_, i) => <Star key={i} size={12} className={i < r.rating ? "fill-warning text-warning" : "text-border"} />)}</div>
-                  <span className="text-xs text-muted-foreground">{new Date(r.createdAt).toLocaleDateString()}</span>
+        {tab === 'variants' && (
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {getDisplayVariants(product).map(variant => (
+              <div key={variant.id} className="rounded-lg border border-border bg-card p-4">
+                <div className="mb-2 flex items-center justify-between gap-3">
+                  <p className="font-medium text-foreground">{variant.name ?? t('products.skuNumber', { id: variant.id, defaultValue: 'SKU #{{id}}' })}</p>
+                  {variant.images[0] ? <img src={resolveProductMediaUrl(variant.images[0])} alt="" className="h-10 w-10 rounded object-contain" /> : <ImagePlus size={18} className="text-muted-foreground" />}
                 </div>
-                <p className="text-sm text-muted-foreground">{r.text}</p>
-              </div>
-            ))}
-            {totalReviewPages > 1 && (
-              <div className="flex gap-2 mt-4">
-                {Array.from({ length: totalReviewPages }, (_, i) => (
-                  <button key={i} onClick={() => setReviewPage(i + 1)} className={`h-8 w-8 rounded text-sm ${reviewPage === i + 1 ? 'bg-accent text-accent-foreground' : 'border border-border'}`}>{i + 1}</button>
-                ))}
-              </div>
-            )}
-            {isAuthenticated && (
-              <div className="mt-6 bg-card border border-border rounded-lg p-4">
-                <h4 className="font-semibold mb-3">{t('productPage.writeReview')}</h4>
-                <div className="flex gap-1 mb-3">
-                  {[1,2,3,4,5].map((s) => (
-                    <button key={s} onClick={() => setReviewRating(s)}><Star size={24} className={s <= reviewRating ? "fill-warning text-warning" : "text-border"} /></button>
+                <p className="text-sm text-muted-foreground">{formatPrice(variant.price)} · {variant.quantity} {t('products.stock', { defaultValue: 'stock' })}</p>
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {variant.combination.map(item => (
+                    <span key={`${variant.id}-${item.optionId}`} className="rounded-md border border-border px-2 py-1 text-xs text-muted-foreground">
+                      {item.variantTypeName}: <span className="font-medium text-foreground">{item.optionName}</span>
+                    </span>
                   ))}
                 </div>
-                <textarea value={reviewText} onChange={(e) => setReviewText(e.target.value)} placeholder={t('productPage.reviewPlaceholder')} className="w-full h-24 p-3 glass-input rounded-md text-sm resize-none mb-3" />
-                <button onClick={handleSubmitReview} className="bg-accent text-accent-foreground px-6 py-2 rounded-md text-sm font-medium hover:bg-accent/90">{t('productPage.submitReview')}</button>
               </div>
-            )}
+            ))}
           </div>
         )}
 
         {relatedProducts.length > 0 && (
           <div className="mt-12">
-            <h2 className="text-xl font-display font-bold text-foreground mb-6">{t('productPage.relatedProducts')}</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-              {relatedProducts.map((p) => <ProductCard key={p.id} product={p} />)}
+            <h2 className="mb-6 text-xl font-display font-bold text-foreground">{t('productPage.relatedProducts')}</h2>
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+              {relatedProducts.map((item) => <ProductCard key={item.id} product={item} />)}
             </div>
           </div>
         )}

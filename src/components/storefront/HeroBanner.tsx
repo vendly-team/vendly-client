@@ -8,9 +8,9 @@ const HeroBanner = () => {
   const [current, setCurrent] = useState(0);
 
   const slides = [
-    { bg: "from-primary to-primary/80", headline: t("hero.slide1Title"), subtitle: t("hero.slide1Desc"), cta: t("hero.slide1Btn"), link: "/category/refrigerators" },
-    { bg: "from-accent/90 to-accent/60", headline: t("hero.slide2Title"), subtitle: t("hero.slide2Desc"), cta: t("hero.slide2Btn"), link: "/category/washing-machines" },
-    { bg: "from-info to-info/70", headline: t("hero.slide3Title"), subtitle: t("hero.slide3Desc"), cta: t("hero.slide3Btn"), link: "/category/televisions" },
+    { bg: "from-primary to-primary/80", headline: t("hero.slide1Title"), subtitle: t("hero.slide1Desc"), cta: t("hero.slide1Btn"), link: "/category/refrigerators", image: "/hero1.png" },
+    { bg: "from-accent/90 to-accent/60", headline: t("hero.slide2Title"), subtitle: t("hero.slide2Desc"), cta: t("hero.slide2Btn"), link: "/category/washing-machines", image: "/hero2.png" },
+    { bg: "from-info to-info/70", headline: t("hero.slide3Title"), subtitle: t("hero.slide3Desc"), cta: t("hero.slide3Btn"), link: "/category/televisions", image: "/hero3.png" },
   ];
   useEffect(() => {
     const timer = setInterval(() => setCurrent((c) => (c + 1) % slides.length), 4000);
@@ -20,7 +20,9 @@ const HeroBanner = () => {
 
   return (
     <section className="relative w-full overflow-hidden">
-      <div className={`relative h-[280px] sm:h-[380px] lg:h-[480px] bg-gradient-to-r ${slide.bg} transition-all duration-500`}>
+      <div className="relative h-[280px] sm:h-[380px] lg:h-[480px] overflow-hidden transition-all duration-500">
+        <img src={slide.image} alt="" className="absolute inset-0 w-full h-full object-cover" aria-hidden="true" />
+        <div className={`absolute inset-0 bg-gradient-to-r ${slide.bg} opacity-75`} />
         <div className="relative container h-full flex items-center">
           <div className="max-w-lg animate-fade-in-up" key={current}>
             <h1 className="text-2xl sm:text-3xl lg:text-5xl font-display font-bold text-primary-foreground leading-tight mb-3">{slide.headline}</h1>

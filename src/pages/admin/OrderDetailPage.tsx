@@ -81,7 +81,7 @@ const AdminOrderDetailPage = () => {
         <h3 className="font-semibold mb-3">{t('orders.items')}</h3>
         {order.items.map((item, i) => (
           <div key={i} className="flex items-center gap-3 py-2 border-b border-border last:border-0">
-            <img src={item.productImage || '/placeholder.svg'} className="w-10 h-10 rounded bg-muted object-cover" alt="" />
+            <img src={item.productImage || '/placeholder.svg'} className="w-10 h-10 rounded bg-muted object-contain" alt="" />
             <div className="flex-1"><p className="text-sm font-medium">{item.productName}</p><p className="text-xs text-muted-foreground">SKU: {item.sku} × {item.qty}</p></div>
             <span className="text-sm font-medium">{formatPrice(item.priceSnapshot * item.qty)}</span>
           </div>

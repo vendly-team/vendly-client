@@ -32,7 +32,8 @@ import NotFound from "./pages/NotFound";
 // Admin pages
 import DashboardPage from "./pages/admin/DashboardPage";
 import ProductsPage from "./pages/admin/ProductsPage";
-import ProductFormPage from "./pages/admin/ProductFormPage";
+import ProductDetailPage from "./pages/admin/ProductDetailPage";
+import { ProductFormPage } from "./pages/admin/ProductFormPage";
 import CategoriesPage from "./pages/admin/CategoriesPage";
 import OrdersPage from "./pages/admin/OrdersPage";
 import OrderDetailPage from "./pages/admin/OrderDetailPage";
@@ -41,7 +42,7 @@ import CustomerDetailPage from "./pages/admin/CustomerDetailPage";
 import ReviewsPage from "./pages/admin/ReviewsPage";
 import DiscountsPage from "./pages/admin/DiscountsPage";
 import SyncLogsPage from "./pages/admin/SyncLogsPage";
-import UsersPage from "./pages/admin/UsersPage";
+import { UsersPage } from "./pages/admin/UsersPage";
 
 const queryClient = new QueryClient();
 
@@ -114,6 +115,7 @@ const App = () => (
           <Route element={<AdminRoute><AdminLayout /></AdminRoute>}>
             <Route path="/admin" element={<DashboardPage />} />
             <Route path="/admin/products" element={<ProductsPage />} />
+            <Route path="/admin/products/:id" element={<ProductDetailPage />} />
             <Route path="/admin/products/new" element={<ProductFormPage />} />
             <Route path="/admin/products/:id/edit" element={<ProductFormPage />} />
             <Route path="/admin/categories" element={<CategoriesPage />} />

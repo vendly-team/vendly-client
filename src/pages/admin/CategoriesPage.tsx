@@ -1,27 +1,132 @@
-import { useState } from 'react';
-import { categories as initialCats } from '@/shared/data/categories';
+import { type ClipboardEvent, type DragEvent, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
-import { Plus, X } from 'lucide-react';
+import { Clipboard, ImagePlus, Pencil, Plus, Sparkles, Trash2, UploadCloud, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { categoriesApi, createCategorySlug, mapCategoryDto } from '@/shared/api/categoriesApi';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+
+type CategoryForm = {
+  name: string;
+  slug: string;
+  image: string;
+  imageFile: File | null;
+  isActive: boolean;
+};
+
+const emptyForm: CategoryForm = { name: '', slug: '', image: '', imageFile: null, isActive: true };
 
 const AdminCategoriesPage = () => {
   const { t } = useTranslation();
-  const [cats, setCats] = useState(initialCats);
+  const [cats, setCats] = useState<ReturnType<typeof mapCategoryDto>[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
-  const [form, setForm] = useState({ name: '', slug: '', image: '', isActive: true });
+  const [form, setForm] = useState<CategoryForm>(emptyForm);
+  const [draggingImage, setDraggingImage] = useState(false);
+  const [slugManuallyEdited, setSlugManuallyEdited] = useState(false);
+  const [initialIsActive, setInitialIsActive] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const openAdd = () => { setForm({ name: '', slug: '', image: '', isActive: true }); setEditId(null); setModalOpen(true); };
-  const openEdit = (id: string) => { const c = cats.find(c => c.id === id); if (c) { setForm({ name: c.name, slug: c.slug, image: c.image, isActive: c.isActive }); setEditId(id); setModalOpen(true); } };
-
-  const handleSave = () => {
-    if (!form.name) { toast.error(t('common.required')); return; }
-    if (editId) { setCats(cats.map(c => c.id === editId ? { ...c, ...form, slug: form.slug || form.name.toLowerCase().replace(/\s+/g, '-') } : c)); toast.success('Category updated'); }
-    else { setCats([...cats, { id: String(Date.now()), ...form, slug: form.slug || form.name.toLowerCase().replace(/\s+/g, '-'), productCount: 0 }]); toast.success('Category created'); }
-    setModalOpen(false);
+  const loadCategories = async () => {
+    setLoading(true);
+    try {
+      const items = await categoriesApi.getAll();
+      setCats(items.map(mapCategoryDto));
+      return items;
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Failed to load categories');
+      return [];
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleDelete = (id: string) => { if (confirm(t('categories.deleteConfirm'))) { setCats(cats.filter(c => c.id !== id)); toast.success(t('common.delete')); } };
+  useEffect(() => {
+    void loadCategories();
+  }, []);
+
+  const openAdd = () => { setForm(emptyForm); setSlugManuallyEdited(false); setInitialIsActive(true); setEditId(null); setModalOpen(true); };
+  const openEdit = (id: string) => { const c = cats.find(c => c.id === id); if (c) { setForm({ name: c.name, slug: c.slug, image: c.image, imageFile: null, isActive: c.isActive }); setSlugManuallyEdited(false); setInitialIsActive(c.isActive); setEditId(id); setModalOpen(true); } };
+
+  const handleImageFile = (file?: File) => {
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please upload an image file');
+      return;
+    }
+
+    setForm(current => ({
+      ...current,
+      image: URL.createObjectURL(file),
+      imageFile: file,
+    }));
+  };
+
+  const handleImagePaste = (event: ClipboardEvent<HTMLDivElement>) => {
+    const file = Array.from(event.clipboardData.files).find(item => item.type.startsWith('image/'));
+    if (file) {
+      event.preventDefault();
+      handleImageFile(file);
+    }
+  };
+
+  const handleImageDrop = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setDraggingImage(false);
+    handleImageFile(event.dataTransfer.files[0]);
+  };
+
+  const handleSave = async () => {
+    if (!form.name) { toast.error(t('common.required')); return; }
+    setSaving(true);
+
+    try {
+      if (editId) {
+        await categoriesApi.update(editId, { name: form.name, image: form.imageFile });
+        if (form.isActive !== initialIsActive) await categoriesApi.toggle(editId);
+        toast.success('Category updated');
+      } else {
+        await categoriesApi.create({ name: form.name, image: form.imageFile });
+        const items = await loadCategories();
+
+        if (!form.isActive) {
+          const created = [...items]
+            .filter(item => item.name === form.name)
+            .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
+
+          if (created) {
+            await categoriesApi.toggle(created.id);
+            await loadCategories();
+          }
+        }
+
+        toast.success('Category created');
+      }
+
+      if (editId) await loadCategories();
+      setModalOpen(false);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Failed to save category');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm(t('categories.deleteConfirm'))) return;
+
+    try {
+      await categoriesApi.delete(id);
+      await loadCategories();
+      toast.success(t('common.delete'));
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Failed to delete category');
+    }
+  };
 
   return (
     <div>
@@ -29,34 +134,194 @@ const AdminCategoriesPage = () => {
         <h1 className="text-2xl font-display font-bold">{t('categories.title')}</h1>
         <button onClick={openAdd} className="flex items-center gap-2 h-10 px-4 bg-accent text-accent-foreground rounded-lg text-sm font-medium"><Plus size={16} /> {t('categories.addCategory')}</button>
       </div>
-      <div className="bg-card border border-border rounded-lg overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead><tr className="border-b border-border bg-muted/50"><th className="text-left px-4 py-3 font-medium text-muted-foreground">{t('common.name')}</th><th className="text-left px-4 py-3 font-medium text-muted-foreground">{t('common.slug')}</th><th className="text-left px-4 py-3 font-medium text-muted-foreground">{t('categories.products')}</th><th className="text-left px-4 py-3 font-medium text-muted-foreground">{t('common.status')}</th><th className="text-left px-4 py-3 font-medium text-muted-foreground">{t('common.actions')}</th></tr></thead>
-          <tbody>
-            {cats.map(c => (
-              <tr key={c.id} className="border-b border-border last:border-0 hover:bg-muted/30">
-                <td className="px-4 py-3 font-medium">{c.name}</td>
-                <td className="px-4 py-3 text-muted-foreground">{c.slug}</td>
-                <td className="px-4 py-3">{c.productCount}</td>
-                <td className="px-4 py-3"><span className={`text-xs px-2 py-0.5 rounded font-medium ${c.isActive ? 'bg-success/10 text-success' : 'bg-muted text-muted-foreground'}`}>{c.isActive ? t('common.active') : t('common.inactive')}</span></td>
-                <td className="px-4 py-3 flex gap-2"><button onClick={() => openEdit(c.id)} className="text-accent hover:underline text-xs">{t('common.edit')}</button><button onClick={() => handleDelete(c.id)} className="text-destructive hover:underline text-xs">{t('common.delete')}</button></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <Table>
+        <TableHeader>
+          <TableRow className="hover:bg-transparent">
+            <TableHead className="w-20">{t('categories.image', { defaultValue: 'Image' })}</TableHead>
+            <TableHead>{t('common.name')}</TableHead>
+            <TableHead>{t('common.slug')}</TableHead>
+            <TableHead>{t('categories.products')}</TableHead>
+            <TableHead>{t('common.status')}</TableHead>
+            <TableHead className="w-28 text-right">{t('common.actions')}</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {loading && (
+            <TableRow>
+              <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
+                Loading categories...
+              </TableCell>
+            </TableRow>
+          )}
+          {!loading && cats.length === 0 && (
+            <TableRow>
+              <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
+                No categories found
+              </TableCell>
+            </TableRow>
+          )}
+          {!loading && cats.map(c => (
+            <TableRow key={c.id}>
+              <TableCell>
+                <div className="h-11 w-14 overflow-hidden rounded-md border border-border bg-muted">
+                  {c.image ? (
+                    <img src={c.image} className="h-full w-full object-cover" alt="" />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center">
+                      <ImagePlus size={16} className="text-muted-foreground" />
+                    </div>
+                  )}
+                </div>
+              </TableCell>
+              <TableCell>
+                <div className="font-semibold text-foreground">{c.name}</div>
+              </TableCell>
+              <TableCell>
+                <span className="rounded bg-muted px-2 py-1 font-mono text-xs text-muted-foreground">{c.slug}</span>
+              </TableCell>
+              <TableCell>
+                <Badge variant="secondary" className="rounded-md border-transparent bg-primary/5 text-primary hover:bg-primary/5">
+                  {c.productCount}
+                </Badge>
+              </TableCell>
+              <TableCell>
+                <Badge
+                  variant="outline"
+                  className={c.isActive
+                    ? 'border-success/15 bg-success/10 text-success hover:bg-success/10'
+                    : 'border-border bg-muted text-muted-foreground hover:bg-muted'}
+                >
+                  <span className={`mr-1.5 h-1.5 w-1.5 rounded-full ${c.isActive ? 'bg-success' : 'bg-muted-foreground'}`} />
+                  {c.isActive ? t('common.active') : t('common.inactive')}
+                </Badge>
+              </TableCell>
+              <TableCell>
+                <div className="flex justify-end gap-1">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8 text-muted-foreground hover:bg-accent/10 hover:text-accent"
+                    onClick={() => openEdit(c.id)}
+                    aria-label={t('common.edit')}
+                    title={t('common.edit')}
+                  >
+                    <Pencil size={15} />
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                    onClick={() => void handleDelete(c.id)}
+                    aria-label={t('common.delete')}
+                    title={t('common.delete')}
+                  >
+                    <Trash2 size={15} />
+                  </Button>
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
       {modalOpen && (
         <div className="fixed inset-0 z-50 bg-foreground/50 flex items-center justify-center p-4" onClick={() => setModalOpen(false)}>
-          <div className="bg-card border border-border rounded-lg p-6 w-full max-w-md" onClick={e => e.stopPropagation()}>
+          <div className="bg-card border border-border rounded-lg p-6 w-full max-w-lg" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-4"><h3 className="font-semibold">{editId ? t('categories.editCategory') : t('categories.addCategory')}</h3><button onClick={() => setModalOpen(false)}><X size={20} /></button></div>
             <div className="space-y-3">
-              <div><label className="text-sm font-medium">{t('common.name')} *</label><input value={form.name} onChange={e => setForm({ ...form, name: e.target.value, slug: form.slug || e.target.value.toLowerCase().replace(/\s+/g, '-') })} className="w-full h-10 px-3 glass-input rounded-md text-sm mt-1" /></div>
-              <div><label className="text-sm font-medium">{t('common.slug')}</label><input value={form.slug} onChange={e => setForm({ ...form, slug: e.target.value })} className="w-full h-10 px-3 glass-input rounded-md text-sm mt-1" /></div>
-              <div><label className="text-sm font-medium">{t('categories.imageUrl')}</label><input value={form.image} onChange={e => setForm({ ...form, image: e.target.value })} className="w-full h-10 px-3 glass-input rounded-md text-sm mt-1" /></div>
-              {form.image && <img src={form.image} className="w-20 h-20 rounded bg-muted object-cover" alt="" />}
-              <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={form.isActive} onChange={e => setForm({ ...form, isActive: e.target.checked })} /> {t('common.active')}</label>
+              <div>
+                <label className="text-sm font-medium">{t('common.name')} *</label>
+                <input
+                  value={form.name}
+                  onChange={e => {
+                    const name = e.target.value;
+                    setForm({ ...form, name, slug: slugManuallyEdited ? form.slug : createCategorySlug(name) });
+                  }}
+                  className="w-full h-10 px-3 glass-input rounded-md text-sm mt-1"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium">{t('common.slug')}</label>
+                <input
+                  value={form.slug}
+                  onChange={e => { setSlugManuallyEdited(true); setForm({ ...form, slug: createCategorySlug(e.target.value) }); }}
+                  className="w-full h-10 px-3 glass-input rounded-md text-sm mt-1"
+                />
+                {slugManuallyEdited && createCategorySlug(form.name) && form.slug !== createCategorySlug(form.name) && (
+                  <button
+                    type="button"
+                    onClick={() => { setForm({ ...form, slug: createCategorySlug(form.name) }); setSlugManuallyEdited(false); }}
+                    className="mt-2 inline-flex items-center gap-1.5 rounded-md bg-accent/10 px-2.5 py-1 text-xs font-medium text-accent transition-colors hover:bg-accent/15"
+                  >
+                    <Sparkles size={13} />
+                    {createCategorySlug(form.name)}
+                  </button>
+                )}
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">{t('categories.image', { defaultValue: 'Image' })}</label>
+                <div
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => fileInputRef.current?.click()}
+                  onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') fileInputRef.current?.click(); }}
+                  onPaste={handleImagePaste}
+                  onDragOver={event => { event.preventDefault(); setDraggingImage(true); }}
+                  onDragLeave={() => setDraggingImage(false)}
+                  onDrop={handleImageDrop}
+                  className={`rounded-lg border border-dashed p-3 transition-colors ${draggingImage ? 'border-accent bg-accent/10' : 'border-border bg-muted/30 hover:bg-muted/50'}`}
+                >
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={event => handleImageFile(event.target.files?.[0])}
+                  />
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-md border border-border bg-card">
+                      {form.image ? (
+                        <img src={form.image} className="h-full w-full object-cover" alt="" />
+                      ) : (
+                        <ImagePlus size={22} className="text-muted-foreground" />
+                      )}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-2 text-sm font-medium text-foreground">
+                        <UploadCloud size={16} className="text-accent" />
+                        {t('categories.imageDropzoneTitle', { defaultValue: 'Click, paste, or drag image here' })}
+                      </div>
+                      <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                        <span>{t('categories.imageFormats', { defaultValue: 'PNG, JPG, WEBP' })}</span>
+                        <span className="inline-flex items-center gap-1"><Clipboard size={13} /> {t('categories.pasteSupported', { defaultValue: 'paste supported' })}</span>
+                      </div>
+                      {form.imageFile && <div className="mt-1 truncate text-xs text-accent">{form.imageFile.name}</div>}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center justify-between rounded-lg border border-border bg-muted/30 px-3 py-2.5">
+                <div>
+                  <div className="text-sm font-medium text-foreground">{t('common.status')}</div>
+                  <div className="text-xs text-muted-foreground">
+                    {form.isActive ? t('common.active') : t('common.inactive')}
+                  </div>
+                </div>
+                <Switch
+                  checked={form.isActive}
+                  onCheckedChange={checked => setForm({ ...form, isActive: checked })}
+                  aria-label={t('common.status')}
+                />
+              </div>
             </div>
-            <button onClick={handleSave} className="w-full h-11 bg-accent text-accent-foreground rounded-lg font-semibold text-sm mt-4">{t('common.save')}</button>
+            <button
+              onClick={() => void handleSave()}
+              disabled={saving}
+              className="w-full h-11 bg-accent text-accent-foreground rounded-lg font-semibold text-sm mt-4 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {saving ? 'Saving...' : t('common.save')}
+            </button>
           </div>
         </div>
       )}

@@ -139,7 +139,7 @@ const CheckoutPage = () => {
             <div className="space-y-3 mb-6">
               {items.map((item) => (
                 <div key={item.productId} className="flex items-center gap-3">
-                  <img src={item.image || '/placeholder.svg'} alt="" className="w-12 h-12 rounded bg-muted object-cover" />
+                  <img src={item.image || '/placeholder.svg'} alt="" className="w-12 h-12 rounded bg-muted object-contain" />
                   <div className="flex-1"><p className="text-sm font-medium">{item.name}</p><p className="text-xs text-muted-foreground">{t('common.qty')}: {item.qty}</p></div>
                   <span className="text-sm font-medium">{formatPrice(item.price * item.qty)}</span>
                 </div>
