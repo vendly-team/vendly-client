@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { productService } from '@/features/products/services/productService';
 import { useProducts } from '@/features/products/hooks/useProducts';
 import { API_BASE_URL } from '@/shared/api/http';
@@ -23,8 +24,8 @@ const AdminProductsPage = () => {
   const [productImages, setProductImages] = useState<Record<number, string[]>>({});
   const [imageTick, setImageTick] = useState(0);
   const [search, setSearch] = useState('');
-  const [catFilter, setCatFilter] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
+  const [catFilter, setCatFilter] = useState('all');
+  const [statusFilter, setStatusFilter] = useState('all');
   const [page, setPage] = useState(1);
   const perPage = 20;
 
@@ -85,8 +86,8 @@ const AdminProductsPage = () => {
         product.name.toLowerCase().includes(normalizedSearch) ||
         product.categoryName.toLowerCase().includes(normalizedSearch) ||
         String(product.id).includes(normalizedSearch);
-      const matchesCategory = !catFilter || String(product.categoryId) === catFilter;
-      const matchesStatus = !statusFilter || (statusFilter === 'active' ? product.isActive : !product.isActive);
+      const matchesCategory = catFilter === 'all' || String(product.categoryId) === catFilter;
+      const matchesStatus = statusFilter === 'all' || (statusFilter === 'active' ? product.isActive : !product.isActive);
 
       return matchesSearch && matchesCategory && matchesStatus;
     });
@@ -141,7 +142,7 @@ const AdminProductsPage = () => {
 
       <div className="mb-4 flex flex-wrap gap-3">
         <div className="relative">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground z-[1] pointer-events-none" />
           <input
             placeholder={t('products.searchPlaceholder', { defaultValue: 'Search...' })}
             value={search}
@@ -149,15 +150,25 @@ const AdminProductsPage = () => {
             className="h-9 w-60 rounded-md glass-input pl-9 pr-3 text-sm"
           />
         </div>
-        <select value={catFilter} onChange={event => { setCatFilter(event.target.value); resetPage(); }} className="h-9 rounded-md glass-input px-3 text-sm">
-          <option value="">{t('products.allCategories', { defaultValue: 'All Categories' })}</option>
-          {categoryItems.map(category => <option key={category.id} value={category.id}>{category.name}</option>)}
-        </select>
-        <select value={statusFilter} onChange={event => { setStatusFilter(event.target.value); resetPage(); }} className="h-9 rounded-md glass-input px-3 text-sm">
-          <option value="">{t('products.allStatus', { defaultValue: 'All Status' })}</option>
-          <option value="active">{t('common.active', { defaultValue: 'Active' })}</option>
-          <option value="inactive">{t('common.inactive', { defaultValue: 'Inactive' })}</option>
-        </select>
+        <Select value={catFilter} onValueChange={v => { setCatFilter(v); resetPage(); }}>
+          <SelectTrigger className="h-9 w-44">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">{t('products.allCategories', { defaultValue: 'All Categories' })}</SelectItem>
+            {categoryItems.map(category => <SelectItem key={category.id} value={String(category.id)}>{category.name}</SelectItem>)}
+          </SelectContent>
+        </Select>
+        <Select value={statusFilter} onValueChange={v => { setStatusFilter(v); resetPage(); }}>
+          <SelectTrigger className="h-9 w-36">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">{t('products.allStatus', { defaultValue: 'All Status' })}</SelectItem>
+            <SelectItem value="active">{t('common.active', { defaultValue: 'Active' })}</SelectItem>
+            <SelectItem value="inactive">{t('common.inactive', { defaultValue: 'Inactive' })}</SelectItem>
+          </SelectContent>
+        </Select>
         <Button type="button" variant="outline" size="sm" className="h-9" onClick={() => void fetchProducts()}>
           <RefreshCw size={14} className="mr-2" />
           {t('common.refresh', { defaultValue: 'Refresh' })}
@@ -173,7 +184,7 @@ const AdminProductsPage = () => {
             <TableHead>{t('products.source', { defaultValue: 'Source' })}</TableHead>
             <TableHead>{t('common.status', { defaultValue: 'Status' })}</TableHead>
             <TableHead>{t('products.created', { defaultValue: 'Created' })}</TableHead>
-            <TableHead className="w-28 text-right">{t('common.actions', { defaultValue: 'Actions' })}</TableHead>
+            <TableHead className="sticky right-0 w-28 bg-card border-l border-border/40 text-right">{t('common.actions', { defaultValue: 'Actions' })}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -226,7 +237,7 @@ const AdminProductsPage = () => {
                   </button>
                 </TableCell>
                 <TableCell className="text-muted-foreground">{new Date(product.createdAt).toLocaleDateString(i18n.language)}</TableCell>
-                <TableCell>
+                <TableCell className="sticky right-0 bg-card border-l border-border/40">
                   <div className="flex justify-end gap-1">
                     <Button type="button" variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:bg-accent/10 hover:text-accent" asChild title={t('common.edit', { defaultValue: 'Edit' })} onClick={event => event.stopPropagation()}>
                       <Link to={`/admin/products/${product.id}/edit`} aria-label={t('common.edit', { defaultValue: 'Edit' })}>

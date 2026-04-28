@@ -73,6 +73,58 @@ export default {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        xl: "1rem",
+        "2xl": "1.25rem",
+        "3xl": "1.5rem",
+        "4xl": "1.75rem",
+        apple: "1.125rem",
+        pill: "9999px",
+      },
+      boxShadow: {
+        // Apple-style layered shadows — subtle, tinted with near-black
+        "apple-xs": "0 1px 2px rgba(0,0,0,0.04)",
+        "apple-sm": "0 1px 2px rgba(0,0,0,0.04), 0 2px 6px rgba(0,0,0,0.04)",
+        "apple-md": "0 2px 4px rgba(0,0,0,0.04), 0 6px 16px rgba(0,0,0,0.06)",
+        "apple-lg": "0 4px 8px rgba(0,0,0,0.04), 0 12px 32px rgba(0,0,0,0.08)",
+        "apple-xl": "0 8px 16px rgba(0,0,0,0.06), 0 24px 64px rgba(0,0,0,0.12)",
+        // The single Apple product-render shadow
+        "apple-product": "rgba(0, 0, 0, 0.22) 3px 5px 30px 0",
+        // Soft hairline ring used as button border
+        "apple-ring": "0 0 0 1px rgba(0,0,0,0.04)",
+        "apple-ring-strong": "0 0 0 1px rgba(0,0,0,0.08)",
+        // Focus ring (uses the existing primary token via inset arbitrary value caller-side)
+        "apple-focus": "0 0 0 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04)",
+      },
+      letterSpacing: {
+        "apple-tight": "-0.022em",
+        "apple-tighter": "-0.028em",
+        "apple-snug": "-0.014em",
+        "apple-wide": "0.012em",
+      },
+      fontSize: {
+        // Apple typography ladder — display sizes use tight tracking
+        "apple-hero": ["3.5rem", { lineHeight: "1.07", letterSpacing: "-0.028em", fontWeight: "600" }],
+        "apple-display": ["2.5rem", { lineHeight: "1.1", letterSpacing: "-0.022em", fontWeight: "600" }],
+        "apple-title": ["2.125rem", { lineHeight: "1.15", letterSpacing: "-0.018em", fontWeight: "600" }],
+        "apple-headline": ["1.5rem", { lineHeight: "1.25", letterSpacing: "-0.014em", fontWeight: "600" }],
+        "apple-lead": ["1.3125rem", { lineHeight: "1.38", letterSpacing: "-0.011em", fontWeight: "400" }],
+        "apple-body": ["1.0625rem", { lineHeight: "1.47", letterSpacing: "-0.011em", fontWeight: "400" }],
+        "apple-caption": ["0.875rem", { lineHeight: "1.43", letterSpacing: "-0.006em", fontWeight: "400" }],
+        "apple-fine": ["0.75rem", { lineHeight: "1.33", letterSpacing: "0", fontWeight: "400" }],
+      },
+      spacing: {
+        // Apple's generous, predictable rhythm — 8px base
+        "apple-xxs": "0.25rem", // 4
+        "apple-xs": "0.5rem", // 8
+        "apple-sm": "0.75rem", // 12
+        "apple-md": "1.0625rem", // 17 (the body line-height anchor)
+        "apple-lg": "1.5rem", // 24
+        "apple-xl": "2rem", // 32
+        "apple-2xl": "3rem", // 48
+        "apple-section": "5rem", // 80
+      },
+      transitionTimingFunction: {
+        apple: "cubic-bezier(0.28, 0.11, 0.32, 1)",
       },
       keyframes: {
         "accordion-down": {

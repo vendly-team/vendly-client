@@ -6,6 +6,7 @@ import { formatPrice } from '@/shared/utils';
 import { toast } from 'sonner';
 import type { OrderStatus } from '@/shared/data/orders';
 import { useTranslation } from 'react-i18next';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const statusColors: Record<string, string> = { new: 'bg-info/10 text-info', accepted: 'bg-purple-100 text-purple-700', in_transit: 'bg-warning/10 text-warning', delivered: 'bg-success/10 text-success', cancelled: 'bg-destructive/10 text-destructive' };
 
@@ -51,9 +52,18 @@ const AdminOrderDetailPage = () => {
         <div className="bg-card border border-border rounded-lg p-4">
           <h3 className="font-semibold mb-2">{t('orders.statusControl')}</h3>
           <div className="flex gap-2">
-            <select value={status} onChange={e => setStatus(e.target.value as OrderStatus)} className="flex-1 h-9 px-3 glass-input rounded-md text-sm">
-              <option value="new">{t('orders.new')}</option><option value="accepted">{t('orders.accepted')}</option><option value="in_transit">{t('orders.inTransit')}</option><option value="delivered">{t('orders.delivered')}</option><option value="cancelled">{t('orders.cancelled')}</option>
-            </select>
+            <Select value={status} onValueChange={v => setStatus(v as OrderStatus)}>
+              <SelectTrigger className="h-9 flex-1">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="new">{t('orders.new')}</SelectItem>
+                <SelectItem value="accepted">{t('orders.accepted')}</SelectItem>
+                <SelectItem value="in_transit">{t('orders.inTransit')}</SelectItem>
+                <SelectItem value="delivered">{t('orders.delivered')}</SelectItem>
+                <SelectItem value="cancelled">{t('orders.cancelled')}</SelectItem>
+              </SelectContent>
+            </Select>
             <button onClick={handleStatusChange} className="h-9 px-4 bg-accent text-accent-foreground rounded-md text-sm font-medium">{t('common.save')}</button>
           </div>
         </div>

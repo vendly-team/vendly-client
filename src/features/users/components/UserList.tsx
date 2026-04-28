@@ -36,7 +36,7 @@ export const UserList = ({ users, currentRole, loading, error, onEdit, onToggleB
           <TableHead>Email</TableHead>
           <TableHead>Role</TableHead>
           <TableHead>Blocked</TableHead>
-          <TableHead className="w-48 text-right">Actions</TableHead>
+          <TableHead className="sticky right-0 w-48 bg-card border-l border-border/40 text-right">Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -89,7 +89,7 @@ export const UserList = ({ users, currentRole, loading, error, onEdit, onToggleB
                   {user.isBlocked ? "Blocked" : "Active"}
                 </Badge>
               </TableCell>
-              <TableCell>
+              <TableCell className="sticky right-0 bg-card border-l border-border/40">
                 <div className="flex justify-end gap-1">
                   {canEdit && (
                     <Button type="button" variant="ghost" size="icon" className="h-8 w-8" onClick={() => onEdit(user)} title="Edit" aria-label="Edit">

@@ -65,7 +65,7 @@ export const AdminCustomersPage = () => {
       <h1 className="mb-6 text-2xl font-display font-bold">Customers</h1>
       <div className="mb-4">
         <div className="relative w-72">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground z-[1] pointer-events-none" />
           <Input placeholder="Search customers..." value={search} onChange={event => setSearch(event.target.value)} className="h-9 pl-9" />
         </div>
       </div>

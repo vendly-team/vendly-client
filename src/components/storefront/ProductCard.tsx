@@ -1,3 +1,4 @@
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Heart, ShoppingCart, Star } from "lucide-react";
 import type { Product } from "@/shared/types";
@@ -15,6 +16,26 @@ const ProductCard = ({ product }: { product: Product }) => {
   const discount = product.salePrice ? getDiscountPercent(product.price, product.salePrice) : 0;
   const isOutOfStock = product.stock === 0;
   const isLowStock = product.stock > 0 && product.stock < 5;
+  const images = useMemo(() => {
+    const unique = product.images.filter(Boolean).filter((image, index, list) => list.indexOf(image) === index);
+    return unique.length > 0 ? unique : ['/placeholder.svg'];
+  }, [product.images]);
+  const [activeImage, setActiveImage] = useState(0);
+  const [isImageHovered, setIsImageHovered] = useState(false);
+
+  useEffect(() => {
+    setActiveImage(0);
+  }, [product.id, images.length]);
+
+  useEffect(() => {
+    if (isImageHovered || images.length <= 1) return;
+
+    const interval = window.setInterval(() => {
+      setActiveImage(index => (index + 1) % images.length);
+    }, 3000);
+
+    return () => window.clearInterval(interval);
+  }, [images.length, isImageHovered]);
 
   return (
     <div className="group relative bg-card rounded-lg border border-border overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col">
@@ -31,10 +52,36 @@ const ProductCard = ({ product }: { product: Product }) => {
         <Heart size={16} fill={isWishlisted ? 'currentColor' : 'none'} />
       </button>
 
-      <Link to={`/product/${product.slug}`} className="block aspect-square bg-muted overflow-hidden">
-        <img src={product.images[0] || '/placeholder.svg'} alt={product.name} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+      <Link
+        to={`/product/${product.slug}`}
+        className="relative block aspect-square bg-muted overflow-hidden"
+        onMouseEnter={() => setIsImageHovered(true)}
+        onMouseLeave={() => setIsImageHovered(false)}
+      >
+        <img src={images[activeImage]} alt={product.name} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+        {images.length > 1 && (
+          <>
+            <div className="absolute inset-0 z-[1] flex">
+              {images.map((image, index) => (
+                <span
+                  key={`${image}-${index}`}
+                  className="h-full flex-1"
+                  onMouseEnter={() => setActiveImage(index)}
+                />
+              ))}
+            </div>
+            <div className="pointer-events-none absolute bottom-2 left-2 right-2 z-[2] flex gap-1">
+              {images.map((image, index) => (
+                <span
+                  key={`${image}-dot-${index}`}
+                  className={`h-1 flex-1 rounded-full transition-colors ${index === activeImage ? 'bg-accent' : 'bg-background/70'}`}
+                />
+              ))}
+            </div>
+          </>
+        )}
         {isOutOfStock && (
-          <div className="absolute inset-0 bg-foreground/40 flex items-center justify-center">
+          <div className="absolute inset-0 z-[3] bg-foreground/40 flex items-center justify-center">
             <span className="bg-card text-foreground font-bold px-4 py-2 rounded text-sm">{t("productCard.outOfStock")}</span>
           </div>
         )}

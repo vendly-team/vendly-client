@@ -142,7 +142,7 @@ const AdminCategoriesPage = () => {
             <TableHead>{t('common.slug')}</TableHead>
             <TableHead>{t('categories.products')}</TableHead>
             <TableHead>{t('common.status')}</TableHead>
-            <TableHead className="w-28 text-right">{t('common.actions')}</TableHead>
+            <TableHead className="sticky right-0 w-28 bg-card border-l border-border/40 text-right">{t('common.actions')}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -195,7 +195,7 @@ const AdminCategoriesPage = () => {
                   {c.isActive ? t('common.active') : t('common.inactive')}
                 </Badge>
               </TableCell>
-              <TableCell>
+              <TableCell className="sticky right-0 bg-card border-l border-border/40">
                 <div className="flex justify-end gap-1">
                   <Button
                     type="button"

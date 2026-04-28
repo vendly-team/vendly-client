@@ -2,8 +2,17 @@ import { useState } from 'react';
 import { reviews as initialReviews } from '@/shared/data/reviews';
 import { products } from '@/shared/data/products';
 import { toast } from 'sonner';
-import { Star, Check, X } from 'lucide-react';
+import { Check, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+
+const statusVariant: Record<string, string> = {
+  approved: 'border-success/15 bg-success/10 text-success hover:bg-success/10',
+  pending: 'border-warning/15 bg-warning/10 text-warning hover:bg-warning/10',
+  rejected: 'border-destructive/15 bg-destructive/10 text-destructive hover:bg-destructive/10',
+};
 
 const AdminReviewsPage = () => {
   const { t } = useTranslation();
@@ -12,8 +21,12 @@ const AdminReviewsPage = () => {
   const [selected, setSelected] = useState<string[]>([]);
 
   const filtered = filter === 'all' ? reviewList : reviewList.filter(r => r.status === filter);
-  const toggleSelect = (id: string) => setSelected(s => s.includes(id) ? s.filter(x => x !== id) : [...s, id]);
-  const selectAll = () => setSelected(selected.length === filtered.length ? [] : filtered.map(r => r.id));
+
+  const toggleSelect = (id: string) =>
+    setSelected(s => s.includes(id) ? s.filter(x => x !== id) : [...s, id]);
+
+  const selectAll = () =>
+    setSelected(selected.length === filtered.length ? [] : filtered.map(r => r.id));
 
   const updateStatus = (ids: string[], status: 'approved' | 'rejected') => {
     setReviewList(reviewList.map(r => ids.includes(r.id) ? { ...r, status } : r));
@@ -21,54 +34,141 @@ const AdminReviewsPage = () => {
     toast.success(t('reviews.success.bulkUpdate', { count: ids.length, status }));
   };
 
+  const filterLabels: Record<string, string> = {
+    all: t('common.all'),
+    pending: t('reviews.pending'),
+    approved: t('reviews.approved'),
+    rejected: t('reviews.rejected'),
+  };
+
   return (
     <div>
-      <h1 className="text-2xl font-display font-bold mb-6">{t('reviews.title')}</h1>
-      <div className="flex flex-wrap gap-3 mb-4">
-        {(['all','pending','approved','rejected'] as const).map(f => {
-          const labels: Record<string, string> = { all: t('common.all'), pending: t('reviews.pending'), approved: t('reviews.approved'), rejected: t('reviews.rejected') };
-          return <button key={f} onClick={() => setFilter(f)} className={`h-9 px-4 rounded-md text-sm font-medium ${filter === f ? 'bg-accent text-accent-foreground' : 'border border-border'}`}>{labels[f]}</button>;
-        })}
+      <div className="mb-6 flex items-center justify-between">
+        <h1 className="text-2xl font-display font-bold">{t('reviews.title')}</h1>
       </div>
+
+      <div className="mb-4 flex flex-wrap gap-2">
+        {(['all', 'pending', 'approved', 'rejected'] as const).map(f => (
+          <button
+            key={f}
+            onClick={() => setFilter(f)}
+            className={`h-9 px-4 rounded-md text-sm font-medium transition-colors ${filter === f ? 'bg-accent text-accent-foreground' : 'border border-border hover:bg-muted/50'}`}
+          >
+            {filterLabels[f]}
+          </button>
+        ))}
+      </div>
+
       {selected.length > 0 && (
-        <div className="flex gap-2 mb-4 bg-muted p-3 rounded-lg">
-          <span className="text-sm">{selected.length} {t('common.selected')}</span>
-          <button onClick={() => updateStatus(selected, 'approved')} className="h-8 px-3 bg-success/10 text-success rounded text-xs font-medium">{t('reviews.approveSelected')}</button>
-          <button onClick={() => updateStatus(selected, 'rejected')} className="h-8 px-3 bg-destructive/10 text-destructive rounded text-xs font-medium">{t('reviews.rejectSelected')}</button>
+        <div className="flex items-center gap-3 mb-4 bg-muted/50 border border-border/60 px-4 py-3 rounded-xl">
+          <span className="text-sm font-medium">{selected.length} {t('common.selected')}</span>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 px-3 bg-success/10 text-success hover:bg-success/20 hover:text-success"
+            onClick={() => updateStatus(selected, 'approved')}
+          >
+            <Check size={13} className="mr-1.5" />
+            {t('reviews.approveSelected')}
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 px-3 bg-destructive/10 text-destructive hover:bg-destructive/20 hover:text-destructive"
+            onClick={() => updateStatus(selected, 'rejected')}
+          >
+            <X size={13} className="mr-1.5" />
+            {t('reviews.rejectSelected')}
+          </Button>
         </div>
       )}
-      <div className="bg-card border border-border rounded-lg overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead><tr className="border-b border-border bg-muted/50">
-            <th className="px-4 py-3"><input type="checkbox" checked={selected.length === filtered.length && filtered.length > 0} onChange={selectAll} /></th>
-            <th className="text-left px-4 py-3 font-medium text-muted-foreground">{t('common.product')}</th>
-            <th className="text-left px-4 py-3 font-medium text-muted-foreground">{t('common.customer')}</th>
-            <th className="text-left px-4 py-3 font-medium text-muted-foreground">{t('reviews.rating')}</th>
-            <th className="text-left px-4 py-3 font-medium text-muted-foreground">{t('reviews.review')}</th>
-            <th className="text-left px-4 py-3 font-medium text-muted-foreground">{t('common.status')}</th>
-            <th className="text-left px-4 py-3 font-medium text-muted-foreground">{t('common.actions')}</th>
-          </tr></thead>
-          <tbody>
-            {filtered.map(r => {
-              const prod = products.find(p => p.id === r.productId);
-              return (
-                <tr key={r.id} className="border-b border-border last:border-0 hover:bg-muted/30">
-                  <td className="px-4 py-3"><input type="checkbox" checked={selected.includes(r.id)} onChange={() => toggleSelect(r.id)} /></td>
-                  <td className="px-4 py-3 font-medium">{prod?.name?.slice(0, 30)}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{r.userName}</td>
-                  <td className="px-4 py-3 text-warning">{'★'.repeat(r.rating)}</td>
-                  <td className="px-4 py-3 text-muted-foreground max-w-xs truncate">{r.text.slice(0, 80)}</td>
-                  <td className="px-4 py-3"><span className={`text-xs px-2 py-0.5 rounded font-medium ${r.status === 'approved' ? 'bg-success/10 text-success' : r.status === 'pending' ? 'bg-warning/10 text-warning' : 'bg-destructive/10 text-destructive'}`}>{r.status}</span></td>
-                  <td className="px-4 py-3 flex gap-1">
-                    <button onClick={() => updateStatus([r.id], 'approved')} className="w-7 h-7 rounded bg-success/10 text-success flex items-center justify-center" title={t('reviews.approve')}><Check size={14} /></button>
-                    <button onClick={() => updateStatus([r.id], 'rejected')} className="w-7 h-7 rounded bg-destructive/10 text-destructive flex items-center justify-center" title={t('reviews.reject')}><X size={14} /></button>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+
+      <Table>
+        <TableHeader>
+          <TableRow className="hover:bg-transparent">
+            <TableHead className="w-10">
+              <input
+                type="checkbox"
+                checked={selected.length === filtered.length && filtered.length > 0}
+                onChange={selectAll}
+                className="rounded"
+              />
+            </TableHead>
+            <TableHead>{t('common.product')}</TableHead>
+            <TableHead>{t('common.customer')}</TableHead>
+            <TableHead>{t('reviews.rating')}</TableHead>
+            <TableHead>{t('reviews.review')}</TableHead>
+            <TableHead>{t('common.status')}</TableHead>
+            <TableHead className="sticky right-0 w-24 bg-card border-l border-border/40 text-right">
+              {t('common.actions')}
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {filtered.length === 0 && (
+            <TableRow>
+              <TableCell colSpan={7} className="h-24 text-center text-muted-foreground">
+                No reviews found
+              </TableCell>
+            </TableRow>
+          )}
+          {filtered.map(r => {
+            const prod = products.find(p => p.id === r.productId);
+            return (
+              <TableRow key={r.id}>
+                <TableCell>
+                  <input
+                    type="checkbox"
+                    checked={selected.includes(r.id)}
+                    onChange={() => toggleSelect(r.id)}
+                    className="rounded"
+                  />
+                </TableCell>
+                <TableCell className="font-medium max-w-[160px] truncate">
+                  {prod?.name?.slice(0, 30)}
+                </TableCell>
+                <TableCell className="text-muted-foreground">{r.userName}</TableCell>
+                <TableCell>
+                  <span className="text-warning tracking-tight">{'★'.repeat(r.rating)}</span>
+                  <span className="text-muted-foreground/40">{'★'.repeat(5 - r.rating)}</span>
+                </TableCell>
+                <TableCell className="text-muted-foreground max-w-xs truncate">
+                  {r.text.slice(0, 80)}
+                </TableCell>
+                <TableCell>
+                  <Badge variant="outline" className={statusVariant[r.status] ?? ''}>
+                    {t(`reviews.${r.status}`, { defaultValue: r.status })}
+                  </Badge>
+                </TableCell>
+                <TableCell className="sticky right-0 bg-card border-l border-border/40">
+                  <div className="flex justify-end gap-1">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 text-muted-foreground hover:bg-success/10 hover:text-success"
+                      onClick={() => updateStatus([r.id], 'approved')}
+                      title={t('reviews.approve')}
+                    >
+                      <Check size={15} />
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                      onClick={() => updateStatus([r.id], 'rejected')}
+                      title={t('reviews.reject')}
+                    >
+                      <X size={15} />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
     </div>
   );
 };

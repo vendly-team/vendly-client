@@ -34,7 +34,8 @@
     --input: 214 25% 90%;
     --ring: 220 60% 18%;
 
-    --radius: 0.75rem;
+    /* Apple radius scale — promoted from 0.75rem to a more rounded base */
+    --radius: 1.125rem;
 
     --sale: 0 80% 55%;
     --success: 142 70% 40%;
@@ -87,56 +88,137 @@
     @apply border-border;
   }
 
-  body {
-    @apply bg-background text-foreground font-sans antialiased;
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "ss01", "cv11";
   }
 
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-size: 17px;
+    line-height: 1.47;
+    letter-spacing: -0.011em;
+    font-weight: 400;
+  }
+
+  /* Apple-style display headlines — tight tracking, weight 600 (never 700) */
   h1, h2, h3, h4, h5, h6 {
     @apply font-display;
+    font-weight: 600;
+    letter-spacing: -0.022em;
+    line-height: 1.12;
+  }
+
+  h1 { font-size: 2.5rem; letter-spacing: -0.028em; line-height: 1.07; }
+  h2 { font-size: 2rem; letter-spacing: -0.024em; line-height: 1.1; }
+  h3 { font-size: 1.5rem; letter-spacing: -0.018em; line-height: 1.2; }
+  h4 { font-size: 1.25rem; letter-spacing: -0.014em; line-height: 1.25; }
+  h5 { font-size: 1.0625rem; letter-spacing: -0.011em; line-height: 1.3; }
+  h6 { font-size: 0.9375rem; letter-spacing: -0.008em; line-height: 1.35; }
+
+  /* Inputs inherit the typography baseline */
+  input, textarea, select, button {
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  /* Selection styling — quiet, no neon */
+  ::selection {
+    background-color: hsl(var(--primary) / 0.18);
   }
 }
 
 @layer components {
   .glass-input {
-    @apply bg-white/50 dark:bg-white/10 backdrop-blur-xl border border-black/[0.06] dark:border-white/15 shadow-[0_1px_2px_rgba(0,0,0,0.04)];
-    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+    @apply bg-white/55 dark:bg-white/10 backdrop-blur-xl border border-black/[0.06] dark:border-white/15;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), inset 0 0 0 0.5px rgba(255, 255, 255, 0.6);
+    transition: background 0.28s cubic-bezier(0.28, 0.11, 0.32, 1),
+                border-color 0.28s cubic-bezier(0.28, 0.11, 0.32, 1),
+                box-shadow 0.28s cubic-bezier(0.28, 0.11, 0.32, 1),
+                transform 0.18s cubic-bezier(0.28, 0.11, 0.32, 1);
   }
   .glass-input:hover {
-    @apply bg-white/[0.65] dark:bg-white/[0.12] border-black/[0.1] dark:border-white/20 shadow-[0_2px_8px_rgba(0,0,0,0.06)];
+    @apply bg-white/[0.7] dark:bg-white/[0.12] border-black/[0.1] dark:border-white/20;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05), 0 4px 14px rgba(0, 0, 0, 0.04), inset 0 0 0 0.5px rgba(255, 255, 255, 0.7);
   }
   .glass-input:focus,
   .glass-input:focus-within {
-    @apply bg-white/80 dark:bg-white/15 border-primary/30 dark:border-white/25 shadow-[0_0_0_3px_rgba(30,58,95,0.08),0_2px_8px_rgba(0,0,0,0.06)];
+    @apply bg-white/85 dark:bg-white/15 border-primary/35 dark:border-white/25;
+    box-shadow: 0 0 0 4px hsl(var(--primary) / 0.1), 0 2px 10px rgba(0, 0, 0, 0.06);
   }
   .glass-surface {
-    @apply bg-white/60 dark:bg-white/10 backdrop-blur-2xl border border-black/[0.06] dark:border-white/15 shadow-[0_4px_24px_rgba(0,0,0,0.06)];
+    @apply bg-white/65 dark:bg-white/10 backdrop-blur-2xl border border-black/[0.06] dark:border-white/15;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03), 0 12px 48px rgba(0, 0, 0, 0.1), inset 0 0 0 0.5px rgba(255, 255, 255, 0.6);
   }
   .glass-checkbox {
-    @apply bg-white/50 dark:bg-white/10 backdrop-blur-xl border-[1.5px] border-black/[0.1] dark:border-white/15 shadow-[0_1px_2px_rgba(0,0,0,0.04)];
-    transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.15s ease;
+    @apply bg-white/55 dark:bg-white/10 backdrop-blur-xl border-[1.5px] border-black/[0.12] dark:border-white/15;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    transition: background 0.22s cubic-bezier(0.28, 0.11, 0.32, 1),
+                border-color 0.22s cubic-bezier(0.28, 0.11, 0.32, 1),
+                box-shadow 0.22s cubic-bezier(0.28, 0.11, 0.32, 1),
+                transform 0.14s cubic-bezier(0.28, 0.11, 0.32, 1);
   }
   .glass-checkbox:hover {
-    @apply border-black/[0.18] dark:border-white/25 shadow-[0_2px_6px_rgba(0,0,0,0.06)];
-    transform: scale(1.05);
+    @apply border-black/[0.22] dark:border-white/25;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transform: scale(1.06);
   }
   .glass-checkbox[data-state="checked"] {
-    @apply bg-primary border-primary shadow-[0_2px_8px_rgba(30,58,95,0.2)];
+    @apply bg-primary border-primary;
+    box-shadow: 0 2px 10px hsl(var(--primary) / 0.28);
     transform: scale(1);
   }
+
+  /* Apple product-card surface — flat with the single product shadow on imagery */
+  .apple-card {
+    @apply bg-card text-card-foreground rounded-2xl border border-black/[0.06];
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    transition: box-shadow 0.32s cubic-bezier(0.28, 0.11, 0.32, 1),
+                transform 0.32s cubic-bezier(0.28, 0.11, 0.32, 1);
+  }
+  .apple-card:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04), 0 12px 32px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Apple frosted-glass top nav strip */
+  .apple-nav-frosted {
+    @apply bg-background/72 backdrop-blur-2xl border-b border-black/[0.06];
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+  }
+
+  /* Apple pill — capsule CTA */
+  .apple-pill {
+    border-radius: 9999px;
+    transition: transform 0.18s cubic-bezier(0.28, 0.11, 0.32, 1),
+                box-shadow 0.28s cubic-bezier(0.28, 0.11, 0.32, 1),
+                background-color 0.28s cubic-bezier(0.28, 0.11, 0.32, 1);
+  }
+  .apple-pill:active { transform: scale(0.96); }
+
+  /* Tables — Apple-quiet rhythm, more generous padding, no harsh borders */
   .admin-shell table {
-    @apply w-full text-sm;
+    @apply w-full text-[14px];
+    border-collapse: separate;
+    border-spacing: 0;
   }
   .admin-shell thead tr {
-    @apply border-b border-border bg-muted/60;
+    @apply border-b border-border/70 bg-muted/40;
   }
   .admin-shell th {
-    @apply h-11 px-4 text-left align-middle text-xs font-semibold uppercase tracking-wide text-muted-foreground;
+    @apply h-12 px-5 text-left align-middle text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground;
   }
   .admin-shell tbody tr {
-    @apply border-b border-border transition-colors last:border-0 hover:bg-muted/35;
+    @apply border-b border-border/60 last:border-0 transition-colors;
+    transition: background-color 0.18s cubic-bezier(0.28, 0.11, 0.32, 1);
+  }
+  .admin-shell tbody tr:hover {
+    @apply bg-muted/35;
   }
   .admin-shell td {
-    @apply px-4 py-3 align-middle text-foreground;
+    @apply px-5 py-4 align-middle text-foreground;
+    letter-spacing: -0.011em;
   }
 }
 
