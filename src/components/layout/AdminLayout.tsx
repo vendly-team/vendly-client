@@ -1,9 +1,10 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/shared/store/authStore';
-import { LayoutDashboard, Package, Grid, ShoppingBag, Users, Star, Tag, RefreshCw, Shield, LogOut, Menu, X, ChevronDown } from 'lucide-react';
+import { LayoutDashboard, Package, Grid, ShoppingBag, Users, Star, Tag, RefreshCw, Shield, LogOut, Menu, X, ChevronDown, Store } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from "react-i18next";
+import { useAppEnvironment } from "@/hooks/useAppEnvironment";
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import {
   DropdownMenu,
@@ -16,6 +17,7 @@ import {
 
 const AdminLayout = () => {
   const { t } = useTranslation();
+  const { isTelegram, isIos } = useAppEnvironment();
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
@@ -110,7 +112,7 @@ const AdminLayout = () => {
 
       {/* Mobile drawer */}
       <aside className={`fixed inset-y-0 left-0 z-50 flex flex-col w-72 bg-sidebar text-sidebar-foreground border-r border-sidebar-border transition-transform duration-300 ease-[cubic-bezier(0.28,0.11,0.32,1)] md:hidden ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        <div className="h-16 shrink-0 border-b border-sidebar-border px-4 flex items-center justify-between">
+        <div className={`shrink-0 border-b border-sidebar-border px-4 flex items-center justify-between ${isTelegram && isIos ? 'pt-24 h-auto' : 'h-16'}`}>
           <div className="flex items-center gap-2">
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground font-display text-[18px] font-bold tracking-[-0.018em] shadow-[0_6px_14px_rgba(0,0,0,0.14)]">
               B
@@ -133,7 +135,7 @@ const AdminLayout = () => {
 
       {/* Desktop sidebar */}
       <aside className={`${collapsed ? 'w-16' : 'w-60'} bg-sidebar text-sidebar-foreground border-r border-sidebar-border shrink-0 transition-[width] duration-300 ease-in-out hidden md:flex flex-col`}>
-        <div className="h-16 shrink-0 border-b border-sidebar-border px-3 flex bg-card items-center">
+        <div className={`shrink-0 border-b border-sidebar-border px-3 flex bg-card items-center ${isTelegram && isIos ? 'pt-24 h-auto' : 'h-16'}`}>
           <button
             type="button"
             onClick={() => setCollapsed(!collapsed)}
@@ -156,7 +158,7 @@ const AdminLayout = () => {
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
 
         {/* Sticky header */}
-        <header className="h-16 shrink-0 bg-card border-b border-border flex items-center justify-between px-4">
+        <header className={`shrink-0 bg-card border-b border-border flex items-center justify-between px-4 ${isTelegram && isIos ? 'pt-24 h-auto' : 'h-16'}`}>
           <div className="flex items-center gap-2">
             <button
               type="button"
@@ -206,6 +208,16 @@ const AdminLayout = () => {
                     </div>
                   </div>
                 </DropdownMenuLabel>
+
+                <DropdownMenuSeparator />
+
+                <DropdownMenuItem
+                  className="cursor-pointer text-[14px] font-medium tracking-[-0.006em]"
+                  onClick={() => navigate('/')}
+                >
+                  <Store size={15} className="mr-2" />
+                  {t("admin.sidebar.userSide")}
+                </DropdownMenuItem>
 
                 <DropdownMenuSeparator />
 

@@ -2,9 +2,12 @@ import { Link } from 'react-router-dom';
 import { orders } from '@/shared/data/orders';
 import { products } from '@/shared/data/products';
 import { formatPrice } from '@/shared/utils';
-import { ShoppingCart, DollarSign, Clock, Package, TrendingUp, TrendingDown, Calendar, ChevronDown } from 'lucide-react';
+import { ShoppingCart, DollarSign, Clock, Package, TrendingUp, TrendingDown, ChevronDown } from 'lucide-react';
 import { AreaChart, Area, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
+import { DateRangePicker } from '@/components/ui/DateRangePicker';
+import type { DateRange } from '@/components/ui/DateRangePicker';
 
 const chartData = [
   { day: 'Mon', orders: 7,  revenue: 1500 },
@@ -44,6 +47,11 @@ const COLOR = {
 
 const DashboardPage = () => {
   const { t } = useTranslation();
+  const [dateRange, setDateRange] = useState<DateRange | undefined>(() => {
+    const to = new Date(); to.setHours(0, 0, 0, 0);
+    const from = new Date(to); from.setDate(from.getDate() - 6);
+    return { from, to };
+  });
 
   const todayOrders   = orders;
   const pendingOrders = orders.filter(o => o.status === 'new' || o.status === 'accepted');
@@ -114,15 +122,7 @@ const DashboardPage = () => {
             Welcome back, admin! Here's what's happening with your store today.
           </p>
         </div>
-        {/* Date range — visual only */}
-        <button
-          type="button"
-          className="flex items-center gap-2 h-9 px-3.5 rounded-xl border border-border bg-card text-[13px] font-medium tracking-[-0.006em] text-foreground hover:bg-muted/50 transition-colors shrink-0 shadow-sm"
-        >
-          <Calendar size={14} className="text-muted-foreground" />
-          <span className="hidden sm:inline">May 12 – May 18, 2025</span>
-          <ChevronDown size={13} className="text-muted-foreground" />
-        </button>
+        <DateRangePicker value={dateRange} onChange={setDateRange} />
       </div>
 
       {/* ── KPI cards ─────────────────────────────────────── */}

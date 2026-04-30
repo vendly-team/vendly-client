@@ -20,7 +20,7 @@ const ProfileLayout = () => {
     <StorefrontLayout>
       <div className="container py-6 animate-fade-in">
         <div className="flex flex-col md:flex-row gap-6">
-          <aside className="md:w-56 shrink-0">
+          <aside className="hidden md:block md:w-56 shrink-0">
             <nav className="flex md:flex-col gap-1 overflow-x-auto md:overflow-visible bg-card border border-border rounded-lg p-2">
               {links.map(({ to, icon: Icon, label }) => (
                 <NavLink key={to} to={to} className={({ isActive }) => `flex items-center gap-2 px-3 py-2 rounded-md text-[14px] tracking-[-0.011em] whitespace-nowrap transition-colors ${isActive ? 'bg-accent text-accent-foreground font-semibold' : 'text-foreground font-medium hover:bg-muted'}`}>

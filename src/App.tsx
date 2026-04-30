@@ -27,6 +27,7 @@ import ProfileOrdersPage from "./pages/storefront/ProfileOrdersPage";
 import ProfileOrderDetailPage from "./pages/storefront/ProfileOrderDetailPage";
 import ProfileAddressesPage from "./pages/storefront/ProfileAddressesPage";
 import ProfileWishlistPage from "./pages/storefront/ProfileWishlistPage";
+import { ProfileHubPage } from "./pages/storefront/ProfileHubPage";
 import NotFound from "./pages/NotFound";
 
 // Admin pages
@@ -101,8 +102,10 @@ const App = () => (
           <Route path="/checkout" element={<AuthRoute><CheckoutPage /></AuthRoute>} />
           <Route path="/checkout/success" element={<AuthRoute><CheckoutSuccessPage /></AuthRoute>} />
 
-          {/* Profile - auth required */}
-          <Route path="/profile" element={<Navigate to="/profile/info" replace />} />
+          {/* Profile hub — mobile landing */}
+          <Route path="/profile" element={<AuthRoute><StorefrontLayout><ProfileHubPage /></StorefrontLayout></AuthRoute>} />
+
+          {/* Profile sub-pages - auth required */}
           <Route element={<AuthRoute><ProfileLayout /></AuthRoute>}>
             <Route path="/profile/info" element={<ProfileInfoPage />} />
             <Route path="/profile/orders" element={<ProfileOrdersPage />} />

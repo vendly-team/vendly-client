@@ -50,7 +50,7 @@
     "language": "Тил"
   },
   "nav": {
-    "home": "Бош саҳифа",
+    "home": "Асосий",
     "catalog": "Каталог",
     "search": "Қидириш",
     "cart": "Сават",
@@ -346,7 +346,7 @@
     "fixedAmount": "Белгиланган сумма ($)",
     "start": "Бошланиш",
     "end": "Тугаш",
-    "allProducts": "Барча маҳсулотлар",
+    "allProducts": "Маҳсулотлар",
     "byCategory": "Категория бўйича",
     "specificProducts": "Танланган маҳсулотлар"
   },
@@ -439,7 +439,7 @@
     "continueShopping": "Харид давом эттириш"
   },
   "categoryPage": {
-    "allProducts": "Барча маҳсулотлар",
+    "allProducts": "Маҳсулотлар",
     "filters": "Филтрлар",
     "priceRange": "Нарх оралиғи",
     "min": "Мин",
@@ -487,6 +487,7 @@
     "myOrders": "Буюртмаларим",
     "myAddresses": "Манзилларим",
     "wishlist": "Истаклар рўйхати",
+    "verified": "Тасдиқланган",
     "saveChanges": "Ўзгаришларни сақлаш",
     "success": {
       "updated": "Профил муваффақиятли янгиланди"
@@ -570,6 +571,7 @@
       "discounts": "Чегирмалар",
       "syncLogs": "Синхронлаш логлари",
       "users": "Фойдаланувчилар",
+      "userSide": "Фойдаланувчи томонига",
       "title": "Админ панел",
       "sections": {
         "overview": "Умумий",

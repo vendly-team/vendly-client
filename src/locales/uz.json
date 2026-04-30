@@ -50,7 +50,7 @@
     "language": "Til"
   },
   "nav": {
-    "home": "Bosh sahifa",
+    "home": "Asosiy",
     "catalog": "Katalog",
     "search": "Qidirish",
     "cart": "Savat",
@@ -346,7 +346,7 @@
     "fixedAmount": "Belgilangan summa ($)",
     "start": "Boshlanish",
     "end": "Tugash",
-    "allProducts": "Barcha mahsulotlar",
+    "allProducts": "Mahsulotlar",
     "byCategory": "Kategoriya bo'yicha",
     "specificProducts": "Tanlangan mahsulotlar"
   },
@@ -439,7 +439,7 @@
     "continueShopping": "Xarid davom ettirish"
   },
   "categoryPage": {
-    "allProducts": "Barcha mahsulotlar",
+    "allProducts": "Mahsulotlar",
     "filters": "Filtrlar",
     "priceRange": "Narx oralig'i",
     "min": "Min",
@@ -487,6 +487,7 @@
     "myOrders": "Buyurtmalarim",
     "myAddresses": "Manzillarim",
     "wishlist": "Istaklar ro'yxati",
+    "verified": "Tasdiqlangan",
     "saveChanges": "O'zgarishlarni saqlash",
     "success": {
       "updated": "Profil muvaffaqiyatli yangilandi"
@@ -570,6 +571,7 @@
       "discounts": "Chegirmalar",
       "syncLogs": "Sinxronlash loglari",
       "users": "Foydalanuvchilar",
+      "userSide": "Foydalanuvchi tomoniga",
       "title": "Admin panel",
       "sections": {
         "overview": "Umumiy",
