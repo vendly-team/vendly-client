@@ -525,7 +525,7 @@ export function ProductFormPage() {
   }
 
   if (loading && !product) {
-    return <div className="flex h-64 items-center justify-center text-sm text-muted-foreground">{t('products.loadingDetail', { defaultValue: 'Loading product detail...' })}</div>
+    return <div className="flex h-64 items-center justify-center text-[14px] font-normal tracking-[-0.006em] text-muted-foreground">{t('products.loadingDetail', { defaultValue: 'Loading product detail...' })}</div>
   }
 
   return (
@@ -537,14 +537,14 @@ export function ProductFormPage() {
           </Button>
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <h1 className="truncate text-2xl font-display font-bold">
+              <h1 className="truncate text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display">
                 {isEdit ? t('products.editProduct') : t('products.newProduct')}
               </h1>
               <Badge variant={infoForm.isActive ? 'default' : 'secondary'} className="shrink-0">
                 {infoForm.isActive ? t('common.active', { defaultValue: 'Active' }) : t('common.inactive', { defaultValue: 'Inactive' })}
               </Badge>
             </div>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-[14px] font-normal tracking-[-0.006em] text-muted-foreground">
               {t('products.formSubtitle', { defaultValue: 'Product data, variant options, SKU combinations, and storefront preview.' })}
             </p>
           </div>
@@ -668,11 +668,11 @@ export function ProductFormPage() {
                   {isComplete ? <CheckCircle2 size={16} /> : step.id}
                 </span>
                 <span className="min-w-0">
-                  <span className="block truncate text-sm font-medium">
+                  <span className="block truncate text-[14px] font-medium tracking-[-0.011em]">
                     {t(step.titleKey, { defaultValue: step.titleDefault })}
                     {step.id === 3 && product?.variants.length ? ` (${product.variants.length})` : ''}
                   </span>
-                  <span className="hidden truncate text-[11px] text-muted-foreground sm:block">
+                  <span className="hidden truncate text-[11px] font-normal tracking-[-0.003em] text-muted-foreground sm:block">
                     {t(step.descriptionKey, { defaultValue: step.descriptionDefault })}
                   </span>
                 </span>
@@ -687,7 +687,7 @@ export function ProductFormPage() {
           <div className="min-w-0 space-y-5 pr-2">
           {activeStep === 1 && <Card>
             <CardHeader>
-              <CardTitle className="flex items-center justify-between gap-3 text-base">
+              <CardTitle className="flex items-center justify-between gap-3 text-[18px] font-semibold tracking-[-0.016em] leading-[1.2]">
                 <span className="flex items-center gap-2">
                   <span className="flex h-7 w-7 items-center justify-center rounded-full bg-accent/10 text-sm font-semibold text-accent">1</span>
                   {t('products.productInformation')}
@@ -761,8 +761,8 @@ export function ProductFormPage() {
 
                 <div className="flex h-11 items-center justify-between rounded-lg border border-border bg-card px-4">
                   <div>
-                    <Label className="text-sm">{t('products.activeProduct', { defaultValue: 'Active product' })}</Label>
-                    <p className="text-xs text-muted-foreground">{t('products.activeProductHint', { defaultValue: 'Visible in storefront when active.' })}</p>
+                    <Label className="text-[13px] font-medium tracking-[-0.006em]">{t('products.activeProduct', { defaultValue: 'Active product' })}</Label>
+                    <p className="text-[12px] font-normal tracking-[-0.003em] text-muted-foreground">{t('products.activeProductHint', { defaultValue: 'Visible in storefront when active.' })}</p>
                   </div>
                   <Switch
                     checked={infoForm.isActive}
@@ -791,7 +791,7 @@ export function ProductFormPage() {
 
           {activeStep === 2 && <Card className={!canManageVariants ? 'opacity-75' : undefined}>
             <CardHeader>
-              <CardTitle className="flex items-center justify-between gap-3 text-base">
+              <CardTitle className="flex items-center justify-between gap-3 text-[18px] font-semibold tracking-[-0.016em] leading-[1.2]">
                 <span className="flex items-center gap-2">
                   <span className="flex h-7 w-7 items-center justify-center rounded-full bg-accent/10 text-sm font-semibold text-accent">2</span>
                   {t('products.variantTypes', { defaultValue: 'Variant types' })}
@@ -803,7 +803,7 @@ export function ProductFormPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               {!canManageVariants && (
-                <div className="rounded-lg border border-dashed border-border bg-muted/35 p-4 text-sm text-muted-foreground">
+                <div className="rounded-lg border border-dashed border-border bg-muted/35 p-4 text-[14px] font-normal tracking-[-0.006em] text-muted-foreground">
                   {t('products.saveInfoFirstHint', { defaultValue: 'Save product information first, then add variant types like Color, Model, or Size.' })}
                 </div>
               )}
@@ -815,8 +815,8 @@ export function ProductFormPage() {
                       <Layers size={16} />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="font-medium text-foreground">{type.name}</p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-[15px] font-semibold tracking-[-0.011em] text-foreground">{type.name}</p>
+                      <p className="text-[12px] font-normal tracking-[-0.003em] text-muted-foreground">
                         {t('products.optionCountDisplayOrder', { count: type.options.length, order: type.displayOrder ?? '-', defaultValue: '{{count}} option · Display order {{order}}' })}
                       </p>
                     </div>
@@ -829,7 +829,7 @@ export function ProductFormPage() {
                     {type.options.length > 0 && (
                       <div className="flex flex-wrap gap-2">
                         {type.options.map(option => (
-                          <div key={option.id} className="flex h-8 items-center gap-2 rounded-full border border-border bg-background pl-2 pr-1 text-xs">
+                          <div key={option.id} className="flex h-8 items-center gap-2 rounded-full border border-border bg-background pl-2 pr-1 text-[12px] font-medium tracking-[-0.003em]">
                             {option.imageUrl ? (
                               <img src={resolveMediaUrl(option.imageUrl) ?? ''} alt={option.name} className="h-5 w-5 rounded-full object-contain" />
                             ) : (
@@ -919,7 +919,7 @@ export function ProductFormPage() {
 
           {activeStep === 3 && <Card className={!canManageVariants ? 'opacity-75' : undefined}>
             <CardHeader>
-              <CardTitle className="flex flex-wrap items-center justify-between gap-3 text-base">
+              <CardTitle className="flex flex-wrap items-center justify-between gap-3 text-[18px] font-semibold tracking-[-0.016em] leading-[1.2]">
                 <span className="flex items-center gap-2">
                   <span className="flex h-7 w-7 items-center justify-center rounded-full bg-accent/10 text-sm font-semibold text-accent">3</span>
                   {t('products.skuCombinations', { defaultValue: 'SKU combinations' })}
@@ -937,14 +937,14 @@ export function ProductFormPage() {
             </CardHeader>
             <CardContent>
               {!canManageVariants ? (
-                <div className="rounded-lg border border-dashed border-border bg-muted/35 p-4 text-sm text-muted-foreground">
+                <div className="rounded-lg border border-dashed border-border bg-muted/35 p-4 text-[14px] font-normal tracking-[-0.006em] text-muted-foreground">
                   {t('products.skuAvailableAfterCreate', { defaultValue: 'SKU combinations become available after product creation.' })}
                 </div>
               ) : product.variants.length === 0 ? (
                 <div className="grid place-items-center rounded-lg border border-dashed border-border bg-muted/35 px-4 py-10 text-center">
                   <Wand2 className="mb-3 text-muted-foreground" size={28} />
-                  <p className="font-medium">{t('products.noSkuCombinations', { defaultValue: 'No SKU combinations yet' })}</p>
-                  <p className="mt-1 max-w-md text-sm text-muted-foreground">
+                  <p className="text-[15px] font-semibold tracking-[-0.011em]">{t('products.noSkuCombinations', { defaultValue: 'No SKU combinations yet' })}</p>
+                  <p className="mt-1 max-w-md text-[14px] font-normal tracking-[-0.006em] text-muted-foreground">
                     {t('products.generateSkuHint', { defaultValue: 'You already added variant options. Generate SKUs to create every color and model combination.' })}
                   </p>
                   <Button className="mt-4" onClick={handleRegenerate} disabled={regenerating}>
@@ -973,7 +973,7 @@ export function ProductFormPage() {
 
                       return (
                         <TableRow key={variant.id}>
-                          <TableCell className="font-mono text-xs text-muted-foreground">{variant.id}</TableCell>
+                          <TableCell className="font-mono text-[12px] tracking-[-0.003em] text-muted-foreground tabular-nums">{variant.id}</TableCell>
                           <TableCell>
                             <Input
                               className="h-9"
@@ -1022,11 +1022,11 @@ export function ProductFormPage() {
                           <TableCell>
                             <div className="flex flex-wrap gap-1.5">
                               {variant.combination.length > 0 ? variant.combination.map(item => (
-                                <span key={`${variant.id}-${item.variantTypeName}-${item.optionId}`} className="rounded-md border border-border px-2 py-1 text-xs text-muted-foreground">
-                                  {item.variantTypeName}: <span className="font-medium text-foreground">{item.optionName}</span>
+                                <span key={`${variant.id}-${item.variantTypeName}-${item.optionId}`} className="rounded-md border border-border px-2 py-1 text-[11px] font-normal tracking-[-0.003em] text-muted-foreground">
+                                  {item.variantTypeName}: <span className="font-semibold tracking-[-0.005em] text-foreground">{item.optionName}</span>
                                 </span>
                               )) : (
-                                <span className="text-xs text-muted-foreground">{getVariantLabel(variant)}</span>
+                                <span className="text-[12px] font-normal tracking-[-0.003em] text-muted-foreground">{getVariantLabel(variant)}</span>
                               )}
                             </div>
                           </TableCell>
@@ -1062,7 +1062,7 @@ export function ProductFormPage() {
           <div className="sticky top-20 space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-base">
+                <CardTitle className="flex items-center gap-2 text-[18px] font-semibold tracking-[-0.016em] leading-[1.2]">
                   <Package size={18} />
                   {t('products.livePreview', { defaultValue: 'Live preview' })}
                 </CardTitle>
@@ -1081,14 +1081,14 @@ export function ProductFormPage() {
 
                   <div className="min-w-0 space-y-4">
                     <div className="space-y-2 rounded-lg p-2">
-                      <p className={`inline-block rounded px-1 text-xs text-muted-foreground transition-all ${previewHighlightClass('category')}`}>
+                      <p className={`inline-block rounded px-1 text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground transition-all ${previewHighlightClass('category')}`}>
                         {selectedCategory?.name ?? product?.categoryName ?? t('common.category', { defaultValue: 'Category' })}
                       </p>
-                      <h2 className={`${previewIsHorizontal ? 'text-2xl' : 'text-xl'} rounded px-1 font-display font-bold leading-tight transition-all ${previewHighlightClass('name')}`}>
+                      <h2 className={`${previewIsHorizontal ? 'text-[24px]' : 'text-[20px]'} rounded px-1 font-display font-bold tracking-[-0.018em] leading-[1.15] transition-all ${previewHighlightClass('name')}`}>
                         {infoForm.name || t('products.productNameFallback', { defaultValue: 'Product name' })}
                       </h2>
                       {infoForm.description && (
-                        <p className={`line-clamp-3 rounded px-1 text-sm text-muted-foreground transition-all ${previewHighlightClass('description')}`}>{infoForm.description}</p>
+                        <p className={`line-clamp-3 rounded px-1 text-[14px] font-normal tracking-[-0.006em] leading-[1.5] text-muted-foreground transition-all ${previewHighlightClass('description')}`}>{infoForm.description}</p>
                       )}
                     </div>
 
@@ -1102,10 +1102,10 @@ export function ProductFormPage() {
                       <div className={`space-y-3 rounded-lg border-t border-border p-2 pt-3 transition-all ${previewHighlightClass('variants')}`}>
                         {product.variantTypes.map(type => (
                           <div key={type.id}>
-                            <p className="mb-2 text-xs font-medium text-muted-foreground">{type.name}</p>
+                            <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground">{type.name}</p>
                             <div className="flex flex-wrap gap-2">
                               {type.options.slice(0, 6).map(option => (
-                                <span key={option.id} className="rounded-md border border-border px-2 py-1 text-xs">
+                                <span key={option.id} className="rounded-md border border-border px-2 py-1 text-[12px] font-medium tracking-[-0.003em]">
                                   {option.name}
                                 </span>
                               ))}
@@ -1116,11 +1116,11 @@ export function ProductFormPage() {
                     ) : null}
 
                     <div className="rounded-lg bg-accent/10 p-4">
-                      <p className="text-xs font-medium text-accent">{t('products.startingPrice', { defaultValue: 'Starting price' })}</p>
-                      <p className={`mt-1 rounded px-1 text-2xl font-display font-bold text-accent transition-all ${previewHighlightClass('skuPrice')}`}>
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-accent">{t('products.startingPrice', { defaultValue: 'Starting price' })}</p>
+                      <p className={`mt-1 rounded px-1 text-[24px] font-bold tracking-[-0.018em] leading-[1.15] font-display text-accent tabular-nums transition-all ${previewHighlightClass('skuPrice')}`}>
                         {previewPrice > 0 ? `${formatCurrency(previewPrice)} ${t('products.currencySom', { defaultValue: "so'm" })}` : t('products.setSkuPrice', { defaultValue: 'Set SKU price' })}
                       </p>
-                      <p className={`mt-1 inline-block rounded px-1 text-xs text-muted-foreground transition-all ${previewHighlightClass('skuStock')}`}>
+                      <p className={`mt-1 inline-block rounded px-1 text-[12px] font-normal tracking-[-0.003em] text-muted-foreground transition-all ${previewHighlightClass('skuStock')}`}>
                         {t('products.quantity', { defaultValue: 'Quantity' })}
                       </p>
                     </div>
@@ -1130,7 +1130,7 @@ export function ProductFormPage() {
             </Card>
 
             <Card>
-              <CardContent className="space-y-2 pt-6 text-sm">
+              <CardContent className="space-y-2 pt-6 text-[14px] font-normal tracking-[-0.006em]">
                 <div className="flex items-start gap-2">
                   <span className="mt-1 h-2 w-2 rounded-full bg-accent" />
                   <p className="text-muted-foreground">{t('products.createFirstHint', { defaultValue: 'Create product first, then manage variants from the same page.' })}</p>
@@ -1139,7 +1139,7 @@ export function ProductFormPage() {
                   <span className="mt-1 h-2 w-2 rounded-full bg-accent" />
                   <p className="text-muted-foreground">{t('products.refreshPreservesHint', { defaultValue: 'Refreshing combinations preserves existing matching SKUs.' })}</p>
                 </div>
-                <Link to="/admin/products" className="inline-flex pt-2 text-sm font-medium text-accent hover:underline">
+                <Link to="/admin/products" className="inline-flex pt-2 text-[14px] font-medium tracking-[-0.011em] text-accent hover:underline">
                   {t('products.backToProducts', { defaultValue: 'Back to products' })}
                 </Link>
               </CardContent>

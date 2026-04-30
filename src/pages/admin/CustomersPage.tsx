@@ -61,24 +61,34 @@ export const AdminCustomersPage = () => {
   };
 
   return (
-    <div>
-      <h1 className="mb-6 text-2xl font-display font-bold">Customers</h1>
-      <div className="mb-4">
+    <div className="space-y-5">
+
+      {/* ── 1. Page title ──────────────────────────────────── */}
+      <h1 className="text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground">
+        Customers
+      </h1>
+
+      {/* ── 2. Toolbar surface ─────────────────────────────── */}
+      <div className="rounded-xl border border-border bg-card px-4 py-3 shadow-sm">
         <div className="relative w-72">
           <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground z-[1] pointer-events-none" />
           <Input placeholder="Search customers..." value={search} onChange={event => setSearch(event.target.value)} className="h-9 pl-9" />
         </div>
       </div>
-      <UserList
-        users={customers}
-        currentRole={currentUser?.role}
-        loading={loading}
-        error={error}
-        allowAssignRole={false}
-        onEdit={setEditingUser}
-        onToggleBlock={user => void handleToggleBlock(user)}
-        onAssignRole={() => undefined}
-      />
+
+      {/* ── 3. List container ──────────────────────────────── */}
+      <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden">
+        <UserList
+          users={customers}
+          currentRole={currentUser?.role}
+          loading={loading}
+          error={error}
+          allowAssignRole={false}
+          onEdit={setEditingUser}
+          onToggleBlock={user => void handleToggleBlock(user)}
+          onAssignRole={() => undefined}
+        />
+      </div>
 
       <Dialog open={Boolean(editingUser)} onOpenChange={open => { if (!open) setEditingUser(null); }}>
         <DialogContent>

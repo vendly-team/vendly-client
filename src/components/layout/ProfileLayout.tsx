@@ -23,11 +23,11 @@ const ProfileLayout = () => {
           <aside className="md:w-56 shrink-0">
             <nav className="flex md:flex-col gap-1 overflow-x-auto md:overflow-visible bg-card border border-border rounded-lg p-2">
               {links.map(({ to, icon: Icon, label }) => (
-                <NavLink key={to} to={to} className={({ isActive }) => `flex items-center gap-2 px-3 py-2 rounded-md text-sm whitespace-nowrap transition-colors ${isActive ? 'bg-accent text-accent-foreground font-medium' : 'text-foreground hover:bg-muted'}`}>
+                <NavLink key={to} to={to} className={({ isActive }) => `flex items-center gap-2 px-3 py-2 rounded-md text-[14px] tracking-[-0.011em] whitespace-nowrap transition-colors ${isActive ? 'bg-accent text-accent-foreground font-semibold' : 'text-foreground font-medium hover:bg-muted'}`}>
                   <Icon size={16} /> {label}
                 </NavLink>
               ))}
-              <button onClick={() => { logout(); navigate('/'); }} className="flex items-center gap-2 px-3 py-2 rounded-md text-sm text-destructive hover:bg-muted">
+              <button onClick={() => { logout(); navigate('/'); }} className="flex items-center gap-2 px-3 py-2 rounded-md text-[14px] font-medium tracking-[-0.011em] text-destructive hover:bg-muted">
                 <LogOut size={16} /> {t("common.signOut")}
               </button>
             </nav>

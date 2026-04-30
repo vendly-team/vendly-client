@@ -1,4 +1,4 @@
-export const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? "http://localhost:5051").replace(/\/$/, "");
+export const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? "/backend").replace(/\/$/, "");
 
 export const getStoredAccessToken = () => {
   const directToken =
@@ -24,6 +24,7 @@ export const apiRequest = async <T>(path: string, options: RequestInit = {}) => 
   const headers = new Headers(options.headers);
 
   if (token) headers.set("Authorization", `Bearer ${token}`);
+  headers.set("ngrok-skip-browser-warning", "true");
 
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...options,

@@ -42,21 +42,21 @@ export const UserList = ({ users, currentRole, loading, error, onEdit, onToggleB
       <TableBody>
         {loading && (
           <TableRow>
-            <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
+            <TableCell colSpan={6} className="h-24 text-center text-[14px] font-normal tracking-[-0.006em] text-muted-foreground">
               Loading users...
             </TableCell>
           </TableRow>
         )}
         {!loading && error && (
           <TableRow>
-            <TableCell colSpan={6} className="h-24 text-center text-destructive">
+            <TableCell colSpan={6} className="h-24 text-center text-[14px] font-medium tracking-[-0.006em] text-destructive">
               {error}
             </TableCell>
           </TableRow>
         )}
         {!loading && !error && users.length === 0 && (
           <TableRow>
-            <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
+            <TableCell colSpan={6} className="h-24 text-center text-[14px] font-normal tracking-[-0.006em] text-muted-foreground">
               No users found
             </TableCell>
           </TableRow>
@@ -70,10 +70,10 @@ export const UserList = ({ users, currentRole, loading, error, onEdit, onToggleB
           return (
             <TableRow key={user.id}>
               <TableCell>
-                <div className="font-semibold text-foreground">{user.firstName} {user.lastName}</div>
+                <div className="text-[15px] font-semibold tracking-[-0.011em] text-foreground">{user.firstName} {user.lastName}</div>
               </TableCell>
-              <TableCell className="text-muted-foreground">{user.phone}</TableCell>
-              <TableCell className="text-muted-foreground">{user.email || "-"}</TableCell>
+              <TableCell className="text-[14px] font-normal tracking-[-0.006em] text-muted-foreground tabular-nums">{user.phone}</TableCell>
+              <TableCell className="text-[14px] font-normal tracking-[-0.006em] text-muted-foreground">{user.email || "-"}</TableCell>
               <TableCell>
                 <Badge variant="outline" className={roleBadgeClass(user.role)}>
                   {getRoleLabel(user.role)}

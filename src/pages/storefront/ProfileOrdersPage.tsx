@@ -18,26 +18,26 @@ const ProfileOrdersPage = () => {
     return (
       <div className="text-center py-20">
         <Package className="mx-auto mb-4 text-muted-foreground" size={48} />
-        <h3 className="text-lg font-semibold mb-2">{t('profileOrders.noOrders')}</h3>
-        <Link to="/" className="text-accent hover:underline">{t('profileOrders.startShopping')}</Link>
+        <h3 className="text-[20px] font-semibold tracking-[-0.016em] leading-[1.2] font-display mb-2">{t('profileOrders.noOrders')}</h3>
+        <Link to="/" className="text-[14px] font-medium tracking-[-0.011em] text-accent hover:underline">{t('profileOrders.startShopping')}</Link>
       </div>
     );
   }
 
   return (
     <div>
-      <h1 className="text-2xl font-display font-bold text-foreground mb-6">{t('profileOrders.title')}</h1>
+      <h1 className="text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground mb-6">{t('profileOrders.title')}</h1>
       <div className="space-y-4">
         {allOrders.map((order) => (
           <Link key={order.id} to={`/profile/orders/${order.id}`} className="block bg-card border border-border rounded-lg p-4 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between mb-2">
-              <span className="font-semibold text-foreground">{order.orderNumber}</span>
-              <span className={`text-xs font-medium px-2 py-1 rounded ${statusColors[order.status] || ''}`}>{t(`statusLabels.${order.status === 'in_transit' ? 'inTransit' : order.status}`)}</span>
+              <span className="text-[15px] font-semibold tracking-[-0.011em] text-foreground tabular-nums">{order.orderNumber}</span>
+              <span className={`text-[11px] font-semibold tracking-[-0.005em] px-2 py-1 rounded ${statusColors[order.status] || ''}`}>{t(`statusLabels.${order.status === 'in_transit' ? 'inTransit' : order.status}`)}</span>
             </div>
-            <div className="flex items-center justify-between text-sm text-muted-foreground">
-              <span>{new Date(order.createdAt).toLocaleDateString()}</span>
+            <div className="flex items-center justify-between text-[13px] font-normal tracking-[-0.006em] text-muted-foreground">
+              <span className="tabular-nums">{new Date(order.createdAt).toLocaleDateString()}</span>
               <span>{order.items.length} {t('profileOrders.items')}</span>
-              <span className="font-medium text-foreground">{formatPrice(order.totalAmount)}</span>
+              <span className="text-[14px] font-semibold tracking-[-0.011em] text-foreground tabular-nums">{formatPrice(order.totalAmount)}</span>
             </div>
           </Link>
         ))}

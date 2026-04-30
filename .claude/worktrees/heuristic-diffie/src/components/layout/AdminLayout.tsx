@@ -47,9 +47,6 @@ const AdminLayout = () => {
       <div className="flex-1 flex flex-col min-w-0">
         <header className="h-14 bg-card border-b border-border flex items-center justify-between px-4">
           <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground">Admin Panel</span>
-          </div>
-          <div className="flex items-center gap-2">
             <span className="text-sm font-medium text-foreground">{user?.firstName} {user?.lastName}</span>
             <span className={`text-xs px-2 py-0.5 rounded font-medium ${user?.role === 'admin' ? 'bg-accent/10 text-accent' : 'bg-info/10 text-info'}`}>{user?.role}</span>
           </div>

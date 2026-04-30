@@ -14,9 +14,9 @@ const ProductSection = ({ title, products, viewAllLink }: ProductSectionProps) =
   return (
     <section className="container py-8">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl sm:text-2xl font-display font-bold text-foreground">{title}</h2>
+        <h2 className="text-[24px] sm:text-[28px] font-display font-bold tracking-[-0.022em] leading-[1.1] text-foreground">{title}</h2>
         {viewAllLink && (
-          <Link to={viewAllLink} className="text-sm font-medium text-accent hover:underline">
+          <Link to={viewAllLink} className="text-[14px] font-medium tracking-[-0.011em] text-accent hover:underline">
             {t("productSection.viewAll")}
           </Link>
         )}

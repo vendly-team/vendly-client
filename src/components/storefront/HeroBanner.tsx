@@ -25,9 +25,9 @@ const HeroBanner = () => {
         <div className={`absolute inset-0 bg-gradient-to-r ${slide.bg} opacity-75`} />
         <div className="relative container h-full flex items-center">
           <div className="max-w-lg animate-fade-in-up" key={current}>
-            <h1 className="text-2xl sm:text-3xl lg:text-5xl font-display font-bold text-primary-foreground leading-tight mb-3">{slide.headline}</h1>
-            <p className="text-sm sm:text-base text-primary-foreground/80 mb-6">{slide.subtitle}</p>
-            <Link to={slide.link} className="inline-flex h-11 px-8 items-center rounded-lg bg-card text-foreground font-semibold text-sm hover:bg-card/90 transition-colors">
+            <h1 className="text-[28px] sm:text-[40px] lg:text-[56px] font-display font-bold tracking-[-0.028em] leading-[1.05] text-primary-foreground mb-3">{slide.headline}</h1>
+            <p className="text-[15px] sm:text-[18px] font-normal tracking-[-0.011em] leading-[1.4] text-primary-foreground/80 mb-6">{slide.subtitle}</p>
+            <Link to={slide.link} className="inline-flex h-11 px-8 items-center rounded-lg bg-card text-foreground font-semibold text-[15px] tracking-[-0.014em] hover:bg-card/90 transition-colors">
               {slide.cta}
             </Link>
           </div>

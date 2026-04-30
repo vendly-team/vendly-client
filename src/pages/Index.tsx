@@ -72,7 +72,7 @@ const Index = () => {
       <HeroBanner />
       <CategoryGrid />
       {loading && (
-        <section className="container py-8 text-sm text-muted-foreground">
+        <section className="container py-8 text-[14px] font-normal tracking-[-0.006em] text-muted-foreground">
           {t("products.loading", { defaultValue: "Loading products..." })}
         </section>
       )}
@@ -90,7 +90,7 @@ const Index = () => {
       ))}
       {!loading && products.length === 0 && (
         <section className="container py-8">
-          <div className="rounded-lg border border-dashed border-border bg-card p-8 text-center text-sm text-muted-foreground">
+          <div className="rounded-lg border border-dashed border-border bg-card p-8 text-center text-[14px] font-normal tracking-[-0.006em] text-muted-foreground">
             {t("products.empty", { defaultValue: "No products found" })}
           </div>
         </section>

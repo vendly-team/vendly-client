@@ -82,16 +82,49 @@ const AdminOrdersPage = () => {
   }, [search]);
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-display font-bold">{t('orders.title')}</h1>
+    <div className="space-y-5">
 
-        {/* View toggle */}
+      {/* ── 1. Page title ──────────────────────────────────── */}
+      <h1 className="text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground">
+        {t('orders.title')}
+      </h1>
+
+      {/* ── 2. Toolbar surface ─────────────────────────────── */}
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-card px-4 py-3 shadow-sm">
+        {/* Left: search + status filter */}
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="relative">
+            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground z-[1] pointer-events-none" />
+            <input
+              placeholder={t('orders.searchPlaceholder')}
+              value={search}
+              onChange={e => { setSearch(e.target.value); resetPage(); }}
+              className="h-9 w-52 rounded-md glass-input pl-9 pr-3 text-[14px] font-normal tracking-[-0.011em]"
+            />
+          </div>
+          {view === 'table' && (
+            <Select value={statusFilter} onValueChange={v => { setStatusFilter(v); resetPage(); }}>
+              <SelectTrigger className="h-9 w-40">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">{t('orders.allStatus')}</SelectItem>
+                <SelectItem value="new">{t('orders.new')}</SelectItem>
+                <SelectItem value="accepted">{t('orders.accepted')}</SelectItem>
+                <SelectItem value="in_transit">{t('orders.inTransit')}</SelectItem>
+                <SelectItem value="delivered">{t('orders.delivered')}</SelectItem>
+                <SelectItem value="cancelled">{t('orders.cancelled')}</SelectItem>
+              </SelectContent>
+            </Select>
+          )}
+        </div>
+
+        {/* Right: view toggle */}
         <div className="flex items-center gap-1 rounded-xl bg-muted/60 p-1 border border-border/40">
           <button
             type="button"
             onClick={() => { setView('table'); localStorage.setItem('admin:orders:view', 'table'); }}
-            className={`flex h-7 items-center gap-1.5 rounded-lg px-3 text-xs font-medium transition-all duration-200 ${
+            className={`flex h-7 items-center gap-1.5 rounded-lg px-3 text-[12px] font-semibold tracking-[-0.005em] transition-all duration-200 ${
               view === 'table'
                 ? 'bg-card shadow-[0_1px_3px_rgba(0,0,0,0.08)] text-foreground'
                 : 'text-muted-foreground hover:text-foreground'
@@ -103,7 +136,7 @@ const AdminOrdersPage = () => {
           <button
             type="button"
             onClick={() => { setView('board'); localStorage.setItem('admin:orders:view', 'board'); }}
-            className={`flex h-7 items-center gap-1.5 rounded-lg px-3 text-xs font-medium transition-all duration-200 ${
+            className={`flex h-7 items-center gap-1.5 rounded-lg px-3 text-[12px] font-semibold tracking-[-0.005em] transition-all duration-200 ${
               view === 'board'
                 ? 'bg-card shadow-[0_1px_3px_rgba(0,0,0,0.08)] text-foreground'
                 : 'text-muted-foreground hover:text-foreground'
@@ -115,47 +148,19 @@ const AdminOrdersPage = () => {
         </div>
       </div>
 
-      {/* Filters */}
-      <div className="mb-4 flex flex-wrap gap-3">
-        <div className="relative">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground z-[1] pointer-events-none" />
-          <input
-            placeholder={t('orders.searchPlaceholder')}
-            value={search}
-            onChange={e => { setSearch(e.target.value); resetPage(); }}
-            className="h-9 w-52 rounded-md glass-input pl-9 pr-3 text-sm"
-          />
-        </div>
-        {view === 'table' && (
-          <Select value={statusFilter} onValueChange={v => { setStatusFilter(v); resetPage(); }}>
-            <SelectTrigger className="h-9 w-40">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">{t('orders.allStatus')}</SelectItem>
-              <SelectItem value="new">{t('orders.new')}</SelectItem>
-              <SelectItem value="accepted">{t('orders.accepted')}</SelectItem>
-              <SelectItem value="in_transit">{t('orders.inTransit')}</SelectItem>
-              <SelectItem value="delivered">{t('orders.delivered')}</SelectItem>
-              <SelectItem value="cancelled">{t('orders.cancelled')}</SelectItem>
-            </SelectContent>
-          </Select>
-        )}
-      </div>
-
-      {/* Table view */}
+      {/* ── 3a. Table view ─────────────────────────────────── */}
       {view === 'table' && (
-        <>
+        <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden">
           <Table>
-            <TableHeader>
-              <TableRow className="hover:bg-transparent">
+            <TableHeader className="bg-muted/40">
+              <TableRow className="hover:bg-transparent border-b border-border">
                 <TableHead>{t('orders.orderNumber')}</TableHead>
                 <TableHead>{t('common.customer')}</TableHead>
                 <TableHead>{t('common.date')}</TableHead>
                 <TableHead>{t('common.status')}</TableHead>
                 <TableHead>{t('common.payment')}</TableHead>
                 <TableHead className="text-right">{t('common.total')}</TableHead>
-                <TableHead className="sticky right-0 w-20 bg-card border-l border-border/40 text-right">
+                <TableHead className="sticky right-0 w-20 bg-muted/40 border-l border-border/50 text-right">
                   {t('common.actions')}
                 </TableHead>
               </TableRow>
@@ -163,7 +168,7 @@ const AdminOrdersPage = () => {
             <TableBody>
               {paged.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={7} className="h-24 text-center text-muted-foreground">
+                  <TableCell colSpan={7} className="h-24 text-center text-[14px] font-normal tracking-[-0.006em] text-muted-foreground">
                     {t('orders.empty', { defaultValue: 'No orders found' })}
                   </TableCell>
                 </TableRow>
@@ -171,12 +176,12 @@ const AdminOrdersPage = () => {
               {paged.map(o => {
                 const cust = customers.find(c => c.id === o.customerId);
                 return (
-                  <TableRow key={o.id}>
-                    <TableCell className="font-medium">{o.orderNumber}</TableCell>
-                    <TableCell className="text-muted-foreground">
+                  <TableRow key={o.id} className="hover:bg-muted/30 transition-colors">
+                    <TableCell className="text-[14px] font-semibold tracking-[-0.006em] tabular-nums">{o.orderNumber}</TableCell>
+                    <TableCell className="text-[14px] font-normal tracking-[-0.006em] text-muted-foreground">
                       {cust ? `${cust.firstName} ${cust.lastName}` : 'Unknown'}
                     </TableCell>
-                    <TableCell className="text-muted-foreground whitespace-nowrap">
+                    <TableCell className="text-[13px] font-normal tracking-[-0.006em] text-muted-foreground whitespace-nowrap tabular-nums">
                       {new Date(o.createdAt).toLocaleDateString(i18n.language)}
                     </TableCell>
                     <TableCell>
@@ -189,8 +194,8 @@ const AdminOrdersPage = () => {
                         {t(`orders.pay_${o.paymentStatus}`, { defaultValue: o.paymentStatus })}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-right font-medium">{formatPrice(o.totalAmount)}</TableCell>
-                    <TableCell className="sticky right-0 bg-card border-l border-border/40">
+                    <TableCell className="text-right text-[14px] font-semibold tracking-[-0.011em] tabular-nums">{formatPrice(o.totalAmount)}</TableCell>
+                    <TableCell className="sticky right-0 bg-card border-l border-border/50">
                       <div className="flex justify-end gap-1">
                         <Button
                           type="button"
@@ -213,7 +218,7 @@ const AdminOrdersPage = () => {
           </Table>
 
           {totalPages > 1 && (
-            <div className="mt-4 flex justify-center gap-2">
+            <div className="border-t border-border px-4 py-3 flex justify-center gap-2">
               {Array.from({ length: totalPages }, (_, index) => {
                 const pageNumber = index + 1;
                 return (
@@ -221,7 +226,11 @@ const AdminOrdersPage = () => {
                     key={pageNumber}
                     type="button"
                     onClick={() => setPage(pageNumber)}
-                    className={`h-8 w-8 rounded text-sm ${currentPage === pageNumber ? 'bg-accent text-accent-foreground' : 'border border-border'}`}
+                    className={`h-8 w-8 rounded-lg text-[13px] font-medium tracking-[-0.006em] tabular-nums transition-colors ${
+                      currentPage === pageNumber
+                        ? 'bg-accent text-accent-foreground'
+                        : 'border border-border hover:bg-muted/50'
+                    }`}
                   >
                     {pageNumber}
                   </button>
@@ -229,10 +238,10 @@ const AdminOrdersPage = () => {
               })}
             </div>
           )}
-        </>
+        </div>
       )}
 
-      {/* Board view */}
+      {/* ── 3b. Board view ─────────────────────────────────── */}
       {view === 'board' && (
         <div className="w-full md:w-[90%]">
           {/* Sticky header bar — lives outside any overflow container so sticky works */}
@@ -242,10 +251,10 @@ const AdminOrdersPage = () => {
                 key={status}
                 className={`flex flex-1 min-w-0 items-center justify-between px-3 py-2 rounded-xl border ${columnAccent[status]}`}
               >
-                <span className="text-xs font-semibold uppercase tracking-wide truncate">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.06em] truncate">
                   {t(`orders.${status}`, { defaultValue: status })}
                 </span>
-                <span className="text-xs font-bold tabular-nums ml-2 shrink-0">{colOrders.length}</span>
+                <span className="text-[12px] font-bold tracking-[-0.005em] tabular-nums ml-2 shrink-0">{colOrders.length}</span>
               </div>
             ))}
           </div>
@@ -255,7 +264,7 @@ const AdminOrdersPage = () => {
             {boardColumns.map(({ status, orders: colOrders }) => (
               <div key={status} className="flex flex-col flex-1 min-w-[140px] gap-2.5">
                 {colOrders.length === 0 && (
-                  <div className="flex items-center justify-center h-20 rounded-2xl border border-dashed border-border/60 text-xs text-muted-foreground">
+                  <div className="flex items-center justify-center h-20 rounded-2xl border border-dashed border-border/60 text-[12px] font-normal tracking-[-0.003em] text-muted-foreground">
                     {t('orders.empty', { defaultValue: 'No orders' })}
                   </div>
                 )}
@@ -268,28 +277,28 @@ const AdminOrdersPage = () => {
                       className="block rounded-2xl bg-card border border-border/50 p-3.5 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_2px_8px_rgba(0,0,0,0.08),0_4px_16px_rgba(0,0,0,0.06)] hover:border-border transition-all duration-200 ease-[cubic-bezier(0.28,0.11,0.32,1)] active:scale-[0.98]"
                     >
                       <div className="flex items-start justify-between gap-2 mb-2.5">
-                        <span className="text-sm font-semibold tracking-tight text-foreground leading-tight">
+                        <span className="text-[14px] font-semibold tracking-[-0.011em] text-foreground leading-[1.2] tabular-nums">
                           {o.orderNumber}
                         </span>
-                        <Badge variant="outline" className={`${payVariant[o.paymentStatus]} shrink-0 text-[10px] px-1.5 py-0`}>
+                        <Badge variant="outline" className={`${payVariant[o.paymentStatus]} shrink-0 text-[10px] font-semibold tracking-[-0.005em] px-1.5 py-0`}>
                           {t(`orders.pay_${o.paymentStatus}`, { defaultValue: o.paymentStatus })}
                         </Badge>
                       </div>
 
-                      <p className="text-xs text-muted-foreground mb-2.5 truncate">
+                      <p className="text-[12px] font-normal tracking-[-0.003em] text-muted-foreground mb-2.5 truncate">
                         {cust ? `${cust.firstName} ${cust.lastName}` : 'Unknown'}
                       </p>
 
                       <div className="flex items-center justify-between">
-                        <span className="text-[11px] text-muted-foreground">
+                        <span className="text-[11px] font-normal tracking-[-0.003em] text-muted-foreground">
                           {o.items.length} {o.items.length === 1 ? 'item' : 'items'}
                         </span>
-                        <span className="text-sm font-semibold text-foreground tabular-nums">
+                        <span className="text-[14px] font-semibold tracking-[-0.011em] text-foreground tabular-nums">
                           {formatPrice(o.totalAmount)}
                         </span>
                       </div>
 
-                      <div className="mt-2.5 pt-2.5 border-t border-border/40 text-[10px] text-muted-foreground">
+                      <div className="mt-2.5 pt-2.5 border-t border-border/40 text-[10px] font-normal tracking-[-0.003em] text-muted-foreground tabular-nums">
                         {new Date(o.createdAt).toLocaleDateString(i18n.language)}
                       </div>
                     </Link>

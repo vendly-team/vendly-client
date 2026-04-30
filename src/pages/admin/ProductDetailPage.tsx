@@ -62,11 +62,11 @@ const ProductDetailPage = () => {
   };
 
   if (loading) {
-    return <div className="flex h-64 items-center justify-center text-sm text-muted-foreground">{t('products.loadingDetail', { defaultValue: 'Loading product detail...' })}</div>;
+    return <div className="flex h-64 items-center justify-center text-[14px] font-normal tracking-[-0.006em] text-muted-foreground">{t('products.loadingDetail', { defaultValue: 'Loading product detail...' })}</div>;
   }
 
   if (!product) {
-    return <div className="text-sm text-muted-foreground">{t('products.notFound', { defaultValue: 'Product not found' })}</div>;
+    return <div className="text-[14px] font-normal tracking-[-0.006em] text-muted-foreground">{t('products.notFound', { defaultValue: 'Product not found' })}</div>;
   }
 
   const previewImage = resolveMediaUrl(selectedVariant?.images[0]) ?? resolveMediaUrl(product.variants.find(variant => variant.images.length > 0)?.images[0]);
@@ -79,8 +79,8 @@ const ProductDetailPage = () => {
             <ArrowLeft size={18} />
           </Button>
           <div className="min-w-0">
-            <h1 className="truncate text-2xl font-display font-bold">{t('products.detailTitle', { defaultValue: 'Product detail' })}</h1>
-            <p className="truncate text-sm text-muted-foreground">{product.name}</p>
+            <h1 className="truncate text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display">{t('products.detailTitle', { defaultValue: 'Product detail' })}</h1>
+            <p className="truncate text-[14px] font-normal tracking-[-0.006em] text-muted-foreground">{product.name}</p>
           </div>
         </div>
         <Button asChild>
@@ -95,19 +95,19 @@ const ProductDetailPage = () => {
         <div className="min-w-0 space-y-5">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-base">
+              <CardTitle className="flex items-center gap-2 text-[18px] font-semibold tracking-[-0.016em] leading-[1.2]">
                 <Package size={18} />
                 {t('products.productInformation', { defaultValue: 'Product information' })}
               </CardTitle>
             </CardHeader>
             <CardContent className="grid gap-4 md:grid-cols-2">
               <div>
-                <p className="text-xs text-muted-foreground">{t('common.name', { defaultValue: 'Name' })}</p>
-                <p className="mt-1 font-semibold text-foreground">{product.name}</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground">{t('common.name', { defaultValue: 'Name' })}</p>
+                <p className="mt-1 text-[15px] font-semibold tracking-[-0.011em] text-foreground">{product.name}</p>
               </div>
               <div>
-                <p className="text-xs text-muted-foreground">{t('common.category', { defaultValue: 'Category' })}</p>
-                <p className="mt-1 font-medium text-foreground">{product.categoryName}</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground">{t('common.category', { defaultValue: 'Category' })}</p>
+                <p className="mt-1 text-[15px] font-medium tracking-[-0.011em] text-foreground">{product.categoryName}</p>
               </div>
               <div className="flex flex-wrap gap-2">
                 <Badge variant={product.isActive ? 'default' : 'secondary'}>{product.isActive ? t('common.active', { defaultValue: 'Active' }) : t('common.inactive', { defaultValue: 'Inactive' })}</Badge>
@@ -115,13 +115,13 @@ const ProductDetailPage = () => {
                 <Badge variant="outline">{product.variants.length} {t('products.sku', { defaultValue: 'SKU' })}</Badge>
               </div>
               <div>
-                <p className="text-xs text-muted-foreground">{t('products.created', { defaultValue: 'Created' })}</p>
-                <p className="mt-1 text-sm text-foreground">{new Date(product.createdAt).toLocaleString(i18n.language)}</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground">{t('products.created', { defaultValue: 'Created' })}</p>
+                <p className="mt-1 text-[14px] font-normal tracking-[-0.006em] text-foreground">{new Date(product.createdAt).toLocaleString(i18n.language)}</p>
               </div>
               {product.description && (
                 <div className="md:col-span-2">
-                  <p className="text-xs text-muted-foreground">{t('products.description', { defaultValue: 'Description' })}</p>
-                  <p className="mt-1 whitespace-pre-line text-sm leading-relaxed text-foreground">{product.description}</p>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground">{t('products.description', { defaultValue: 'Description' })}</p>
+                  <p className="mt-1 whitespace-pre-line text-[15px] font-normal tracking-[-0.011em] leading-[1.5] text-foreground">{product.description}</p>
                 </div>
               )}
             </CardContent>
@@ -129,16 +129,16 @@ const ProductDetailPage = () => {
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">{t('products.variantTypesAndOptions', { defaultValue: 'Variant types and options' })}</CardTitle>
+              <CardTitle className="text-[18px] font-semibold tracking-[-0.016em] leading-[1.2]">{t('products.variantTypesAndOptions', { defaultValue: 'Variant types and options' })}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              {product.variantTypes.length === 0 && <p className="text-sm text-muted-foreground">{t('products.noVariantTypes', { defaultValue: 'No variant types found.' })}</p>}
+              {product.variantTypes.length === 0 && <p className="text-[14px] font-normal tracking-[-0.006em] text-muted-foreground">{t('products.noVariantTypes', { defaultValue: 'No variant types found.' })}</p>}
               {product.variantTypes.map(type => (
                 <div key={type.id} className="rounded-lg border border-border p-3">
                   <div className="flex items-center justify-between gap-3">
                     <div>
-                      <p className="font-semibold">{type.name}</p>
-                      <p className="text-xs text-muted-foreground">{t('products.displayOrder', { defaultValue: 'Display order' })} {type.displayOrder ?? '-'}</p>
+                      <p className="text-[15px] font-semibold tracking-[-0.011em]">{type.name}</p>
+                      <p className="text-[12px] font-normal tracking-[-0.003em] text-muted-foreground">{t('products.displayOrder', { defaultValue: 'Display order' })} {type.displayOrder ?? '-'}</p>
                     </div>
                     <Badge variant="secondary">{type.options.length} {t('products.options', { defaultValue: 'options' })}</Badge>
                   </div>
@@ -146,7 +146,7 @@ const ProductDetailPage = () => {
                     {type.options.map(option => {
                       const optionImage = resolveMediaUrl(option.imageUrl);
                       return (
-                        <span key={option.id} className="inline-flex items-center gap-2 rounded-full border border-border px-2.5 py-1 text-xs">
+                        <span key={option.id} className="inline-flex items-center gap-2 rounded-full border border-border px-2.5 py-1 text-[12px] font-medium tracking-[-0.003em]">
                           {optionImage ? <img src={optionImage} alt="" className="h-5 w-5 rounded-full object-contain" /> : <span className="h-5 w-5 rounded-full bg-muted" />}
                           {option.name}
                         </span>
@@ -160,11 +160,11 @@ const ProductDetailPage = () => {
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">{t('products.skuData', { defaultValue: 'SKU data' })}</CardTitle>
+              <CardTitle className="text-[18px] font-semibold tracking-[-0.016em] leading-[1.2]">{t('products.skuData', { defaultValue: 'SKU data' })}</CardTitle>
             </CardHeader>
             <CardContent>
               {product.variants.length === 0 ? (
-                <p className="text-sm text-muted-foreground">{t('products.noSkuItems', { defaultValue: 'No SKU items found.' })}</p>
+                <p className="text-[14px] font-normal tracking-[-0.006em] text-muted-foreground">{t('products.noSkuItems', { defaultValue: 'No SKU items found.' })}</p>
               ) : (
                 <Table>
                   <TableHeader>
@@ -183,10 +183,10 @@ const ProductDetailPage = () => {
                       const image = resolveMediaUrl(variant.images[0]);
                       return (
                         <TableRow key={variant.id}>
-                          <TableCell className="font-mono text-xs text-muted-foreground">{variant.id}</TableCell>
-                          <TableCell className="font-medium">{variant.name ?? '-'}</TableCell>
-                          <TableCell>{variant.price}</TableCell>
-                          <TableCell>{variant.quantity}</TableCell>
+                          <TableCell className="font-mono text-[12px] tracking-[-0.003em] text-muted-foreground tabular-nums">{variant.id}</TableCell>
+                          <TableCell className="text-[14px] font-medium tracking-[-0.011em]">{variant.name ?? '-'}</TableCell>
+                          <TableCell className="text-[14px] tracking-[-0.011em] tabular-nums">{variant.price}</TableCell>
+                          <TableCell className="text-[14px] tracking-[-0.011em] tabular-nums">{variant.quantity}</TableCell>
                           <TableCell>
                             <Badge variant="outline" className={variant.isActive ? 'border-success/15 bg-success/10 text-success' : 'border-border bg-muted text-muted-foreground'}>
                               {variant.isActive ? t('common.active', { defaultValue: 'Active' }) : t('common.inactive', { defaultValue: 'Inactive' })}
@@ -200,8 +200,8 @@ const ProductDetailPage = () => {
                           <TableCell>
                             <div className="flex flex-wrap gap-1.5">
                               {variant.combination.map(item => (
-                                <span key={`${variant.id}-${item.variantTypeName}-${item.optionId}`} className="rounded-md border border-border px-2 py-1 text-xs text-muted-foreground">
-                                  {item.variantTypeName}: <span className="font-medium text-foreground">{item.optionName}</span>
+                                <span key={`${variant.id}-${item.variantTypeName}-${item.optionId}`} className="rounded-md border border-border px-2 py-1 text-[11px] font-normal tracking-[-0.003em] text-muted-foreground">
+                                  {item.variantTypeName}: <span className="font-semibold tracking-[-0.005em] text-foreground">{item.optionName}</span>
                                 </span>
                               ))}
                             </div>
@@ -220,7 +220,7 @@ const ProductDetailPage = () => {
           <div className="sticky top-20 space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">{t('products.buyerCardPreview', { defaultValue: 'Buyer card preview' })}</CardTitle>
+                <CardTitle className="text-[18px] font-semibold tracking-[-0.016em] leading-[1.2]">{t('products.buyerCardPreview', { defaultValue: 'Buyer card preview' })}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="aspect-square overflow-hidden rounded-lg border border-border bg-muted">
@@ -233,8 +233,8 @@ const ProductDetailPage = () => {
                   )}
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground">{product.categoryName}</p>
-                  <p className="mt-1 text-xl font-display font-bold leading-tight">{product.name}</p>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground">{product.categoryName}</p>
+                  <p className="mt-1 text-[20px] font-bold tracking-[-0.018em] leading-[1.15] font-display">{product.name}</p>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <Badge variant={product.isActive ? 'default' : 'secondary'}>{product.isActive ? t('common.active', { defaultValue: 'Active' }) : t('common.inactive', { defaultValue: 'Inactive' })}</Badge>
@@ -246,7 +246,7 @@ const ProductDetailPage = () => {
                 <div className="space-y-3 border-t border-border pt-3">
                   {product.variantTypes.map(type => (
                     <div key={type.id}>
-                      <p className="mb-2 text-xs font-medium text-muted-foreground">{type.name}</p>
+                      <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground">{type.name}</p>
                       <div className="flex flex-wrap gap-2">
                         {type.options.map(option => {
                           const active = selectedOptions[option.id] === option.id;
@@ -256,7 +256,7 @@ const ProductDetailPage = () => {
                               key={option.id}
                               type="button"
                               onClick={() => selectOption(type.name, option.id)}
-                              className={`inline-flex min-h-9 items-center gap-2 rounded-md border px-3 text-sm transition-colors ${active ? 'border-accent bg-accent/10 text-accent' : 'border-border bg-background text-foreground hover:border-accent/50'}`}
+                              className={`inline-flex min-h-9 items-center gap-2 rounded-md border px-3 text-[13px] font-medium tracking-[-0.006em] transition-colors ${active ? 'border-accent bg-accent/10 text-accent' : 'border-border bg-background text-foreground hover:border-accent/50'}`}
                             >
                               {optionImage && <img src={optionImage} alt="" className="h-5 w-5 rounded object-contain" />}
                               {option.name}
@@ -268,11 +268,11 @@ const ProductDetailPage = () => {
                   ))}
                 </div>
                 <div className="rounded-lg bg-accent/10 p-4">
-                  <p className="text-xs font-medium text-accent">{selectedVariant?.name ?? t('products.selectedSku', { defaultValue: 'Selected SKU' })}</p>
-                  <p className="mt-1 text-2xl font-display font-bold text-accent">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-accent">{selectedVariant?.name ?? t('products.selectedSku', { defaultValue: 'Selected SKU' })}</p>
+                  <p className="mt-1 text-[24px] font-bold tracking-[-0.018em] leading-[1.15] font-display text-accent tabular-nums">
                     {selectedVariant && selectedVariant.price > 0 ? `${selectedVariant.price.toLocaleString(i18n.language)} ${t('products.currencySom', { defaultValue: "so'm" })}` : t('products.setSkuPrice', { defaultValue: 'Set SKU price' })}
                   </p>
-                  <p className="mt-1 text-xs text-muted-foreground">
+                  <p className="mt-1 text-[12px] font-normal tracking-[-0.003em] text-muted-foreground">
                     {selectedVariant ? t('products.skuNumber', { id: selectedVariant.id, defaultValue: 'SKU #{{id}}' }) : t('products.selectVariantOptions', { defaultValue: 'Select variant options' })}
                   </p>
                 </div>

@@ -113,7 +113,7 @@ const ProductPage = () => {
   if (loading) {
     return (
       <StorefrontLayout>
-        <div className="container py-20 text-center text-sm text-muted-foreground">{t('products.loadingDetail', { defaultValue: 'Loading product detail...' })}</div>
+        <div className="container py-20 text-center text-[14px] font-normal tracking-[-0.006em] text-muted-foreground">{t('products.loadingDetail', { defaultValue: 'Loading product detail...' })}</div>
       </StorefrontLayout>
     );
   }
@@ -122,8 +122,8 @@ const ProductPage = () => {
     return (
       <StorefrontLayout>
         <div className="container py-20 text-center">
-          <h1 className="text-2xl font-bold">{t('productPage.notFound')}</h1>
-          <Link to="/" className="mt-4 inline-block text-accent">{t('productPage.goHome')}</Link>
+          <h1 className="text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display">{t('productPage.notFound')}</h1>
+          <Link to="/" className="mt-4 inline-block text-[14px] font-medium tracking-[-0.011em] text-accent">{t('productPage.goHome')}</Link>
         </div>
       </StorefrontLayout>
     );
@@ -136,10 +136,10 @@ const ProductPage = () => {
   return (
     <StorefrontLayout>
       <div className="container py-6 animate-fade-in">
-        <div className="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
+        <div className="mb-6 flex items-center gap-2 text-[13px] font-normal tracking-[-0.006em] text-muted-foreground">
           <Link to="/" className="hover:text-accent">{t('nav.home')}</Link> <span>/</span>
           <Link to={`/category/${createCategorySlug(product.categoryName)}`} className="hover:text-accent">{product.categoryName}</Link> <span>/</span>
-          <span className="line-clamp-1 text-foreground">{product.name}</span>
+          <span className="line-clamp-1 text-foreground font-medium">{product.name}</span>
         </div>
 
         <div className="mb-12 grid grid-cols-1 gap-8 lg:grid-cols-2">
@@ -165,27 +165,27 @@ const ProductPage = () => {
           </div>
 
           <div>
-            <h1 className="mb-2 text-2xl font-display font-bold text-foreground lg:text-3xl">{product.name}</h1>
-            <p className="mb-4 text-sm text-muted-foreground">{product.categoryName}</p>
+            <h1 className="mb-2 text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground lg:text-[34px] lg:tracking-[-0.024em]">{product.name}</h1>
+            <p className="mb-4 text-[13px] font-medium tracking-[-0.006em] text-muted-foreground uppercase">{product.categoryName}</p>
 
             {product.syncSource === 1 && (
-              <div className="mb-4 flex items-center gap-2 rounded-md border border-warning/30 bg-warning/10 px-3 py-2 text-sm text-warning">
+              <div className="mb-4 flex items-center gap-2 rounded-md border border-warning/30 bg-warning/10 px-3 py-2 text-[13px] font-medium tracking-[-0.006em] text-warning">
                 <Info size={16} /> {t('products.external', { defaultValue: 'External' })}
               </div>
             )}
 
             <div className="mb-4 flex items-baseline gap-3">
-              <span className="text-3xl font-bold text-foreground">{selectedVariant && selectedVariant.price > 0 ? formatPrice(selectedVariant.price) : t('products.setSkuPrice', { defaultValue: 'Set SKU price' })}</span>
+              <span className="text-[32px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground tabular-nums">{selectedVariant && selectedVariant.price > 0 ? formatPrice(selectedVariant.price) : t('products.setSkuPrice', { defaultValue: 'Set SKU price' })}</span>
             </div>
 
-            {isOutOfStock && <span className="mb-4 inline-block rounded bg-destructive/10 px-3 py-1 text-sm font-medium text-destructive">{t('productPage.outOfStock')}</span>}
-            {isLowStock && <span className="mb-4 inline-block rounded bg-warning/10 px-3 py-1 text-sm font-medium text-warning">{t('productPage.onlyLeft', { count: selectedVariant?.quantity ?? 0 })}</span>}
-            {!isOutOfStock && !isLowStock && <span className="mb-4 inline-block rounded bg-success/10 px-3 py-1 text-sm font-medium text-success">{t('productPage.inStock')}</span>}
+            {isOutOfStock && <span className="mb-4 inline-block rounded bg-destructive/10 px-3 py-1 text-[12px] font-semibold tracking-[-0.005em] text-destructive">{t('productPage.outOfStock')}</span>}
+            {isLowStock && <span className="mb-4 inline-block rounded bg-warning/10 px-3 py-1 text-[12px] font-semibold tracking-[-0.005em] text-warning">{t('productPage.onlyLeft', { count: selectedVariant?.quantity ?? 0 })}</span>}
+            {!isOutOfStock && !isLowStock && <span className="mb-4 inline-block rounded bg-success/10 px-3 py-1 text-[12px] font-semibold tracking-[-0.005em] text-success">{t('productPage.inStock')}</span>}
 
             <div className="mb-5 space-y-3 border-t border-border pt-4">
               {product.variantTypes.map(type => (
                 <div key={type.id}>
-                  <p className="mb-2 text-sm font-medium text-foreground">{type.name}</p>
+                  <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground">{type.name}</p>
                   <div className="flex flex-wrap gap-2">
                     {type.options.map(option => {
                       const active = selectedOptions[option.id] === option.id;
@@ -195,7 +195,7 @@ const ProductPage = () => {
                           key={option.id}
                           type="button"
                           onClick={() => selectOption(type.name, option.id)}
-                          className={`inline-flex min-h-10 items-center gap-2 rounded-md border px-3 text-sm transition-colors ${active ? 'border-accent bg-accent/10 text-accent' : 'border-border bg-background text-foreground hover:border-accent/50'}`}
+                          className={`inline-flex min-h-10 items-center gap-2 rounded-md border px-3 text-[13px] font-medium tracking-[-0.006em] transition-colors ${active ? 'border-accent bg-accent/10 text-accent' : 'border-border bg-background text-foreground hover:border-accent/50'}`}
                         >
                           {optionImage && <img src={optionImage} alt="" className="h-6 w-6 rounded object-contain" />}
                           {option.name}
@@ -210,13 +210,13 @@ const ProductPage = () => {
             <div className="mb-4 flex items-center gap-3">
               <div className="flex items-center rounded-md border border-border">
                 <button onClick={() => setQty(Math.max(1, qty - 1))} className="flex h-10 w-10 items-center justify-center text-foreground hover:bg-muted"><Minus size={16} /></button>
-                <input type="number" value={qty} onChange={(event) => setQty(Math.max(1, Math.min(selectedVariant?.quantity ?? 1, Number(event.target.value) || 1)))} className="h-10 w-14 border-x border-border bg-background text-center text-sm" />
+                <input type="number" value={qty} onChange={(event) => setQty(Math.max(1, Math.min(selectedVariant?.quantity ?? 1, Number(event.target.value) || 1)))} className="h-10 w-14 border-x border-border bg-background text-center text-[15px] font-medium tracking-[-0.011em] tabular-nums" />
                 <button onClick={() => setQty(Math.min(selectedVariant?.quantity ?? 1, qty + 1))} className="flex h-10 w-10 items-center justify-center text-foreground hover:bg-muted"><Plus size={16} /></button>
               </div>
             </div>
 
             <div className="mb-6 flex gap-3">
-              <button onClick={handleAddToCart} disabled={isOutOfStock} className="flex h-12 flex-1 items-center justify-center gap-2 rounded-lg bg-accent font-semibold text-accent-foreground hover:bg-accent/90 disabled:cursor-not-allowed disabled:opacity-50">
+              <button onClick={handleAddToCart} disabled={isOutOfStock} className="flex h-12 flex-1 items-center justify-center gap-2 rounded-lg bg-accent text-[16px] font-semibold tracking-[-0.014em] text-accent-foreground hover:bg-accent/90 disabled:cursor-not-allowed disabled:opacity-50">
                 <ShoppingCart size={20} /> {t('productPage.addToCart')}
               </button>
               <button onClick={() => toggle(storeProduct.id)} className={`flex h-12 w-12 items-center justify-center rounded-lg border transition-colors ${isWishlisted ? 'border-sale text-sale' : 'border-border text-muted-foreground hover:text-sale'}`}>
@@ -229,7 +229,7 @@ const ProductPage = () => {
         <div className="mb-6 border-b border-border">
           <div className="flex gap-6">
             {(['description', 'variants'] as const).map(tabKey => (
-              <button key={tabKey} onClick={() => setTab(tabKey)} className={`border-b-2 pb-3 text-sm font-medium transition-colors ${tab === tabKey ? 'border-accent text-accent' : 'border-transparent text-muted-foreground hover:text-foreground'}`}>
+              <button key={tabKey} onClick={() => setTab(tabKey)} className={`border-b-2 pb-3 text-[14px] font-semibold tracking-[-0.011em] transition-colors ${tab === tabKey ? 'border-accent text-accent' : 'border-transparent text-muted-foreground hover:text-foreground'}`}>
                 {tabKey === 'description' ? t('common.description') : t('products.variants', { defaultValue: 'Variants' })}
               </button>
             ))}
@@ -237,7 +237,7 @@ const ProductPage = () => {
         </div>
 
         {tab === 'description' && (
-          <div className="max-w-none whitespace-pre-line text-sm leading-relaxed text-foreground">
+          <div className="max-w-none whitespace-pre-line text-[15px] font-normal tracking-[-0.011em] leading-[1.5] text-foreground">
             {product.description || t('common.noData', { defaultValue: 'No data' })}
           </div>
         )}
@@ -247,14 +247,14 @@ const ProductPage = () => {
             {getDisplayVariants(product).map(variant => (
               <div key={variant.id} className="rounded-lg border border-border bg-card p-4">
                 <div className="mb-2 flex items-center justify-between gap-3">
-                  <p className="font-medium text-foreground">{variant.name ?? t('products.skuNumber', { id: variant.id, defaultValue: 'SKU #{{id}}' })}</p>
+                  <p className="text-[15px] font-semibold tracking-[-0.011em] text-foreground">{variant.name ?? t('products.skuNumber', { id: variant.id, defaultValue: 'SKU #{{id}}' })}</p>
                   {variant.images[0] ? <img src={resolveProductMediaUrl(variant.images[0])} alt="" className="h-10 w-10 rounded object-contain" /> : <ImagePlus size={18} className="text-muted-foreground" />}
                 </div>
-                <p className="text-sm text-muted-foreground">{formatPrice(variant.price)} · {variant.quantity} {t('products.stock', { defaultValue: 'stock' })}</p>
+                <p className="text-[13px] font-normal tracking-[-0.006em] text-muted-foreground tabular-nums">{formatPrice(variant.price)} · {variant.quantity} {t('products.stock', { defaultValue: 'stock' })}</p>
                 <div className="mt-3 flex flex-wrap gap-1.5">
                   {variant.combination.map(item => (
-                    <span key={`${variant.id}-${item.optionId}`} className="rounded-md border border-border px-2 py-1 text-xs text-muted-foreground">
-                      {item.variantTypeName}: <span className="font-medium text-foreground">{item.optionName}</span>
+                    <span key={`${variant.id}-${item.optionId}`} className="rounded-md border border-border px-2 py-1 text-[11px] font-normal tracking-[-0.003em] text-muted-foreground">
+                      {item.variantTypeName}: <span className="font-semibold text-foreground tracking-[-0.005em]">{item.optionName}</span>
                     </span>
                   ))}
                 </div>
@@ -265,7 +265,7 @@ const ProductPage = () => {
 
         {relatedProducts.length > 0 && (
           <div className="mt-12">
-            <h2 className="mb-6 text-xl font-display font-bold text-foreground">{t('productPage.relatedProducts')}</h2>
+            <h2 className="mb-6 text-[24px] font-bold tracking-[-0.018em] leading-[1.15] font-display text-foreground">{t('productPage.relatedProducts')}</h2>
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
               {relatedProducts.map((item) => <ProductCard key={item.id} product={item} />)}
             </div>

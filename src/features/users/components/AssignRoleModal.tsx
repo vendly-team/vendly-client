@@ -26,7 +26,7 @@ export const AssignRoleModal = ({ user, open, submitting = false, onOpenChange, 
           <DialogTitle>Assign Role</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
-          <div className="text-sm text-muted-foreground">
+          <div className="text-[14px] font-normal tracking-[-0.006em] text-muted-foreground">
             {user ? `${user.firstName} ${user.lastName}` : "Select user role"}
           </div>
           <Select value={String(role)} onValueChange={value => setRole(Number(value) as UserRole)}>

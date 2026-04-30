@@ -28,27 +28,27 @@ const LoginPage = () => {
   return (
     <StorefrontLayout>
       <div className="container py-12 max-w-md mx-auto animate-fade-in">
-        <h1 className="text-2xl font-display font-bold text-foreground mb-6 text-center">{t('auth.signIn')}</h1>
+        <h1 className="text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground mb-6 text-center">{t('auth.signIn')}</h1>
         <form onSubmit={handleSubmit} className="bg-card border border-border rounded-lg p-6 space-y-4">
           <div>
-            <label className="text-sm font-medium text-foreground">{t('common.email')} / {t('common.phone')}</label>
-            <input type="text" value={loginValue} onChange={(e) => setLoginValue(e.target.value)} required className="w-full h-10 px-3 glass-input rounded-md text-sm mt-1" />
+            <label className="text-[13px] font-medium tracking-[-0.006em] text-foreground">{t('common.email')} / {t('common.phone')}</label>
+            <input type="text" value={loginValue} onChange={(e) => setLoginValue(e.target.value)} required className="w-full h-10 px-3 glass-input rounded-md text-[15px] font-normal tracking-[-0.011em] mt-1" />
           </div>
           <div>
-            <label className="text-sm font-medium text-foreground">{t('auth.password')}</label>
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={4} className="w-full h-10 px-3 glass-input rounded-md text-sm mt-1" />
+            <label className="text-[13px] font-medium tracking-[-0.006em] text-foreground">{t('auth.password')}</label>
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={4} className="w-full h-10 px-3 glass-input rounded-md text-[15px] font-normal tracking-[-0.011em] mt-1" />
           </div>
           <div className="flex items-center justify-between">
-            <label className="flex items-center gap-2 text-sm"><input type="checkbox" className="rounded" /> {t('auth.rememberMe')}</label>
-            <Link to="/forgot-password" className="text-sm text-accent hover:underline">{t('auth.forgotPassword')}</Link>
+            <label className="flex items-center gap-2 text-[14px] font-normal tracking-[-0.006em]"><input type="checkbox" className="rounded" /> {t('auth.rememberMe')}</label>
+            <Link to="/forgot-password" className="text-[14px] font-medium tracking-[-0.011em] text-accent hover:underline">{t('auth.forgotPassword')}</Link>
           </div>
-          <button type="submit" disabled={loading} className="w-full h-11 bg-accent text-accent-foreground rounded-lg font-semibold text-sm disabled:opacity-50">
+          <button type="submit" disabled={loading} className="w-full h-11 bg-accent text-accent-foreground rounded-lg font-semibold text-[15px] tracking-[-0.014em] disabled:opacity-50">
             {loading ? t('auth.signingIn') : t('auth.signIn')}
           </button>
-          <p className="text-sm text-center text-muted-foreground">
-            {t('auth.noAccount')} <Link to="/register" className="text-accent hover:underline">{t('auth.register')}</Link>
+          <p className="text-[14px] font-normal tracking-[-0.006em] text-center text-muted-foreground">
+            {t('auth.noAccount')} <Link to="/register" className="text-accent hover:underline font-medium">{t('auth.register')}</Link>
           </p>
-          <div className="text-xs text-muted-foreground text-center border-t border-border pt-3">
+          <div className="text-[12px] font-normal tracking-[-0.003em] text-muted-foreground text-center border-t border-border pt-3">
             {t('auth.demo')}
           </div>
         </form>

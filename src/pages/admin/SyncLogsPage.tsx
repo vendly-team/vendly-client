@@ -35,11 +35,11 @@ const SyncLogsPage = () => {
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-display font-bold">{t('syncLogs.title')}</h1>
+        <h1 className="text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display">{t('syncLogs.title')}</h1>
         <Button
           onClick={handleSync}
           disabled={syncing}
-          className="flex items-center gap-2 h-10 px-4 rounded-lg text-sm font-medium"
+          className="flex items-center gap-2 h-10 px-4 rounded-lg text-[14px] font-semibold tracking-[-0.011em]"
         >
           <RefreshCw size={16} className={syncing ? 'animate-spin' : ''} />
           {syncing ? t('syncLogs.syncing') : t('syncLogs.runSync')}
@@ -62,17 +62,17 @@ const SyncLogsPage = () => {
         <TableBody>
           {logs.length === 0 && (
             <TableRow>
-              <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
+              <TableCell colSpan={6} className="h-24 text-center text-[14px] font-normal tracking-[-0.006em] text-muted-foreground">
                 No sync logs found
               </TableCell>
             </TableRow>
           )}
           {logs.map(l => (
             <TableRow key={l.id}>
-              <TableCell className="text-muted-foreground whitespace-nowrap">
+              <TableCell className="text-[13px] font-normal tracking-[-0.006em] text-muted-foreground whitespace-nowrap tabular-nums">
                 {new Date(l.timestamp).toLocaleString(i18n.language)}
               </TableCell>
-              <TableCell className="font-medium">{l.source}</TableCell>
+              <TableCell className="text-[14px] font-semibold tracking-[-0.011em]">{l.source}</TableCell>
               <TableCell>
                 <Badge
                   variant="outline"
@@ -84,8 +84,8 @@ const SyncLogsPage = () => {
                   {l.status}
                 </Badge>
               </TableCell>
-              <TableCell className="font-medium tabular-nums">{l.productsUpdated}</TableCell>
-              <TableCell className="text-muted-foreground">{l.duration}</TableCell>
+              <TableCell className="text-[14px] font-semibold tracking-[-0.011em] tabular-nums">{l.productsUpdated}</TableCell>
+              <TableCell className="text-[14px] font-normal tracking-[-0.006em] text-muted-foreground tabular-nums">{l.duration}</TableCell>
               <TableCell className="sticky right-0 bg-card border-l border-border/40">
                 <div className="flex justify-end gap-1">
                   {l.errorMessage ? (
@@ -119,7 +119,7 @@ const SyncLogsPage = () => {
             onClick={e => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-5">
-              <h3 className="text-[20px] font-semibold tracking-[-0.018em] text-destructive">
+              <h3 className="text-[20px] font-semibold tracking-[-0.016em] leading-[1.2] font-display text-destructive">
                 {t('syncLogs.errorDetails')}
               </h3>
               <button
@@ -129,7 +129,7 @@ const SyncLogsPage = () => {
                 <X size={16} />
               </button>
             </div>
-            <p className="text-sm text-muted-foreground leading-relaxed">{errorModal}</p>
+            <p className="text-[14px] font-normal tracking-[-0.006em] text-muted-foreground leading-[1.5]">{errorModal}</p>
           </div>
         </div>
       )}

@@ -46,9 +46,9 @@ const CategoryGrid = () => {
 
   return (
     <section id="category-grid-section" className="container py-10">
-      <h2 className="text-xl sm:text-2xl font-display font-bold text-foreground mb-6">{t("categoryGrid.title")}</h2>
+      <h2 className="text-[24px] sm:text-[28px] font-display font-bold tracking-[-0.022em] leading-[1.1] text-foreground mb-6">{t("categoryGrid.title")}</h2>
       {!loading && categories.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-border bg-card p-8 text-center text-sm text-muted-foreground">
+        <div className="rounded-lg border border-dashed border-border bg-card p-8 text-center text-[14px] font-normal tracking-[-0.006em] text-muted-foreground">
           {t("categories.empty", { defaultValue: "No categories found" })}
         </div>
       ) : (
@@ -82,8 +82,8 @@ const CategoryGrid = () => {
                       </div>
                     )}
                   </div>
-                  <span className="line-clamp-2 min-h-10 text-center text-sm font-medium text-foreground">{cat.name}</span>
-                  <span className="text-[11px] text-muted-foreground">{t("categoryGrid.productCount", { count: cat.productCount })}</span>
+                  <span className="line-clamp-2 min-h-10 text-center text-[14px] font-semibold tracking-[-0.011em] text-foreground">{cat.name}</span>
+                  <span className="text-[11px] font-normal tracking-[-0.003em] text-muted-foreground tabular-nums">{t("categoryGrid.productCount", { count: cat.productCount })}</span>
                 </Link>
               </CarouselItem>
             ))}

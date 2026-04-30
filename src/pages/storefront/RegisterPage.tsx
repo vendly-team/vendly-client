@@ -44,16 +44,16 @@ const RegisterPage = () => {
 
   const field = (label: string, key: keyof typeof form, type = 'text') => (
     <div>
-      <label className="text-sm font-medium text-foreground">{label}</label>
-      <input type={type} value={form[key] as string} onChange={(e) => setForm({ ...form, [key]: e.target.value })} className="w-full h-10 px-3 glass-input rounded-md text-sm mt-1" />
-      {errors[key] && <p className="text-xs text-destructive mt-1">{errors[key]}</p>}
+      <label className="text-[13px] font-medium tracking-[-0.006em] text-foreground">{label}</label>
+      <input type={type} value={form[key] as string} onChange={(e) => setForm({ ...form, [key]: e.target.value })} className="w-full h-10 px-3 glass-input rounded-md text-[15px] font-normal tracking-[-0.011em] mt-1" />
+      {errors[key] && <p className="text-[12px] font-normal tracking-[-0.003em] text-destructive mt-1">{errors[key]}</p>}
     </div>
   );
 
   return (
     <StorefrontLayout>
       <div className="container py-12 max-w-md mx-auto animate-fade-in">
-        <h1 className="text-2xl font-display font-bold text-foreground mb-6 text-center">{t('auth.createAccount')}</h1>
+        <h1 className="text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground mb-6 text-center">{t('auth.createAccount')}</h1>
         <form onSubmit={handleSubmit} className="bg-card border border-border rounded-lg p-6 space-y-4">
           <div className="grid grid-cols-2 gap-4">
             {field(`${t('auth.firstName')} *`, 'firstName')}
@@ -63,16 +63,16 @@ const RegisterPage = () => {
           {field(`${t('common.email')} *`, 'email', 'email')}
           {field(`${t('auth.password')} *`, 'password', 'password')}
           {field(`${t('auth.confirmPassword')} *`, 'confirmPassword', 'password')}
-          <label className="flex items-center gap-2 text-sm">
+          <label className="flex items-center gap-2 text-[14px] font-normal tracking-[-0.006em]">
             <input type="checkbox" checked={form.agree} onChange={(e) => setForm({ ...form, agree: e.target.checked })} className="rounded" />
             {t('auth.agreeTerms')}
           </label>
-          {errors.agree && <p className="text-xs text-destructive">{errors.agree}</p>}
-          <button type="submit" disabled={loading} className="w-full h-11 bg-accent text-accent-foreground rounded-lg font-semibold text-sm disabled:opacity-50">
+          {errors.agree && <p className="text-[12px] font-normal tracking-[-0.003em] text-destructive">{errors.agree}</p>}
+          <button type="submit" disabled={loading} className="w-full h-11 bg-accent text-accent-foreground rounded-lg font-semibold text-[15px] tracking-[-0.014em] disabled:opacity-50">
             {loading ? t('common.loading', { defaultValue: 'Loading...' }) : t('auth.createAccount')}
           </button>
-          <p className="text-sm text-center text-muted-foreground">
-            {t('auth.hasAccount')} <Link to="/login" className="text-accent hover:underline">{t('auth.signIn')}</Link>
+          <p className="text-[14px] font-normal tracking-[-0.006em] text-center text-muted-foreground">
+            {t('auth.hasAccount')} <Link to="/login" className="text-accent hover:underline font-medium">{t('auth.signIn')}</Link>
           </p>
         </form>
       </div>

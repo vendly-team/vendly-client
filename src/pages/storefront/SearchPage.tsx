@@ -43,17 +43,17 @@ const SearchPage = () => {
         <form onSubmit={(e) => { e.preventDefault(); handleSearch(query); }} className="max-w-xl mx-auto mb-6">
           <div className="relative">
             <input type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder={t('searchPage.placeholder')}
-              className="w-full h-12 pl-4 pr-12 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent/50" autoFocus />
+              className="w-full h-12 pl-4 pr-12 rounded-lg border border-border bg-background text-foreground text-[15px] font-normal tracking-[-0.011em] focus:outline-none focus:ring-2 focus:ring-accent/50" autoFocus />
             <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-accent"><Search size={20} /></button>
           </div>
         </form>
 
         {history.length > 0 && !q && (
           <div className="max-w-xl mx-auto mb-6">
-            <p className="text-sm text-muted-foreground mb-2">{t('searchPage.recentSearches')}</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground mb-2">{t('searchPage.recentSearches')}</p>
             <div className="flex flex-wrap gap-2">
               {history.map((h) => (
-                <span key={h} className="flex items-center gap-1 bg-muted px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-muted/80" onClick={() => handleSearch(h)}>
+                <span key={h} className="flex items-center gap-1 bg-muted px-3 py-1 rounded-full text-[13px] font-medium tracking-[-0.006em] cursor-pointer hover:bg-muted/80" onClick={() => handleSearch(h)}>
                   {h} <button onClick={(e) => { e.stopPropagation(); removeHistory(h); }}><X size={14} /></button>
                 </span>
               ))}
@@ -62,7 +62,7 @@ const SearchPage = () => {
         )}
 
         {q && (
-          <p className="text-sm text-muted-foreground mb-4">{t('searchPage.results', { count: results.length, query: q })}</p>
+          <p className="text-[13px] font-normal tracking-[-0.006em] text-muted-foreground mb-4">{t('searchPage.results', { count: results.length, query: q })}</p>
         )}
 
         {q && results.length > 0 ? (
@@ -72,8 +72,8 @@ const SearchPage = () => {
         ) : q ? (
           <div className="text-center py-20">
             <Search className="mx-auto mb-4 text-muted-foreground" size={48} />
-            <h3 className="text-lg font-semibold text-foreground mb-2">{t('searchPage.noResults')}</h3>
-            <p className="text-muted-foreground">{t('searchPage.tryDifferent')}</p>
+            <h3 className="text-[20px] font-semibold tracking-[-0.016em] leading-[1.2] font-display text-foreground mb-2">{t('searchPage.noResults')}</h3>
+            <p className="text-[15px] font-normal tracking-[-0.011em] text-muted-foreground">{t('searchPage.tryDifferent')}</p>
           </div>
         ) : null}
       </div>

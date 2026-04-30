@@ -96,9 +96,9 @@ export const UserForm = ({ mode, user, submitting = false, onSubmit }: UserFormP
           </Select>
         </>
       ) : (
-        <div className="rounded-lg border border-border bg-muted/30 px-3 py-2 text-sm">
+        <div className="rounded-lg border border-border bg-muted/30 px-3 py-2 text-[14px] font-normal tracking-[-0.006em]">
           <span className="text-muted-foreground">Role: </span>
-          <span className="font-medium text-foreground">{getRoleLabel(form.role)}</span>
+          <span className="font-semibold tracking-[-0.011em] text-foreground">{getRoleLabel(form.role)}</span>
         </div>
       )}
       <Button type="submit" disabled={submitting} className="w-full bg-accent text-accent-foreground hover:bg-accent/90">

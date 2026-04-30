@@ -46,7 +46,8 @@
     "id": "ID",
     "refresh": "Янгилаш",
     "saving": "Сақланмоқда...",
-    "signOut": "Чиқиш"
+    "signOut": "Чиқиш",
+    "language": "Тил"
   },
   "nav": {
     "home": "Бош саҳифа",

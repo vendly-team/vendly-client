@@ -17,8 +17,28 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
-        display: ["Plus Jakarta Sans", "Inter", "system-ui", "sans-serif"],
+        // SF Pro Text on Apple devices via system-ui / -apple-system, Inter elsewhere
+        sans: [
+          "system-ui",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "SF Pro Text",
+          "Inter",
+          "Segoe UI",
+          "Roboto",
+          "sans-serif",
+        ],
+        // SF Pro Display on Apple devices, Plus Jakarta Sans / Inter as substitute
+        display: [
+          "system-ui",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "SF Pro Display",
+          "Plus Jakarta Sans",
+          "Inter",
+          "Segoe UI",
+          "sans-serif",
+        ],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -100,6 +120,10 @@ export default {
         "apple-tighter": "-0.028em",
         "apple-snug": "-0.014em",
         "apple-wide": "0.012em",
+        // User-friendly tracking aliases per spec
+        "apple-display": "-0.022em",
+        "apple-body": "-0.011em",
+        "apple-caption": "-0.006em",
       },
       fontSize: {
         // Apple typography ladder — display sizes use tight tracking
@@ -111,6 +135,15 @@ export default {
         "apple-body": ["1.0625rem", { lineHeight: "1.47", letterSpacing: "-0.011em", fontWeight: "400" }],
         "apple-caption": ["0.875rem", { lineHeight: "1.43", letterSpacing: "-0.006em", fontWeight: "400" }],
         "apple-fine": ["0.75rem", { lineHeight: "1.33", letterSpacing: "0", fontWeight: "400" }],
+        // Short-name aliases per spec
+        hero: ["3.5rem", { lineHeight: "1.07", letterSpacing: "-0.028em", fontWeight: "600" }],
+        display: ["2.5rem", { lineHeight: "1.1", letterSpacing: "-0.022em", fontWeight: "600" }],
+        title: ["2.125rem", { lineHeight: "1.15", letterSpacing: "-0.018em", fontWeight: "600" }],
+        headline: ["1.5rem", { lineHeight: "1.25", letterSpacing: "-0.014em", fontWeight: "600" }],
+        lead: ["1.3125rem", { lineHeight: "1.38", letterSpacing: "-0.011em", fontWeight: "400" }],
+        body: ["1.0625rem", { lineHeight: "1.47", letterSpacing: "-0.011em", fontWeight: "400" }],
+        caption: ["0.875rem", { lineHeight: "1.43", letterSpacing: "-0.006em", fontWeight: "400" }],
+        fine: ["0.75rem", { lineHeight: "1.33", letterSpacing: "0", fontWeight: "400" }],
       },
       spacing: {
         // Apple's generous, predictable rhythm — 8px base

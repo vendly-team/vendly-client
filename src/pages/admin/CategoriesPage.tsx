@@ -58,20 +58,12 @@ const AdminCategoriesPage = () => {
       toast.error('Please upload an image file');
       return;
     }
-
-    setForm(current => ({
-      ...current,
-      image: URL.createObjectURL(file),
-      imageFile: file,
-    }));
+    setForm(current => ({ ...current, image: URL.createObjectURL(file), imageFile: file }));
   };
 
   const handleImagePaste = (event: ClipboardEvent<HTMLDivElement>) => {
     const file = Array.from(event.clipboardData.files).find(item => item.type.startsWith('image/'));
-    if (file) {
-      event.preventDefault();
-      handleImageFile(file);
-    }
+    if (file) { event.preventDefault(); handleImageFile(file); }
   };
 
   const handleImageDrop = (event: DragEvent<HTMLDivElement>) => {
@@ -83,7 +75,6 @@ const AdminCategoriesPage = () => {
   const handleSave = async () => {
     if (!form.name) { toast.error(t('common.required')); return; }
     setSaving(true);
-
     try {
       if (editId) {
         await categoriesApi.update(editId, { name: form.name, image: form.imageFile });
@@ -92,21 +83,14 @@ const AdminCategoriesPage = () => {
       } else {
         await categoriesApi.create({ name: form.name, image: form.imageFile });
         const items = await loadCategories();
-
         if (!form.isActive) {
           const created = [...items]
             .filter(item => item.name === form.name)
             .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
-
-          if (created) {
-            await categoriesApi.toggle(created.id);
-            await loadCategories();
-          }
+          if (created) { await categoriesApi.toggle(created.id); await loadCategories(); }
         }
-
         toast.success('Category created');
       }
-
       if (editId) await loadCategories();
       setModalOpen(false);
     } catch (error) {
@@ -118,7 +102,6 @@ const AdminCategoriesPage = () => {
 
   const handleDelete = async (id: string) => {
     if (!confirm(t('categories.deleteConfirm'))) return;
-
     try {
       await categoriesApi.delete(id);
       await loadCategories();
@@ -129,130 +112,157 @@ const AdminCategoriesPage = () => {
   };
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-display font-bold">{t('categories.title')}</h1>
-        <button onClick={openAdd} className="flex items-center gap-2 h-10 px-4 bg-accent text-accent-foreground rounded-lg text-sm font-medium"><Plus size={16} /> {t('categories.addCategory')}</button>
+    <div className="space-y-5">
+
+      {/* ── 1. Page title ──────────────────────────────────── */}
+      <h1 className="text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground">
+        {t('categories.title')}
+      </h1>
+
+      {/* ── 2. Toolbar surface ─────────────────────────────── */}
+      <div className="flex justify-end rounded-xl border border-border bg-card px-4 py-3 shadow-sm">
+        <button
+          onClick={openAdd}
+          className="flex items-center gap-2 h-9 px-4 bg-accent text-accent-foreground rounded-lg text-[14px] font-semibold tracking-[-0.011em] hover:bg-accent/90 transition-colors"
+        >
+          <Plus size={15} />
+          {t('categories.addCategory')}
+        </button>
       </div>
-      <Table>
-        <TableHeader>
-          <TableRow className="hover:bg-transparent">
-            <TableHead className="w-20">{t('categories.image', { defaultValue: 'Image' })}</TableHead>
-            <TableHead>{t('common.name')}</TableHead>
-            <TableHead>{t('common.slug')}</TableHead>
-            <TableHead>{t('categories.products')}</TableHead>
-            <TableHead>{t('common.status')}</TableHead>
-            <TableHead className="sticky right-0 w-28 bg-card border-l border-border/40 text-right">{t('common.actions')}</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {loading && (
-            <TableRow>
-              <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
-                Loading categories...
-              </TableCell>
+
+      {/* ── 3. Table container ─────────────────────────────── */}
+      <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden">
+        <Table>
+          <TableHeader className="bg-muted/40">
+            <TableRow className="hover:bg-transparent border-b border-border">
+              <TableHead className="w-20">{t('categories.image', { defaultValue: 'Image' })}</TableHead>
+              <TableHead>{t('common.name')}</TableHead>
+              <TableHead>{t('common.slug')}</TableHead>
+              <TableHead>{t('categories.products')}</TableHead>
+              <TableHead>{t('common.status')}</TableHead>
+              <TableHead className="sticky right-0 w-28 bg-muted/40 border-l border-border/50 text-right">
+                {t('common.actions')}
+              </TableHead>
             </TableRow>
-          )}
-          {!loading && cats.length === 0 && (
-            <TableRow>
-              <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
-                No categories found
-              </TableCell>
-            </TableRow>
-          )}
-          {!loading && cats.map(c => (
-            <TableRow key={c.id}>
-              <TableCell>
-                <div className="h-11 w-14 overflow-hidden rounded-md border border-border bg-muted">
-                  {c.image ? (
-                    <img src={c.image} className="h-full w-full object-cover" alt="" />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center">
-                      <ImagePlus size={16} className="text-muted-foreground" />
-                    </div>
-                  )}
-                </div>
-              </TableCell>
-              <TableCell>
-                <div className="font-semibold text-foreground">{c.name}</div>
-              </TableCell>
-              <TableCell>
-                <span className="rounded bg-muted px-2 py-1 font-mono text-xs text-muted-foreground">{c.slug}</span>
-              </TableCell>
-              <TableCell>
-                <Badge variant="secondary" className="rounded-md border-transparent bg-primary/5 text-primary hover:bg-primary/5">
-                  {c.productCount}
-                </Badge>
-              </TableCell>
-              <TableCell>
-                <Badge
-                  variant="outline"
-                  className={c.isActive
-                    ? 'border-success/15 bg-success/10 text-success hover:bg-success/10'
-                    : 'border-border bg-muted text-muted-foreground hover:bg-muted'}
-                >
-                  <span className={`mr-1.5 h-1.5 w-1.5 rounded-full ${c.isActive ? 'bg-success' : 'bg-muted-foreground'}`} />
-                  {c.isActive ? t('common.active') : t('common.inactive')}
-                </Badge>
-              </TableCell>
-              <TableCell className="sticky right-0 bg-card border-l border-border/40">
-                <div className="flex justify-end gap-1">
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8 text-muted-foreground hover:bg-accent/10 hover:text-accent"
-                    onClick={() => openEdit(c.id)}
-                    aria-label={t('common.edit')}
-                    title={t('common.edit')}
+          </TableHeader>
+          <TableBody>
+            {loading && (
+              <TableRow>
+                <TableCell colSpan={6} className="h-24 text-center text-[14px] font-normal tracking-[-0.006em] text-muted-foreground">
+                  Loading categories...
+                </TableCell>
+              </TableRow>
+            )}
+            {!loading && cats.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={6} className="h-24 text-center text-[14px] font-normal tracking-[-0.006em] text-muted-foreground">
+                  No categories found
+                </TableCell>
+              </TableRow>
+            )}
+            {!loading && cats.map(c => (
+              <TableRow key={c.id} className="hover:bg-muted/30 transition-colors">
+                <TableCell>
+                  <div className="h-11 w-14 overflow-hidden rounded-md border border-border bg-muted">
+                    {c.image ? (
+                      <img src={c.image} className="h-full w-full object-cover" alt="" />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center">
+                        <ImagePlus size={16} className="text-muted-foreground" />
+                      </div>
+                    )}
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div className="text-[15px] font-semibold tracking-[-0.011em] text-foreground">{c.name}</div>
+                </TableCell>
+                <TableCell>
+                  <span className="rounded bg-muted px-2 py-1 font-mono text-[12px] tracking-[-0.003em] text-muted-foreground">
+                    {c.slug}
+                  </span>
+                </TableCell>
+                <TableCell>
+                  <Badge variant="secondary" className="rounded-md border-transparent bg-primary/5 text-primary hover:bg-primary/5">
+                    {c.productCount}
+                  </Badge>
+                </TableCell>
+                <TableCell>
+                  <Badge
+                    variant="outline"
+                    className={c.isActive
+                      ? 'border-success/15 bg-success/10 text-success hover:bg-success/10'
+                      : 'border-border bg-muted text-muted-foreground hover:bg-muted'}
                   >
-                    <Pencil size={15} />
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
-                    onClick={() => void handleDelete(c.id)}
-                    aria-label={t('common.delete')}
-                    title={t('common.delete')}
-                  >
-                    <Trash2 size={15} />
-                  </Button>
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+                    <span className={`mr-1.5 h-1.5 w-1.5 rounded-full ${c.isActive ? 'bg-success' : 'bg-muted-foreground'}`} />
+                    {c.isActive ? t('common.active') : t('common.inactive')}
+                  </Badge>
+                </TableCell>
+                <TableCell className="sticky right-0 bg-card border-l border-border/50">
+                  <div className="flex justify-end gap-1">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 text-muted-foreground hover:bg-accent/10 hover:text-accent"
+                      onClick={() => openEdit(c.id)}
+                      aria-label={t('common.edit')}
+                      title={t('common.edit')}
+                    >
+                      <Pencil size={15} />
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                      onClick={() => void handleDelete(c.id)}
+                      aria-label={t('common.delete')}
+                      title={t('common.delete')}
+                    >
+                      <Trash2 size={15} />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+
+      {/* Modal — unchanged */}
       {modalOpen && (
         <div className="fixed inset-0 z-50 bg-foreground/50 flex items-center justify-center p-4" onClick={() => setModalOpen(false)}>
           <div className="bg-card border border-border rounded-lg p-6 w-full max-w-lg" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-4"><h3 className="font-semibold">{editId ? t('categories.editCategory') : t('categories.addCategory')}</h3><button onClick={() => setModalOpen(false)}><X size={20} /></button></div>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-[20px] font-semibold tracking-[-0.016em] leading-[1.2] font-display">
+                {editId ? t('categories.editCategory') : t('categories.addCategory')}
+              </h3>
+              <button onClick={() => setModalOpen(false)}><X size={20} /></button>
+            </div>
             <div className="space-y-3">
               <div>
-                <label className="text-sm font-medium">{t('common.name')} *</label>
+                <label className="text-[13px] font-medium tracking-[-0.006em]">{t('common.name')} *</label>
                 <input
                   value={form.name}
                   onChange={e => {
                     const name = e.target.value;
                     setForm({ ...form, name, slug: slugManuallyEdited ? form.slug : createCategorySlug(name) });
                   }}
-                  className="w-full h-10 px-3 glass-input rounded-md text-sm mt-1"
+                  className="w-full h-10 px-3 glass-input rounded-md text-[15px] font-normal tracking-[-0.011em] mt-1"
                 />
               </div>
               <div>
-                <label className="text-sm font-medium">{t('common.slug')}</label>
+                <label className="text-[13px] font-medium tracking-[-0.006em]">{t('common.slug')}</label>
                 <input
                   value={form.slug}
                   onChange={e => { setSlugManuallyEdited(true); setForm({ ...form, slug: createCategorySlug(e.target.value) }); }}
-                  className="w-full h-10 px-3 glass-input rounded-md text-sm mt-1"
+                  className="w-full h-10 px-3 glass-input rounded-md text-[15px] font-normal tracking-[-0.011em] mt-1"
                 />
                 {slugManuallyEdited && createCategorySlug(form.name) && form.slug !== createCategorySlug(form.name) && (
                   <button
                     type="button"
                     onClick={() => { setForm({ ...form, slug: createCategorySlug(form.name) }); setSlugManuallyEdited(false); }}
-                    className="mt-2 inline-flex items-center gap-1.5 rounded-md bg-accent/10 px-2.5 py-1 text-xs font-medium text-accent transition-colors hover:bg-accent/15"
+                    className="mt-2 inline-flex items-center gap-1.5 rounded-md bg-accent/10 px-2.5 py-1 text-[12px] font-medium tracking-[-0.003em] text-accent transition-colors hover:bg-accent/15"
                   >
                     <Sparkles size={13} />
                     {createCategorySlug(form.name)}
@@ -260,7 +270,7 @@ const AdminCategoriesPage = () => {
                 )}
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium">{t('categories.image', { defaultValue: 'Image' })}</label>
+                <label className="text-[13px] font-medium tracking-[-0.006em]">{t('categories.image', { defaultValue: 'Image' })}</label>
                 <div
                   role="button"
                   tabIndex={0}
@@ -272,53 +282,39 @@ const AdminCategoriesPage = () => {
                   onDrop={handleImageDrop}
                   className={`rounded-lg border border-dashed p-3 transition-colors ${draggingImage ? 'border-accent bg-accent/10' : 'border-border bg-muted/30 hover:bg-muted/50'}`}
                 >
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={event => handleImageFile(event.target.files?.[0])}
-                  />
+                  <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={event => handleImageFile(event.target.files?.[0])} />
                   <div className="flex items-center gap-3">
                     <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-md border border-border bg-card">
-                      {form.image ? (
-                        <img src={form.image} className="h-full w-full object-cover" alt="" />
-                      ) : (
-                        <ImagePlus size={22} className="text-muted-foreground" />
-                      )}
+                      {form.image ? <img src={form.image} className="h-full w-full object-cover" alt="" /> : <ImagePlus size={22} className="text-muted-foreground" />}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <div className="flex flex-wrap items-center gap-2 text-sm font-medium text-foreground">
+                      <div className="flex flex-wrap items-center gap-2 text-[14px] font-medium tracking-[-0.011em] text-foreground">
                         <UploadCloud size={16} className="text-accent" />
                         {t('categories.imageDropzoneTitle', { defaultValue: 'Click, paste, or drag image here' })}
                       </div>
-                      <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                      <div className="mt-1 flex flex-wrap items-center gap-2 text-[12px] font-normal tracking-[-0.003em] text-muted-foreground">
                         <span>{t('categories.imageFormats', { defaultValue: 'PNG, JPG, WEBP' })}</span>
                         <span className="inline-flex items-center gap-1"><Clipboard size={13} /> {t('categories.pasteSupported', { defaultValue: 'paste supported' })}</span>
                       </div>
-                      {form.imageFile && <div className="mt-1 truncate text-xs text-accent">{form.imageFile.name}</div>}
+                      {form.imageFile && <div className="mt-1 truncate text-[12px] font-medium tracking-[-0.003em] text-accent">{form.imageFile.name}</div>}
                     </div>
                   </div>
                 </div>
               </div>
               <div className="flex items-center justify-between rounded-lg border border-border bg-muted/30 px-3 py-2.5">
                 <div>
-                  <div className="text-sm font-medium text-foreground">{t('common.status')}</div>
-                  <div className="text-xs text-muted-foreground">
+                  <div className="text-[14px] font-medium tracking-[-0.011em] text-foreground">{t('common.status')}</div>
+                  <div className="text-[12px] font-normal tracking-[-0.003em] text-muted-foreground">
                     {form.isActive ? t('common.active') : t('common.inactive')}
                   </div>
                 </div>
-                <Switch
-                  checked={form.isActive}
-                  onCheckedChange={checked => setForm({ ...form, isActive: checked })}
-                  aria-label={t('common.status')}
-                />
+                <Switch checked={form.isActive} onCheckedChange={checked => setForm({ ...form, isActive: checked })} aria-label={t('common.status')} />
               </div>
             </div>
             <button
               onClick={() => void handleSave()}
               disabled={saving}
-              className="w-full h-11 bg-accent text-accent-foreground rounded-lg font-semibold text-sm mt-4 disabled:cursor-not-allowed disabled:opacity-60"
+              className="w-full h-11 bg-accent text-accent-foreground rounded-lg font-semibold text-[15px] tracking-[-0.014em] mt-4 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {saving ? 'Saving...' : t('common.save')}
             </button>

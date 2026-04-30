@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { AssignRoleModal } from "@/features/users/components/AssignRoleModal";
 import { UserForm } from "@/features/users/components/UserForm";
@@ -82,24 +81,37 @@ export const UsersPage = () => {
   };
 
   return (
-    <div>
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-display font-bold">Users</h1>
-        <Button type="button" className="bg-accent text-accent-foreground hover:bg-accent/90" onClick={() => setCreateOpen(true)}>
-          <Plus size={16} />
+    <div className="space-y-5">
+
+      {/* ── 1. Page title ──────────────────────────────────── */}
+      <h1 className="text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground">
+        Users
+      </h1>
+
+      {/* ── 2. Toolbar surface ─────────────────────────────── */}
+      <div className="flex justify-end rounded-xl border border-border bg-card px-4 py-3 shadow-sm">
+        <button
+          type="button"
+          onClick={() => setCreateOpen(true)}
+          className="flex items-center gap-2 h-9 px-4 bg-accent text-accent-foreground rounded-lg text-[14px] font-semibold tracking-[-0.011em] hover:bg-accent/90 transition-colors"
+        >
+          <Plus size={15} />
           Create User
-        </Button>
+        </button>
       </div>
 
-      <UserList
-        users={users.filter(user => user.role !== 0)}
-        currentRole={currentUser?.role}
-        loading={loading}
-        error={error}
-        onEdit={setEditingUser}
-        onToggleBlock={user => void handleToggleBlock(user)}
-        onAssignRole={setRoleUser}
-      />
+      {/* ── 3. List container ──────────────────────────────── */}
+      <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden">
+        <UserList
+          users={users.filter(user => user.role !== 0)}
+          currentRole={currentUser?.role}
+          loading={loading}
+          error={error}
+          onEdit={setEditingUser}
+          onToggleBlock={user => void handleToggleBlock(user)}
+          onAssignRole={setRoleUser}
+        />
+      </div>
 
       <Dialog open={createOpen} onOpenChange={setCreateOpen}>
         <DialogContent>

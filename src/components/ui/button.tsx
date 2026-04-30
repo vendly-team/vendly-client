@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-[14px] font-medium tracking-[-0.011em] ring-offset-background transition-[background-color,box-shadow,transform,color,border-color] duration-200 ease-[cubic-bezier(0.28,0.11,0.32,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 active:scale-[0.96] disabled:pointer-events-none disabled:opacity-40 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-[15px] font-semibold tracking-[-0.014em] ring-offset-background transition-[background-color,box-shadow,transform,color,border-color] duration-200 ease-[cubic-bezier(0.28,0.11,0.32,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 active:scale-[0.96] disabled:pointer-events-none disabled:opacity-40 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -20,13 +20,13 @@ const buttonVariants = cva(
         ghost:
           "hover:bg-accent hover:text-accent-foreground rounded-xl",
         link:
-          "text-primary underline-offset-[5px] hover:underline rounded-none px-0 active:scale-100",
+          "text-primary underline-offset-[5px] hover:underline rounded-none px-0 active:scale-100 font-medium tracking-[-0.011em]",
       },
       size: {
-        default: "h-10 px-5 py-2",
-        sm: "h-9 px-4 text-[13px]",
-        lg: "h-12 px-7 text-[15px]",
-        xl: "h-[52px] px-8 text-[16px]",
+        default: "h-10 px-5 py-2 text-[15px] font-semibold tracking-[-0.014em]",
+        sm: "h-9 px-4 text-[13px] font-medium tracking-[-0.006em]",
+        lg: "h-12 px-7 text-[16px] font-semibold tracking-[-0.014em]",
+        xl: "h-[52px] px-8 text-[17px] font-semibold tracking-[-0.014em]",
         icon: "h-10 w-10 rounded-full",
       },
     },

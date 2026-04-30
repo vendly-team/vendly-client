@@ -46,7 +46,8 @@
     "selected": "selected",
     "refresh": "Refresh",
     "saving": "Saving...",
-    "signOut": "Sign Out"
+    "signOut": "Sign Out",
+    "language": "Language"
   },
   "nav": {
     "home": "Home",

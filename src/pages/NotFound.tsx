@@ -13,9 +13,9 @@ const NotFound = () => {
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted">
       <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">{t("notFound.title")}</h1>
-        <p className="mb-4 text-xl text-muted-foreground">{t("notFound.message")}</p>
-        <a href="/" className="text-primary underline hover:text-primary/90">
+        <h1 className="mb-4 text-[40px] font-bold tracking-[-0.024em] leading-[1.08] font-display">{t("notFound.title")}</h1>
+        <p className="mb-4 text-[20px] font-normal tracking-[-0.011em] leading-[1.4] text-muted-foreground">{t("notFound.message")}</p>
+        <a href="/" className="text-[15px] font-medium tracking-[-0.011em] text-primary underline hover:text-primary/90">
           {t("notFound.goHome")}
         </a>
       </div>

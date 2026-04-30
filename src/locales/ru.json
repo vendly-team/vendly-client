@@ -46,7 +46,8 @@
     "id": "ID",
     "refresh": "Обновить",
     "saving": "Сохранение...",
-    "signOut": "Выйти"
+    "signOut": "Выйти",
+    "language": "Язык"
   },
   "nav": {
     "home": "Главная",
