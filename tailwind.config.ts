@@ -39,6 +39,7 @@ export default {
           "Segoe UI",
           "sans-serif",
         ],
+        brand: ["Saira Stencil One", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",

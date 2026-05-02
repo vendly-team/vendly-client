@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Search, ShoppingCart, User, Heart, X, ChevronDown, LogOut, Package, Shield, Globe } from "lucide-react";
+import { OptoLogo } from "@/components/ui/OptoLogo";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { categoriesApi, mapCategoryDto } from "@/shared/api/categoriesApi";
@@ -104,8 +105,8 @@ const Header = () => {
               type="button"
               onClick={() => { void i18n.changeLanguage(lang.code); onSelect?.(); }}
               className={`flex-1 py-1 text-[11px] tracking-[-0.003em] rounded-full transition-all duration-200 ease-out ${isActive
-                  ? 'bg-white text-foreground font-semibold shadow-sm'
-                  : 'bg-transparent text-muted-foreground font-medium hover:text-foreground'
+                ? 'bg-white text-foreground font-semibold shadow-sm'
+                : 'bg-transparent text-muted-foreground font-medium hover:text-foreground'
                 }`}
             >
               {LANG_LABELS[lang.code] ?? lang.code.toUpperCase()}
@@ -121,10 +122,7 @@ const Header = () => {
       <div className="container flex items-center gap-4 py-3">
 
         <Link to="/" className="flex items-center gap-2 shrink-0">
-          <div className="w-9 h-9 rounded-lg bg-accent flex items-center justify-center">
-            <span className="text-accent-foreground font-display font-bold text-[18px] tracking-[-0.018em]">B</span>
-          </div>
-          <span className="font-display font-bold text-[20px] tracking-[-0.018em] text-foreground hidden sm:inline">{t("header.brand")}</span>
+          <OptoLogo />
         </Link>
 
         {/* ── Mobile icon row ───────────────────────────── */}

@@ -1,6 +1,7 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/shared/store/authStore';
 import { LayoutDashboard, Package, Grid, ShoppingBag, Users, Star, Tag, RefreshCw, Shield, LogOut, Menu, X, ChevronDown, Store } from 'lucide-react';
+import { OptoLogo } from "@/components/ui/OptoLogo";
 import type { LucideIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from "react-i18next";
@@ -114,12 +115,7 @@ const AdminLayout = () => {
       <aside className={`fixed inset-y-0 left-0 z-50 flex flex-col w-72 bg-sidebar text-sidebar-foreground border-r border-sidebar-border transition-transform duration-300 ease-[cubic-bezier(0.28,0.11,0.32,1)] md:hidden ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className={`shrink-0 border-b border-sidebar-border px-4 flex items-center justify-between ${isTelegram && isIos ? 'pt-24 h-auto' : 'h-16'}`}>
           <div className="flex items-center gap-2">
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground font-display text-[18px] font-bold tracking-[-0.018em] shadow-[0_6px_14px_rgba(0,0,0,0.14)]">
-              B
-            </span>
-            <span className="font-display text-[18px] font-bold tracking-[-0.018em] text-sidebar-primary">
-              {t("admin.sidebar.brand")}
-            </span>
+            <OptoLogo />
           </div>
           <button
             type="button"
@@ -143,12 +139,7 @@ const AdminLayout = () => {
             aria-label={collapsed ? t("admin.sidebar.brand") : t("nav.toggleMenu")}
             title={t("nav.toggleMenu")}
           >
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground font-display text-[18px] font-bold tracking-[-0.018em] shadow-[0_6px_14px_rgba(0,0,0,0.14)] transition-transform duration-300 group-hover:scale-105">
-              B
-            </span>
-            <span className={`${collapsed ? 'max-w-0 opacity-0' : 'max-w-32 opacity-100'} overflow-hidden whitespace-nowrap font-display text-[18px] font-bold tracking-[-0.018em] text-sidebar-primary transition-[max-width,opacity] duration-300 ease-in-out`}>
-              {t("admin.sidebar.brand")}
-            </span>
+            <OptoLogo className="transition-transform duration-300 group-hover:scale-105" />
           </button>
         </div>
         <SidebarNav />
