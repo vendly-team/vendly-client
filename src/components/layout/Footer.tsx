@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { categories } from "@/shared/data/categories";
 import { useTranslation } from "react-i18next";
-import { OptoLogo } from "@/components/ui/OptoLogo";
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -12,7 +11,7 @@ const Footer = () => {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <OptoLogo />
+              <img src="/opto.svg" alt="Opto" className="h-11 w-11 object-contain rounded-lg" />
             </div>
             <p className="text-[14px] font-normal tracking-[-0.006em] text-white/60 leading-[1.5]">
               {t("footer.tagline")}

@@ -1,7 +1,6 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/shared/store/authStore';
 import { LayoutDashboard, Package, Grid, ShoppingBag, Users, Star, Tag, RefreshCw, Shield, LogOut, Menu, X, ChevronDown, Store } from 'lucide-react';
-import { OptoLogo } from "@/components/ui/OptoLogo";
 import type { LucideIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from "react-i18next";
@@ -115,7 +114,7 @@ const AdminLayout = () => {
       <aside className={`fixed inset-y-0 left-0 z-50 flex flex-col w-72 bg-sidebar text-sidebar-foreground border-r border-sidebar-border transition-transform duration-300 ease-[cubic-bezier(0.28,0.11,0.32,1)] md:hidden ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className={`shrink-0 border-b border-sidebar-border px-4 flex items-center justify-between ${isTelegram && isIos ? 'pt-24 h-auto' : 'h-16'}`}>
           <div className="flex items-center gap-2">
-            <OptoLogo />
+            <img src="/opto.svg" alt="Opto" className="h-11 w-11 object-contain" />
           </div>
           <button
             type="button"
@@ -139,7 +138,7 @@ const AdminLayout = () => {
             aria-label={collapsed ? t("admin.sidebar.brand") : t("nav.toggleMenu")}
             title={t("nav.toggleMenu")}
           >
-            <OptoLogo className="transition-transform duration-300 group-hover:scale-105" />
+            <img src="/opto.svg" alt="Opto" className="h-11 w-11 object-contain transition-transform duration-300 group-hover:scale-105" />
           </button>
         </div>
         <SidebarNav />

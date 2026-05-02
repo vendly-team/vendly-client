@@ -24,18 +24,7 @@ const CategoryPage = () => {
   const [page, setPage] = useState(1);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
-  const [sheetHeight, setSheetHeight] = useState(52);
-  const [isDragging, setIsDragging] = useState(false);
-  const isDraggingRef = useRef(false);
-  const dragStartY = useRef(0);
-  const dragStartHeight = useRef(0);
   const filtersReadyRef = useRef(false);
-
-  // Snap points (vh)
-  const SNAP_MEDIUM = 55;
-  const SNAP_FULL = 92;
-  const CLOSE_THRESHOLD = 28;
-  const MID_THRESHOLD = (SNAP_MEDIUM + SNAP_FULL) / 2; // 77 — midpoint between snaps
   const perPage = 12;
   const category = categories.find((c) => c.slug === slug);
 
@@ -76,12 +65,10 @@ const CategoryPage = () => {
     return () => { document.body.style.overflow = ''; };
   }, [mobileFiltersOpen]);
 
-  // Mark filters as ready after initial load
   useEffect(() => {
     if (!loading) filtersReadyRef.current = true;
   }, [loading]);
 
-  // Notify user when filters produce a result
   useEffect(() => {
     if (!filtersReadyRef.current) return;
     if (filtered.length === 0) {
@@ -97,7 +84,6 @@ const CategoryPage = () => {
     setTimeout(() => {
       setMobileFiltersOpen(false);
       setIsClosing(false);
-      setSheetHeight(SNAP_MEDIUM);
     }, 280);
   };
 
@@ -123,35 +109,6 @@ const CategoryPage = () => {
 
   const resetFilters = () => {
     setPriceMin(''); setPriceMax(''); setOnSaleOnly(false); setInStockOnly(false); setPage(1);
-  };
-
-  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    e.currentTarget.setPointerCapture(e.pointerId);
-    isDraggingRef.current = true;
-    setIsDragging(true);
-    dragStartY.current = e.clientY;
-    dragStartHeight.current = sheetHeight;
-  };
-
-  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (!isDraggingRef.current) return;
-    const deltaY = dragStartY.current - e.clientY;
-    const deltaVh = (deltaY / window.innerHeight) * 100;
-    const next = Math.min(92, Math.max(18, dragStartHeight.current + deltaVh));
-    setSheetHeight(next);
-  };
-
-  const handlePointerUp = () => {
-    if (!isDraggingRef.current) return;
-    isDraggingRef.current = false;
-    setIsDragging(false);
-    setSheetHeight(prev => {
-      if (prev < CLOSE_THRESHOLD) {
-        requestAnimationFrame(() => closeSheet());
-        return prev; // keep current low height — no jump before slide-out
-      }
-      return prev < MID_THRESHOLD ? SNAP_MEDIUM : SNAP_FULL;
-    });
   };
 
   const FilterPanel = () => (
@@ -326,25 +283,11 @@ const CategoryPage = () => {
             onClick={closeSheet}
           />
 
-          {/* Sheet */}
+          {/* Sheet — auto height, capped at 88vh so content is never cut */}
           <div
             className={`fixed inset-x-0 bottom-0 z-[60] md:hidden bg-card rounded-t-[1.75rem] shadow-apple-xl flex flex-col overflow-hidden ${isClosing ? 'animate-slide-out-bottom' : 'animate-slide-in-bottom'}`}
-            style={{
-              height: `${sheetHeight}vh`,
-              transition: (isDragging || isClosing) ? 'none' : 'height 0.3s cubic-bezier(0.28, 0.11, 0.32, 1)',
-            }}
+            style={{ maxHeight: 'calc(88vh - env(safe-area-inset-bottom, 0px))' }}
           >
-            {/* Drag handle — full-width tap target */}
-            <div
-              className="flex-shrink-0 flex flex-col items-center pt-3 pb-1 cursor-grab active:cursor-grabbing touch-none select-none"
-              onPointerDown={handlePointerDown}
-              onPointerMove={handlePointerMove}
-              onPointerUp={handlePointerUp}
-              onPointerCancel={handlePointerUp}
-            >
-              <div className="w-10 h-[5px] rounded-full bg-foreground/15" />
-            </div>
-
             {/* Header */}
             <div className="flex-shrink-0 flex items-center justify-between px-5 py-3 border-b border-border">
               <div className="flex items-center gap-2">
@@ -369,10 +312,10 @@ const CategoryPage = () => {
             </div>
 
             {/* Scrollable content */}
-            <div className="flex-1 overflow-y-auto overscroll-contain px-5 pt-5">
+            <div className="overflow-y-auto overscroll-contain px-5 pt-5">
               <FilterPanel />
-              {/* Spacer: padding-bottom on overflow containers is unreliable — use explicit element */}
-              <div style={{ height: 'calc(2.5rem + env(safe-area-inset-bottom, 24px))' }} aria-hidden="true" />
+              {/* Safe-area spacer — padding-bottom unreliable on scroll containers */}
+              <div style={{ height: 'calc(1.5rem + env(safe-area-inset-bottom, 24px))' }} aria-hidden="true" />
             </div>
           </div>
         </>
