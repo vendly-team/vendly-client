@@ -1,9 +1,19 @@
 import { apiRequest } from "./http";
 import type { User } from "@/shared/types";
 
-type AuthResponse = {
+type ServerUserInfo = {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email?: string | null;
+  phone: string;
+  role: string;
+};
+
+export type AuthResponse = {
   accessToken: string;
   refreshToken: string;
+  user: ServerUserInfo;
 };
 
 type JwtPayload = {
@@ -30,7 +40,6 @@ const decodeBase64Url = (value: string) => {
 export const decodeJwtPayload = (token: string): JwtPayload => {
   const payload = token.split(".")[1];
   if (!payload) throw new Error("Invalid access token");
-
   return JSON.parse(decodeBase64Url(payload));
 };
 
@@ -40,25 +49,14 @@ const normalizeRole = (role?: string): User["role"] => {
   return "customer";
 };
 
-const displayNameFromLogin = (login: string) => {
-  const value = login.includes("@") ? login.split("@")[0] : login;
-  return value || "User";
-};
-
-export const userFromToken = (accessToken: string, loginFallback = ""): User => {
-  const payload = decodeJwtPayload(accessToken);
-  const email = payload.email ?? (loginFallback.includes("@") ? loginFallback : "");
-  const displayName = displayNameFromLogin(email || loginFallback);
-
-  return {
-    id: payload.user_id ?? "",
-    firstName: displayName,
-    lastName: "",
-    email,
-    phone: loginFallback.includes("@") ? "" : loginFallback,
-    role: normalizeRole(payload.role),
-  };
-};
+export const mapServerUser = (info: ServerUserInfo): User => ({
+  id: String(info.id),
+  firstName: info.firstName,
+  lastName: info.lastName,
+  email: info.email ?? "",
+  phone: info.phone,
+  role: normalizeRole(info.role),
+});
 
 export const authApi = {
   login: (login: string, password: string) =>
