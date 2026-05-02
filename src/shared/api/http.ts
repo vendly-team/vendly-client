@@ -41,10 +41,15 @@ type OnExpiredCallback = () => void;
 
 let _onRefreshed: OnRefreshedCallback | null = null;
 let _onExpired: OnExpiredCallback | null = null;
+let _onServerError: ((path: string) => void) | null = null;
 
 export const configureTokenRefresh = (onRefreshed: OnRefreshedCallback, onExpired: OnExpiredCallback) => {
   _onRefreshed = onRefreshed;
   _onExpired = onExpired;
+};
+
+export const configureServerErrorHandler = (handler: (path: string) => void) => {
+  _onServerError = handler;
 };
 
 // Single-flight refresh — all concurrent 401s share the same in-flight request
@@ -128,6 +133,10 @@ export const apiRequest = async <T>(path: string, options: RequestInit = {}) => 
     } catch {
       const text = await response.text();
       if (text) message = text;
+    }
+
+    if (response.status >= 500) {
+      _onServerError?.(path);
     }
 
     throw new Error(message);

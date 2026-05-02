@@ -587,6 +587,12 @@
     "message": "Sahifa topilmadi",
     "goHome": "Bosh sahifaga"
   },
+  "serverError": {
+    "title": "500",
+    "message": "Serverda xatolik yuz berdi. Iltimos, qayta urining.",
+    "retry": "Qayta urinish",
+    "goHome": "Bosh sahifaga"
+  },
   "statusLabels": {
     "new": "Yangi",
     "accepted": "Qabul qilingan",

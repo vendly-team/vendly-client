@@ -587,6 +587,12 @@
     "message": "Oops! Page not found",
     "goHome": "Go Home"
   },
+  "serverError": {
+    "title": "500",
+    "message": "Something went wrong on our end. Please try again.",
+    "retry": "Try Again",
+    "goHome": "Go Home"
+  },
   "statusLabels": {
     "new": "New",
     "accepted": "Accepted",

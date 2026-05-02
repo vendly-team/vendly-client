@@ -15,6 +15,7 @@ export type AppEnvironment = {
   isMobile: boolean;
   isDesktop: boolean;
   isIos: boolean;
+  isAndroid: boolean;
   telegramPlatform: string | null;
   telegramColorScheme: 'light' | 'dark' | null;
   viewportHeight: number;
@@ -29,11 +30,16 @@ function detectIos(): boolean {
   return /iPhone|iPad|iPod/.test(navigator.userAgent);
 }
 
+function detectAndroid(): boolean {
+  return /Android/.test(navigator.userAgent);
+}
+
 function compute(): AppEnvironment {
   const tg = window.Telegram?.WebApp;
   const isTelegram = Boolean(tg) || sessionStorage.getItem(SESSION_KEY) === 'tg';
   const isMobile = detectMobile();
   const isIos = detectIos();
+  const isAndroid = detectAndroid();
 
   return {
     isTelegram,
@@ -41,6 +47,7 @@ function compute(): AppEnvironment {
     isMobile,
     isDesktop: !isMobile,
     isIos,
+    isAndroid,
     telegramPlatform: tg?.platform ?? null,
     telegramColorScheme: tg?.colorScheme ?? null,
     viewportHeight: tg?.viewportHeight ?? window.innerHeight,
@@ -86,6 +93,7 @@ let currentEnv: AppEnvironment = {
   isMobile: false,
   isDesktop: true,
   isIos: false,
+  isAndroid: false,
   telegramPlatform: null,
   telegramColorScheme: null,
   viewportHeight: 0,

@@ -1,10 +1,11 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes, Navigate, useLocation } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useAuthStore } from "@/shared/store/authStore";
-import { lazy, Suspense, type ReactNode } from "react";
+import { lazy, Suspense, useEffect, type ReactNode } from "react";
+import { configureServerErrorHandler } from "@/shared/api/http";
 
 // Layouts
 import StorefrontLayout from "@/components/layout/StorefrontLayout";
@@ -29,6 +30,7 @@ import ProfileAddressesPage from "./pages/storefront/ProfileAddressesPage";
 import ProfileWishlistPage from "./pages/storefront/ProfileWishlistPage";
 import { ProfileHubPage } from "./pages/storefront/ProfileHubPage";
 import NotFound from "./pages/NotFound";
+import { ServerErrorPage } from "./pages/ServerErrorPage";
 
 // Admin pages
 import DashboardPage from "./pages/admin/DashboardPage";
@@ -69,6 +71,16 @@ const AdminRoute = ({ children }: { children: ReactNode }) => {
   return <>{children}</>;
 };
 
+const NavigationWatcher = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    configureServerErrorHandler((path) => {
+      navigate(`/500?from=${encodeURIComponent(path)}`, { replace: true });
+    });
+  }, [navigate]);
+  return null;
+};
+
 const AdminOnlyRoute = ({ children }: { children: ReactNode }) => {
   const { isAuthenticated, user } = useAuthStore();
   const location = useLocation();
@@ -87,6 +99,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <NavigationWatcher />
         <Routes>
           {/* Storefront - public */}
           <Route path="/" element={<Index />} />
@@ -132,6 +145,9 @@ const App = () => (
             <Route path="/admin/sync-logs" element={<AdminOnlyRoute><SyncLogsPage /></AdminOnlyRoute>} />
             <Route path="/admin/users" element={<AdminOnlyRoute><UsersPage /></AdminOnlyRoute>} />
           </Route>
+
+          {/* Error pages */}
+          <Route path="/500" element={<ServerErrorPage />} />
 
           {/* Catch-all */}
           <Route path="*" element={<NotFound />} />
