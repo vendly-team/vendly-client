@@ -1,6 +1,7 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 import StorefrontLayout from '@/components/layout/StorefrontLayout';
 import ProductCard from '@/components/storefront/ProductCard';
 import { SlidersHorizontal, X } from 'lucide-react';
@@ -22,6 +23,19 @@ const CategoryPage = () => {
   const [sort, setSort] = useState('newest');
   const [page, setPage] = useState(1);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+  const [sheetHeight, setSheetHeight] = useState(52);
+  const [isDragging, setIsDragging] = useState(false);
+  const isDraggingRef = useRef(false);
+  const dragStartY = useRef(0);
+  const dragStartHeight = useRef(0);
+  const filtersReadyRef = useRef(false);
+
+  // Snap points (vh)
+  const SNAP_MEDIUM = 55;
+  const SNAP_FULL = 92;
+  const CLOSE_THRESHOLD = 28;
+  const MID_THRESHOLD = (SNAP_MEDIUM + SNAP_FULL) / 2; // 77 — midpoint between snaps
   const perPage = 12;
   const category = categories.find((c) => c.slug === slug);
 
@@ -35,7 +49,6 @@ const CategoryPage = () => {
         ]);
         const mappedCategories = categoryDtos.map(mapCategoryDto).filter(item => item.isActive);
         setCategories(mappedCategories);
-
         const details = await Promise.all(
           productList
             .filter(product => product.isActive)
@@ -55,12 +68,43 @@ const CategoryPage = () => {
         setLoading(false);
       }
     };
-
     void loadCategoryProducts();
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = mobileFiltersOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [mobileFiltersOpen]);
+
+  // Mark filters as ready after initial load
+  useEffect(() => {
+    if (!loading) filtersReadyRef.current = true;
+  }, [loading]);
+
+  // Notify user when filters produce a result
+  useEffect(() => {
+    if (!filtersReadyRef.current) return;
+    if (filtered.length === 0) {
+      toast.error(t('categoryPage.noProducts'), { duration: 2500 });
+    } else {
+      toast.success(t('categoryPage.productsFound', { count: filtered.length }), { duration: 2000 });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [priceMin, priceMax, onSaleOnly, inStockOnly, sort]);
+
+  const closeSheet = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setMobileFiltersOpen(false);
+      setIsClosing(false);
+      setSheetHeight(SNAP_MEDIUM);
+    }, 280);
+  };
+
   const filtered = useMemo(() => {
-    let list = category ? products.filter((p) => p.categoryId === category.id && p.isActive) : products.filter((p) => p.isActive);
+    let list = category
+      ? products.filter((p) => p.categoryId === category.id && p.isActive)
+      : products.filter((p) => p.isActive);
     if (priceMin) list = list.filter((p) => (p.salePrice ?? p.price) >= Number(priceMin));
     if (priceMax) list = list.filter((p) => (p.salePrice ?? p.price) <= Number(priceMax));
     if (onSaleOnly) list = list.filter((p) => p.salePrice !== undefined);
@@ -77,25 +121,111 @@ const CategoryPage = () => {
   const totalPages = Math.ceil(filtered.length / perPage);
   const paged = filtered.slice((page - 1) * perPage, page * perPage);
 
-  const resetFilters = () => { setPriceMin(''); setPriceMax(''); setOnSaleOnly(false); setInStockOnly(false); setPage(1); };
+  const resetFilters = () => {
+    setPriceMin(''); setPriceMax(''); setOnSaleOnly(false); setInStockOnly(false); setPage(1);
+  };
+
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    e.currentTarget.setPointerCapture(e.pointerId);
+    isDraggingRef.current = true;
+    setIsDragging(true);
+    dragStartY.current = e.clientY;
+    dragStartHeight.current = sheetHeight;
+  };
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDraggingRef.current) return;
+    const deltaY = dragStartY.current - e.clientY;
+    const deltaVh = (deltaY / window.innerHeight) * 100;
+    const next = Math.min(92, Math.max(18, dragStartHeight.current + deltaVh));
+    setSheetHeight(next);
+  };
+
+  const handlePointerUp = () => {
+    if (!isDraggingRef.current) return;
+    isDraggingRef.current = false;
+    setIsDragging(false);
+    setSheetHeight(prev => {
+      if (prev < CLOSE_THRESHOLD) {
+        requestAnimationFrame(() => closeSheet());
+        return prev; // keep current low height — no jump before slide-out
+      }
+      return prev < MID_THRESHOLD ? SNAP_MEDIUM : SNAP_FULL;
+    });
+  };
 
   const FilterPanel = () => (
-    <div className="space-y-4">
-      <h3 className="text-[18px] font-semibold tracking-[-0.016em] leading-[1.2] font-display text-foreground">{t('categoryPage.filters')}</h3>
+    <div className="space-y-6">
       <div>
-        <label className="text-[13px] font-medium tracking-[-0.006em] text-foreground">{t('categoryPage.priceRange')}</label>
-        <div className="flex gap-2 mt-1">
-          <input type="number" placeholder={t('categoryPage.min')} value={priceMin} onChange={(e) => { setPriceMin(e.target.value); setPage(1); }} className="w-full h-9 px-2 border border-border rounded text-[14px] font-normal tracking-[-0.011em] tabular-nums bg-background" />
-          <input type="number" placeholder={t('categoryPage.max')} value={priceMax} onChange={(e) => { setPriceMax(e.target.value); setPage(1); }} className="w-full h-9 px-2 border border-border rounded text-[14px] font-normal tracking-[-0.011em] tabular-nums bg-background" />
+        <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground mb-2">
+          {t('categoryPage.priceRange')}
+        </p>
+        <div className="flex gap-2">
+          <input
+            type="number"
+            placeholder={t('categoryPage.min')}
+            value={priceMin}
+            onChange={(e) => { setPriceMin(e.target.value); setPage(1); }}
+            className="w-full h-10 px-3 border border-border rounded-xl text-[14px] tabular-nums bg-background focus:outline-none focus:ring-2 focus:ring-accent/25"
+          />
+          <input
+            type="number"
+            placeholder={t('categoryPage.max')}
+            value={priceMax}
+            onChange={(e) => { setPriceMax(e.target.value); setPage(1); }}
+            className="w-full h-10 px-3 border border-border rounded-xl text-[14px] tabular-nums bg-background focus:outline-none focus:ring-2 focus:ring-accent/25"
+          />
         </div>
       </div>
-      <label className="flex items-center gap-2 text-[14px] font-normal tracking-[-0.006em]">
-        <input type="checkbox" checked={onSaleOnly} onChange={(e) => { setOnSaleOnly(e.target.checked); setPage(1); }} className="rounded border-border" /> {t('categoryPage.onSaleOnly')}
-      </label>
-      <label className="flex items-center gap-2 text-[14px] font-normal tracking-[-0.006em]">
-        <input type="checkbox" checked={inStockOnly} onChange={(e) => { setInStockOnly(e.target.checked); setPage(1); }} className="rounded border-border" /> {t('categoryPage.inStockOnly')}
-      </label>
-      <button onClick={resetFilters} className="text-[13px] font-medium tracking-[-0.006em] text-accent hover:underline">{t('categoryPage.resetFilters')}</button>
+
+      <div>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground mb-3">
+          {t('categoryPage.filters')}
+        </p>
+        <div className="space-y-3">
+          <label className="flex items-center gap-3 text-[15px] cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={onSaleOnly}
+              onChange={(e) => { setOnSaleOnly(e.target.checked); setPage(1); }}
+              className="h-5 w-5 rounded-md border-border accent-accent"
+            />
+            {t('categoryPage.onSaleOnly')}
+          </label>
+          <label className="flex items-center gap-3 text-[15px] cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={inStockOnly}
+              onChange={(e) => { setInStockOnly(e.target.checked); setPage(1); }}
+              className="h-5 w-5 rounded-md border-border accent-accent"
+            />
+            {t('categoryPage.inStockOnly')}
+          </label>
+        </div>
+      </div>
+
+      <div>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground mb-2">
+          {t('categoryPage.sortBy', { defaultValue: 'Sort' })}
+        </p>
+        <select
+          value={sort}
+          onChange={(e) => setSort(e.target.value)}
+          className="w-full h-10 px-3 border border-border rounded-xl text-[14px] bg-background focus:outline-none focus:ring-2 focus:ring-accent/25"
+        >
+          <option value="newest">{t('categoryPage.newestFirst')}</option>
+          <option value="price-asc">{t('categoryPage.priceLowHigh')}</option>
+          <option value="price-desc">{t('categoryPage.priceHighLow')}</option>
+          <option value="rating">{t('categoryPage.highestRated')}</option>
+        </select>
+      </div>
+
+      <button
+        onClick={resetFilters}
+        className="w-full h-10 rounded-xl border border-destructive/30 text-destructive text-[14px] font-medium hover:bg-destructive/5 active:scale-[0.98] transition-all"
+      >
+        {t('categoryPage.resetFilters')}
+      </button>
     </div>
   );
 
@@ -103,16 +233,28 @@ const CategoryPage = () => {
     <StorefrontLayout>
       <div className="container py-6 animate-fade-in">
         <div className="flex items-center gap-2 text-[13px] font-normal tracking-[-0.006em] text-muted-foreground mb-4">
-          <Link to="/" className="hover:text-accent">{t('nav.home')}</Link> <span>/</span>
+          <Link to="/" className="hover:text-accent">{t('nav.home')}</Link>
+          <span>/</span>
           <span className="text-foreground font-medium">{category?.name || t('categoryPage.allProducts')}</span>
         </div>
+
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground">{category?.name || t('categoryPage.allProducts')}</h1>
+          <h1 className="text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground">
+            {category?.name || t('categoryPage.allProducts')}
+          </h1>
           <div className="flex items-center gap-3">
-            <button className="md:hidden flex items-center gap-1 text-[14px] font-medium tracking-[-0.011em] text-foreground border border-border rounded-md px-3 py-1.5" onClick={() => setMobileFiltersOpen(true)}>
-              <SlidersHorizontal size={16} /> {t('categoryPage.filters')}
+            <button
+              className="md:hidden flex items-center gap-1.5 text-[14px] font-medium tracking-[-0.011em] text-foreground border border-border rounded-full px-3.5 py-1.5 active:scale-95 transition-transform"
+              onClick={() => { setMobileFiltersOpen(true); setIsClosing(false); }}
+            >
+              <SlidersHorizontal size={15} />
+              {t('categoryPage.filters')}
             </button>
-            <select value={sort} onChange={(e) => setSort(e.target.value)} className="h-9 px-3 glass-input rounded-md text-[14px] font-normal tracking-[-0.011em] text-foreground">
+            <select
+              value={sort}
+              onChange={(e) => setSort(e.target.value)}
+              className="hidden md:block h-9 px-3 glass-input rounded-md text-[14px] font-normal tracking-[-0.011em] text-foreground"
+            >
               <option value="newest">{t('categoryPage.newestFirst')}</option>
               <option value="price-asc">{t('categoryPage.priceLowHigh')}</option>
               <option value="price-desc">{t('categoryPage.priceHighLow')}</option>
@@ -120,9 +262,12 @@ const CategoryPage = () => {
             </select>
           </div>
         </div>
+
         <div className="flex gap-6">
           <aside className="hidden md:block w-56 shrink-0">
-            <div className="bg-card p-4 rounded-lg border border-border sticky top-24"><FilterPanel /></div>
+            <div className="bg-card p-4 rounded-lg border border-border sticky top-24">
+              <FilterPanel />
+            </div>
           </aside>
           <div className="flex-1">
             {loading ? (
@@ -131,40 +276,106 @@ const CategoryPage = () => {
               </div>
             ) : paged.length > 0 ? (
               <>
-                <p className="text-[13px] font-normal tracking-[-0.006em] text-muted-foreground mb-4">{t('categoryPage.productsFound', { count: filtered.length })}</p>
+                <p className="text-[13px] font-normal tracking-[-0.006em] text-muted-foreground mb-4">
+                  {t('categoryPage.productsFound', { count: filtered.length })}
+                </p>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
                   {paged.map((p) => <ProductCard key={p.id} product={p} />)}
                 </div>
                 {totalPages > 1 && (
                   <div className="flex items-center justify-center gap-2 mt-8">
-                    <button disabled={page === 1} onClick={() => setPage(page - 1)} className="h-9 px-3 border border-border rounded text-[13px] font-medium tracking-[-0.006em] disabled:opacity-50">{t('common.prev')}</button>
+                    <button disabled={page === 1} onClick={() => setPage(page - 1)} className="h-9 px-3 border border-border rounded text-[13px] font-medium tracking-[-0.006em] disabled:opacity-50">
+                      {t('common.prev')}
+                    </button>
                     {Array.from({ length: totalPages }, (_, i) => (
-                      <button key={i} onClick={() => setPage(i + 1)} className={`h-9 w-9 rounded text-[13px] font-medium tracking-[-0.006em] tabular-nums ${page === i + 1 ? 'bg-accent text-accent-foreground' : 'border border-border'}`}>{i + 1}</button>
+                      <button
+                        key={i}
+                        onClick={() => setPage(i + 1)}
+                        className={`h-9 w-9 rounded text-[13px] font-medium tracking-[-0.006em] tabular-nums ${page === i + 1 ? 'bg-accent text-accent-foreground' : 'border border-border'}`}
+                      >
+                        {i + 1}
+                      </button>
                     ))}
-                    <button disabled={page === totalPages} onClick={() => setPage(page + 1)} className="h-9 px-3 border border-border rounded text-[13px] font-medium tracking-[-0.006em] disabled:opacity-50">{t('common.next')}</button>
+                    <button disabled={page === totalPages} onClick={() => setPage(page + 1)} className="h-9 px-3 border border-border rounded text-[13px] font-medium tracking-[-0.006em] disabled:opacity-50">
+                      {t('common.next')}
+                    </button>
                   </div>
                 )}
               </>
             ) : (
               <div className="text-center py-20">
                 <SlidersHorizontal className="mx-auto mb-4 text-muted-foreground" size={48} />
-                <h3 className="text-[20px] font-semibold tracking-[-0.016em] leading-[1.2] font-display text-foreground mb-2">{t('categoryPage.noProducts')}</h3>
-                <button onClick={resetFilters} className="text-[14px] font-medium tracking-[-0.011em] text-accent hover:underline">{t('categoryPage.resetFilters')}</button>
+                <h3 className="text-[20px] font-semibold tracking-[-0.016em] leading-[1.2] font-display text-foreground mb-2">
+                  {t('categoryPage.noProducts')}
+                </h3>
+                <button onClick={resetFilters} className="text-[14px] font-medium tracking-[-0.011em] text-accent hover:underline">
+                  {t('categoryPage.resetFilters')}
+                </button>
               </div>
             )}
           </div>
         </div>
       </div>
+
+      {/* Mobile Bottom Sheet */}
       {mobileFiltersOpen && (
-        <div className="fixed inset-0 z-50 bg-foreground/50 md:hidden" onClick={() => setMobileFiltersOpen(false)}>
-          <div className="absolute right-0 top-0 h-full w-72 bg-card p-6 animate-slide-in-right" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-[18px] font-semibold tracking-[-0.016em] leading-[1.2] font-display">{t('categoryPage.filters')}</h3>
-              <button onClick={() => setMobileFiltersOpen(false)}><X size={20} /></button>
+        <>
+          {/* Backdrop */}
+          <div
+            className={`fixed inset-0 z-[60] bg-black/50 backdrop-blur-[2px] md:hidden transition-opacity duration-300 ${isClosing ? 'opacity-0' : 'opacity-100 animate-fade-in'}`}
+            onClick={closeSheet}
+          />
+
+          {/* Sheet */}
+          <div
+            className={`fixed inset-x-0 bottom-0 z-[60] md:hidden bg-card rounded-t-[1.75rem] shadow-apple-xl flex flex-col overflow-hidden ${isClosing ? 'animate-slide-out-bottom' : 'animate-slide-in-bottom'}`}
+            style={{
+              height: `${sheetHeight}vh`,
+              transition: (isDragging || isClosing) ? 'none' : 'height 0.3s cubic-bezier(0.28, 0.11, 0.32, 1)',
+            }}
+          >
+            {/* Drag handle — full-width tap target */}
+            <div
+              className="flex-shrink-0 flex flex-col items-center pt-3 pb-1 cursor-grab active:cursor-grabbing touch-none select-none"
+              onPointerDown={handlePointerDown}
+              onPointerMove={handlePointerMove}
+              onPointerUp={handlePointerUp}
+              onPointerCancel={handlePointerUp}
+            >
+              <div className="w-10 h-[5px] rounded-full bg-foreground/15" />
             </div>
-            <FilterPanel />
+
+            {/* Header */}
+            <div className="flex-shrink-0 flex items-center justify-between px-5 py-3 border-b border-border">
+              <div className="flex items-center gap-2">
+                <SlidersHorizontal size={17} className="text-accent" />
+                <span className="text-[17px] font-semibold tracking-[-0.014em] font-display">
+                  {t('categoryPage.filters')}
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                {category && (
+                  <span className="text-[12px] font-semibold tracking-[0.01em] text-accent bg-accent/10 px-2.5 py-1 rounded-full max-w-[130px] truncate">
+                    {category.name}
+                  </span>
+                )}
+                <button
+                  onClick={closeSheet}
+                  className="flex h-7 w-7 items-center justify-center rounded-full bg-muted text-muted-foreground hover:bg-muted/70 transition-colors"
+                >
+                  <X size={15} />
+                </button>
+              </div>
+            </div>
+
+            {/* Scrollable content */}
+            <div className="flex-1 overflow-y-auto overscroll-contain px-5 pt-5">
+              <FilterPanel />
+              {/* Spacer: padding-bottom on overflow containers is unreliable — use explicit element */}
+              <div style={{ height: 'calc(2.5rem + env(safe-area-inset-bottom, 24px))' }} aria-hidden="true" />
+            </div>
           </div>
-        </div>
+        </>
       )}
     </StorefrontLayout>
   );
