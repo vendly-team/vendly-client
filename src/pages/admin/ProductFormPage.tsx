@@ -573,13 +573,13 @@ export function ProductFormPage() {
                     type="button"
                     onClick={() => setGuideStep(item.number as 1 | 2 | 3)}
                     className={`relative z-10 flex min-h-32 w-full gap-3 rounded-lg border p-4 text-left transition-all ${guideStep === item.number
-                        ? 'border-accent bg-accent/10 shadow-sm'
-                        : 'border-border bg-card hover:border-accent/40 hover:bg-muted/40'
+                      ? 'border-accent bg-accent/10 shadow-sm'
+                      : 'border-border bg-card hover:border-accent/40 hover:bg-muted/40'
                       }`}
                   >
                     <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sm font-bold transition-colors ${guideStep === item.number
-                        ? 'bg-accent text-accent-foreground'
-                        : 'bg-background text-muted-foreground ring-1 ring-border'
+                      ? 'bg-accent text-accent-foreground'
+                      : 'bg-background text-muted-foreground ring-1 ring-border'
                       }`}>
                       {item.number}
                     </span>
@@ -601,7 +601,7 @@ export function ProductFormPage() {
                   </div>
                   <div className="space-y-3 p-4">
                     <div className={`rounded-lg border bg-background p-3 transition-all ${mockHighlightClass(1)}`}>
-                    <span className="mb-2 inline-flex rounded bg-accent/10 px-2 py-0.5 text-[11px] font-semibold text-accent">{t('products.guide.mockupInfoLabel', { defaultValue: '1 · Product info' })}</span>
+                      <span className="mb-2 inline-flex rounded bg-accent/10 px-2 py-0.5 text-[11px] font-semibold text-accent">{t('products.guide.mockupInfoLabel', { defaultValue: '1 · Product info' })}</span>
                       <p className="text-xs text-muted-foreground">{t('products.guide.mockupCategory', { defaultValue: 'Phone cases' })}</p>
                       <h3 className="mt-1 text-lg font-display font-bold leading-tight text-foreground">
                         {t('products.guide.mockupProductName', { defaultValue: 'iPhone 15 Pro Max protective case' })}
@@ -653,17 +653,17 @@ export function ProductFormPage() {
                 disabled={!enabled}
                 onClick={() => setActiveStep(step.id)}
                 className={`relative z-10 flex min-h-12 items-center gap-2 rounded-lg border px-3 text-left transition-all ${isActive
-                    ? 'border-accent bg-accent/10 text-foreground shadow-md shadow-accent/10'
-                    : enabled
-                      ? 'border-border bg-card text-foreground hover:border-accent/40 hover:bg-muted/40'
-                      : 'cursor-not-allowed border-border bg-muted/40 text-muted-foreground/50'
+                  ? 'border-accent bg-accent/10 text-foreground shadow-md shadow-accent/10'
+                  : enabled
+                    ? 'border-border bg-card text-foreground hover:border-accent/40 hover:bg-muted/40'
+                    : 'cursor-not-allowed border-border bg-muted/40 text-muted-foreground/50'
                   }`}
               >
                 <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold ${isActive
-                    ? 'bg-accent text-accent-foreground'
-                    : isComplete
-                      ? 'bg-success/10 text-success'
-                      : 'bg-muted text-muted-foreground'
+                  ? 'bg-accent text-accent-foreground'
+                  : isComplete
+                    ? 'bg-success/10 text-success'
+                    : 'bg-muted text-muted-foreground'
                   }`}>
                   {isComplete ? <CheckCircle2 size={16} /> : step.id}
                 </span>
@@ -682,470 +682,470 @@ export function ProductFormPage() {
         </div>
       </div>
 
-      <ResizablePanelGroup direction="horizontal" className="min-h-[720px] gap-4">
+      <ResizablePanelGroup direction="horizontal" className="min-h-[720px] gap-1">
         <ResizablePanel defaultSize={50} minSize={35} className="min-w-0">
           <div className="min-w-0 space-y-5 pr-2">
-          {activeStep === 1 && <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between gap-3 text-[18px] font-semibold tracking-[-0.016em] leading-[1.2]">
-                <span className="flex items-center gap-2">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-accent/10 text-sm font-semibold text-accent">1</span>
-                  {t('products.productInformation')}
-                </span>
-                <Button type="button" variant="ghost" size="icon" className="h-8 w-8 rounded-full" onClick={() => openGuide(1)} aria-label={t('products.guide.open', { defaultValue: 'Product creation guide' })}>
-                  <Info size={15} />
-                </Button>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="grid gap-4 lg:grid-cols-2">
-              <div className="space-y-2 lg:col-span-1">
-                <Label htmlFor="product-name">{t('common.product')} *</Label>
-                <Input
-                  id="product-name"
-                  value={infoForm.name}
-                  onFocus={() => setPreviewHighlight('name')}
-                  onBlur={() => setPreviewHighlight(null)}
-                  onChange={event => setInfoForm(previous => ({ ...previous, name: event.target.value }))}
-                  placeholder={t('products.namePlaceholder', { defaultValue: 'iPhone chexol 11, 12, 13...' })}
-                />
-              </div>
+            {activeStep === 1 && <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between gap-3 text-[18px] font-semibold tracking-[-0.016em] leading-[1.2]">
+                  <span className="flex items-center gap-2">
+                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-accent/10 text-sm font-semibold text-accent">1</span>
+                    {t('products.productInformation')}
+                  </span>
+                  <Button type="button" variant="ghost" size="icon" className="h-8 w-8 rounded-full" onClick={() => openGuide(1)} aria-label={t('products.guide.open', { defaultValue: 'Product creation guide' })}>
+                    <Info size={15} />
+                  </Button>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="grid gap-4 lg:grid-cols-2">
+                <div className="space-y-2 lg:col-span-1">
+                  <Label htmlFor="product-name">{t('common.product')} *</Label>
+                  <Input
+                    id="product-name"
+                    value={infoForm.name}
+                    onFocus={() => setPreviewHighlight('name')}
+                    onBlur={() => setPreviewHighlight(null)}
+                    onChange={event => setInfoForm(previous => ({ ...previous, name: event.target.value }))}
+                    placeholder={t('products.namePlaceholder', { defaultValue: 'iPhone chexol 11, 12, 13...' })}
+                  />
+                </div>
 
-              <div className="space-y-2">
-                <Label>{t('common.category')} *</Label>
-                <Select
-                  value={infoForm.categoryId}
-                  onValueChange={value => setInfoForm(previous => ({ ...previous, categoryId: value }))}
-                >
-                  <SelectTrigger onFocus={() => setPreviewHighlight('category')} onBlur={() => setPreviewHighlight(null)}>
-                    <SelectValue placeholder={t('products.selectCategory', { defaultValue: 'Select category' })} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {categories.map(category => (
-                      <SelectItem key={category.id} value={String(category.id)}>
-                        {category.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2 lg:col-span-1">
-                <Label htmlFor="product-description">{t('products.description')}</Label>
-                <Textarea
-                  id="product-description"
-                  value={infoForm.description}
-                  onFocus={() => setPreviewHighlight('description')}
-                  onBlur={() => setPreviewHighlight(null)}
-                  onChange={event => setInfoForm(previous => ({ ...previous, description: event.target.value }))}
-                  placeholder={t('products.descriptionPlaceholder', { defaultValue: 'Short product description for storefront.' })}
-                  className="min-h-[118px]"
-                />
-              </div>
-
-              <div className="grid content-start gap-4">
                 <div className="space-y-2">
-                  <Label>{t('products.source')}</Label>
+                  <Label>{t('common.category')} *</Label>
                   <Select
-                    value={String(infoForm.syncSource)}
-                    onValueChange={value => setInfoForm(previous => ({ ...previous, syncSource: Number(value) as SyncSource }))}
+                    value={infoForm.categoryId}
+                    onValueChange={value => setInfoForm(previous => ({ ...previous, categoryId: value }))}
                   >
-                    <SelectTrigger onFocus={() => setPreviewHighlight('badges')} onBlur={() => setPreviewHighlight(null)}>
-                      <SelectValue />
+                    <SelectTrigger onFocus={() => setPreviewHighlight('category')} onBlur={() => setPreviewHighlight(null)}>
+                      <SelectValue placeholder={t('products.selectCategory', { defaultValue: 'Select category' })} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="0">{t('products.manual', { defaultValue: 'Manual' })}</SelectItem>
-                      <SelectItem value="1">{t('products.external', { defaultValue: 'External' })}</SelectItem>
+                      {categories.map(category => (
+                        <SelectItem key={category.id} value={String(category.id)}>
+                          {category.name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
 
-                <div className="flex h-11 items-center justify-between rounded-lg border border-border bg-card px-4">
-                  <div>
-                    <Label className="text-[13px] font-medium tracking-[-0.006em]">{t('products.activeProduct', { defaultValue: 'Active product' })}</Label>
-                    <p className="text-[12px] font-normal tracking-[-0.003em] text-muted-foreground">{t('products.activeProductHint', { defaultValue: 'Visible in storefront when active.' })}</p>
-                  </div>
-                  <Switch
-                    checked={infoForm.isActive}
-                    onCheckedChange={checked => setInfoForm(previous => ({ ...previous, isActive: checked }))}
-                    onFocus={() => setPreviewHighlight('badges')}
+                <div className="space-y-2 lg:col-span-1">
+                  <Label htmlFor="product-description">{t('products.description')}</Label>
+                  <Textarea
+                    id="product-description"
+                    value={infoForm.description}
+                    onFocus={() => setPreviewHighlight('description')}
                     onBlur={() => setPreviewHighlight(null)}
-                    disabled={!isEdit}
+                    onChange={event => setInfoForm(previous => ({ ...previous, description: event.target.value }))}
+                    placeholder={t('products.descriptionPlaceholder', { defaultValue: 'Short product description for storefront.' })}
+                    className="min-h-[118px]"
                   />
                 </div>
-              </div>
-            </CardContent>
-            <div className="flex justify-end gap-2 border-t border-border px-6 py-4">
-              <Button onClick={handleSaveInfo} disabled={savingInfo}>
-                <Save size={16} className="mr-2" />
-                {savingInfo ? t('common.saving', { defaultValue: 'Saving...' }) : isEdit ? t('products.saveProductInfo', { defaultValue: 'Save product info' }) : t('products.saveAndContinue', { defaultValue: 'Save and continue' })}
-              </Button>
-              <Button
-                variant="outline"
-                disabled={!canManageVariants}
-                onClick={() => setActiveStep(2)}
-              >
-                {t('common.next', { defaultValue: 'Next' })}
-              </Button>
-            </div>
-          </Card>}
 
-          {activeStep === 2 && <Card className={!canManageVariants ? 'opacity-75' : undefined}>
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between gap-3 text-[18px] font-semibold tracking-[-0.016em] leading-[1.2]">
-                <span className="flex items-center gap-2">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-accent/10 text-sm font-semibold text-accent">2</span>
-                  {t('products.variantTypes', { defaultValue: 'Variant types' })}
-                </span>
-                <Button type="button" variant="ghost" size="icon" className="h-8 w-8 rounded-full" onClick={() => openGuide(2)} aria-label={t('products.guide.open', { defaultValue: 'Product creation guide' })}>
-                  <Info size={15} />
+                <div className="grid content-start gap-4">
+                  <div className="space-y-2">
+                    <Label>{t('products.source')}</Label>
+                    <Select
+                      value={String(infoForm.syncSource)}
+                      onValueChange={value => setInfoForm(previous => ({ ...previous, syncSource: Number(value) as SyncSource }))}
+                    >
+                      <SelectTrigger onFocus={() => setPreviewHighlight('badges')} onBlur={() => setPreviewHighlight(null)}>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="0">{t('products.manual', { defaultValue: 'Manual' })}</SelectItem>
+                        <SelectItem value="1">{t('products.external', { defaultValue: 'External' })}</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="flex h-11 items-center justify-between rounded-lg border border-border bg-card px-4">
+                    <div>
+                      <Label className="text-[13px] font-medium tracking-[-0.006em]">{t('products.activeProduct', { defaultValue: 'Active product' })}</Label>
+                      <p className="text-[12px] font-normal tracking-[-0.003em] text-muted-foreground">{t('products.activeProductHint', { defaultValue: 'Visible in storefront when active.' })}</p>
+                    </div>
+                    <Switch
+                      checked={infoForm.isActive}
+                      onCheckedChange={checked => setInfoForm(previous => ({ ...previous, isActive: checked }))}
+                      onFocus={() => setPreviewHighlight('badges')}
+                      onBlur={() => setPreviewHighlight(null)}
+                      disabled={!isEdit}
+                    />
+                  </div>
+                </div>
+              </CardContent>
+              <div className="flex justify-end gap-2 border-t border-border px-6 py-4">
+                <Button onClick={handleSaveInfo} disabled={savingInfo}>
+                  <Save size={16} className="mr-2" />
+                  {savingInfo ? t('common.saving', { defaultValue: 'Saving...' }) : isEdit ? t('products.saveProductInfo', { defaultValue: 'Save product info' }) : t('products.saveAndContinue', { defaultValue: 'Save and continue' })}
                 </Button>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {!canManageVariants && (
-                <div className="rounded-lg border border-dashed border-border bg-muted/35 p-4 text-[14px] font-normal tracking-[-0.006em] text-muted-foreground">
-                  {t('products.saveInfoFirstHint', { defaultValue: 'Save product information first, then add variant types like Color, Model, or Size.' })}
-                </div>
-              )}
-
-              {product?.variantTypes.map(type => (
-                <div key={type.id} className="rounded-lg border border-border bg-card p-3">
-                  <div className="flex flex-wrap items-center gap-3">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-md bg-muted text-muted-foreground">
-                      <Layers size={16} />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-[15px] font-semibold tracking-[-0.011em] text-foreground">{type.name}</p>
-                      <p className="text-[12px] font-normal tracking-[-0.003em] text-muted-foreground">
-                        {t('products.optionCountDisplayOrder', { count: type.options.length, order: type.displayOrder ?? '-', defaultValue: '{{count}} option · Display order {{order}}' })}
-                      </p>
-                    </div>
-                    <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive" onClick={() => handleDeleteType(type.id)}>
-                      <Trash2 size={15} />
-                    </Button>
-                  </div>
-
-                  <div className="mt-3 grid gap-2">
-                    {type.options.length > 0 && (
-                      <div className="flex flex-wrap gap-2">
-                        {type.options.map(option => (
-                          <div key={option.id} className="flex h-8 items-center gap-2 rounded-full border border-border bg-background pl-2 pr-1 text-[12px] font-medium tracking-[-0.003em]">
-                            {option.imageUrl ? (
-                              <img src={resolveMediaUrl(option.imageUrl) ?? ''} alt={option.name} className="h-5 w-5 rounded-full object-contain" />
-                            ) : (
-                              <span className="h-5 w-5 rounded-full bg-muted" />
-                            )}
-                            <span>{option.name}</span>
-                            <button
-                              type="button"
-                              onClick={() => handleDeleteOption(option.id)}
-                              className="grid h-6 w-6 place-items-center rounded-full text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
-                              aria-label={t('products.deleteOption', { defaultValue: 'Delete option' })}
-                            >
-                              <Trash2 size={12} />
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-                    <div className="grid gap-2 md:grid-cols-[minmax(0,1fr)_220px_40px]">
-                      <Input
-                        placeholder={t('products.addOptionPlaceholder', { type: type.name.toLowerCase(), defaultValue: 'Add {{type}} option' })}
-                        value={optionInputs[type.id]?.name ?? ''}
-                        onFocus={() => setPreviewHighlight('variants')}
-                        onBlur={() => setPreviewHighlight(null)}
-                        onChange={event =>
-                          setOptionInputs(previous => ({
-                            ...previous,
-                            [type.id]: { name: event.target.value, file: previous[type.id]?.file ?? null },
-                          }))
-                        }
-                        onKeyDown={event => {
-                          if (event.key === 'Enter') void handleAddOption(type.id)
-                        }}
-                      />
-                      <ImagePicker
-                        label={t('products.optionImage', { defaultValue: 'Option image' })}
-                        fileName={optionInputs[type.id]?.file?.name}
-                        onFocus={() => setPreviewHighlight('variants')}
-                        onBlur={() => setPreviewHighlight(null)}
-                        onSelect={file =>
-                          setOptionInputs(previous => ({
-                            ...previous,
-                            [type.id]: { name: previous[type.id]?.name ?? '', file },
-                          }))
-                        }
-                      />
-                      <Button
-                        type="button"
-                        size="icon"
-                        variant="outline"
-                        disabled={addingOption[type.id] || !optionInputs[type.id]?.name.trim()}
-                        onClick={() => handleAddOption(type.id)}
-                      >
-                        <Plus size={16} />
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-
-              <div className="grid gap-2 md:grid-cols-[minmax(0,1fr)_auto]">
-                <Input
-                  placeholder={t('products.newVariantTypePlaceholder', { defaultValue: 'New variant type, e.g. Color' })}
-                  value={newTypeName}
+                <Button
+                  variant="outline"
                   disabled={!canManageVariants}
-                  onFocus={() => setPreviewHighlight('variants')}
-                  onBlur={() => setPreviewHighlight(null)}
-                  onChange={event => setNewTypeName(event.target.value)}
-                  onKeyDown={event => {
-                    if (event.key === 'Enter') void handleAddType()
-                  }}
-                />
-                <Button onClick={handleAddType} disabled={!canManageVariants || addingType || !newTypeName.trim()}>
-                  <Plus size={16} className="mr-2" />
-                  {t('products.addType', { defaultValue: 'Add type' })}
+                  onClick={() => setActiveStep(2)}
+                >
+                  {t('common.next', { defaultValue: 'Next' })}
                 </Button>
               </div>
-            </CardContent>
-            <div className="flex justify-between gap-2 border-t border-border px-6 py-4">
-              <Button variant="outline" onClick={() => setActiveStep(1)}>{t('common.back', { defaultValue: 'Back' })}</Button>
-              <Button onClick={() => setActiveStep(3)} disabled={!canManageVariants}>
-                {t('products.continueToSkuData', { defaultValue: 'Continue to SKU data' })}
-              </Button>
-            </div>
-          </Card>}
+            </Card>}
 
-          {activeStep === 3 && <Card className={!canManageVariants ? 'opacity-75' : undefined}>
-            <CardHeader>
-              <CardTitle className="flex flex-wrap items-center justify-between gap-3 text-[18px] font-semibold tracking-[-0.016em] leading-[1.2]">
-                <span className="flex items-center gap-2">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-accent/10 text-sm font-semibold text-accent">3</span>
-                  {t('products.skuCombinations', { defaultValue: 'SKU combinations' })}
-                </span>
-                <div className="flex flex-wrap items-center gap-2">
-                  <Button type="button" variant="ghost" size="icon" className="h-8 w-8 rounded-full" onClick={() => openGuide(3)} aria-label={t('products.guide.open', { defaultValue: 'Product creation guide' })}>
+            {activeStep === 2 && <Card className={!canManageVariants ? 'opacity-75' : undefined}>
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between gap-3 text-[18px] font-semibold tracking-[-0.016em] leading-[1.2]">
+                  <span className="flex items-center gap-2">
+                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-accent/10 text-sm font-semibold text-accent">2</span>
+                    {t('products.variantTypes', { defaultValue: 'Variant types' })}
+                  </span>
+                  <Button type="button" variant="ghost" size="icon" className="h-8 w-8 rounded-full" onClick={() => openGuide(2)} aria-label={t('products.guide.open', { defaultValue: 'Product creation guide' })}>
                     <Info size={15} />
                   </Button>
-                  <Button size="sm" variant="outline" onClick={handleRegenerate} disabled={!canManageVariants || regenerating || (product?.variantTypes.length ?? 0) === 0}>
-                    <RefreshCw size={14} className={`mr-2 ${regenerating ? 'animate-spin' : ''}`} />
-                    {t('products.generateSkus', { defaultValue: 'Generate SKUs' })}
-                  </Button>
-                </div>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {!canManageVariants ? (
-                <div className="rounded-lg border border-dashed border-border bg-muted/35 p-4 text-[14px] font-normal tracking-[-0.006em] text-muted-foreground">
-                  {t('products.skuAvailableAfterCreate', { defaultValue: 'SKU combinations become available after product creation.' })}
-                </div>
-              ) : product.variants.length === 0 ? (
-                <div className="grid place-items-center rounded-lg border border-dashed border-border bg-muted/35 px-4 py-10 text-center">
-                  <Wand2 className="mb-3 text-muted-foreground" size={28} />
-                  <p className="text-[15px] font-semibold tracking-[-0.011em]">{t('products.noSkuCombinations', { defaultValue: 'No SKU combinations yet' })}</p>
-                  <p className="mt-1 max-w-md text-[14px] font-normal tracking-[-0.006em] text-muted-foreground">
-                    {t('products.generateSkuHint', { defaultValue: 'You already added variant options. Generate SKUs to create every color and model combination.' })}
-                  </p>
-                  <Button className="mt-4" onClick={handleRegenerate} disabled={regenerating}>
-                    <RefreshCw size={16} className={`mr-2 ${regenerating ? 'animate-spin' : ''}`} />
-                    {regenerating ? t('products.generating', { defaultValue: 'Generating...' }) : t('products.generateSkus', { defaultValue: 'Generate SKUs' })}
-                  </Button>
-                </div>
-              ) : (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="w-20">{t('common.id', { defaultValue: 'ID' })}</TableHead>
-                      <TableHead>{t('common.name', { defaultValue: 'Name' })}</TableHead>
-                      <TableHead className="w-32">{t('common.price', { defaultValue: 'Price' })}</TableHead>
-                      <TableHead className="w-28">{t('products.quantity', { defaultValue: 'Quantity' })}</TableHead>
-                      <TableHead className="w-24">{t('products.isActive', { defaultValue: 'Is active' })}</TableHead>
-                      <TableHead className="w-48">{t('products.images', { defaultValue: 'Images' })}</TableHead>
-                      <TableHead>{t('products.combination', { defaultValue: 'Combination' })}</TableHead>
-                      <TableHead className="w-24 text-right">{t('common.save', { defaultValue: 'Save' })}</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {product.variants.map(variant => {
-                      const row = variantRows[variant.id]
-                      if (!row) return null
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {!canManageVariants && (
+                  <div className="rounded-lg border border-dashed border-border bg-muted/35 p-4 text-[14px] font-normal tracking-[-0.006em] text-muted-foreground">
+                    {t('products.saveInfoFirstHint', { defaultValue: 'Save product information first, then add variant types like Color, Model, or Size.' })}
+                  </div>
+                )}
 
-                      return (
-                        <TableRow key={variant.id}>
-                          <TableCell className="font-mono text-[12px] tracking-[-0.003em] text-muted-foreground tabular-nums">{variant.id}</TableCell>
-                          <TableCell>
-                            <Input
-                              className="h-9"
-                              value={row.name}
-                              onFocus={() => setPreviewHighlight('name')}
-                              onBlur={() => setPreviewHighlight(null)}
-                              onChange={event => updateVariantRow(variant.id, { name: event.target.value })}
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <Input
-                              type="number"
-                              min={0}
-                              className="h-9"
-                              value={row.price}
-                              onFocus={() => setPreviewHighlight('skuPrice')}
-                              onBlur={() => setPreviewHighlight(null)}
-                              onChange={event => updateVariantRow(variant.id, { price: event.target.value })}
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <Input
-                              type="number"
-                              min={0}
-                              className="h-9"
-                              value={row.quantity}
-                              onFocus={() => setPreviewHighlight('skuStock')}
-                              onBlur={() => setPreviewHighlight(null)}
-                              onChange={event => updateVariantRow(variant.id, { quantity: event.target.value })}
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <Switch checked={row.isActive} onFocus={() => setPreviewHighlight('badges')} onBlur={() => setPreviewHighlight(null)} onCheckedChange={checked => updateVariantRow(variant.id, { isActive: checked })} />
-                          </TableCell>
-                          <TableCell>
-                            <ImagePicker
-                              label={t('products.primaryImage', { defaultValue: 'Primary image' })}
-                              fileName={row.image?.name}
-                              previewUrl={resolveMediaUrl(variant.images[0])}
-                              compact
-                              onFocus={() => setPreviewHighlight('image')}
-                              onBlur={() => setPreviewHighlight(null)}
-                              onSelect={file => updateVariantRow(variant.id, { image: file })}
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex flex-wrap gap-1.5">
-                              {variant.combination.length > 0 ? variant.combination.map(item => (
-                                <span key={`${variant.id}-${item.variantTypeName}-${item.optionId}`} className="rounded-md border border-border px-2 py-1 text-[11px] font-normal tracking-[-0.003em] text-muted-foreground">
-                                  {item.variantTypeName}: <span className="font-semibold tracking-[-0.005em] text-foreground">{item.optionName}</span>
-                                </span>
-                              )) : (
-                                <span className="text-[12px] font-normal tracking-[-0.003em] text-muted-foreground">{getVariantLabel(variant)}</span>
+                {product?.variantTypes.map(type => (
+                  <div key={type.id} className="rounded-lg border border-border bg-card p-3">
+                    <div className="flex flex-wrap items-center gap-3">
+                      <div className="flex h-9 w-9 items-center justify-center rounded-md bg-muted text-muted-foreground">
+                        <Layers size={16} />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-[15px] font-semibold tracking-[-0.011em] text-foreground">{type.name}</p>
+                        <p className="text-[12px] font-normal tracking-[-0.003em] text-muted-foreground">
+                          {t('products.optionCountDisplayOrder', { count: type.options.length, order: type.displayOrder ?? '-', defaultValue: '{{count}} option · Display order {{order}}' })}
+                        </p>
+                      </div>
+                      <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive" onClick={() => handleDeleteType(type.id)}>
+                        <Trash2 size={15} />
+                      </Button>
+                    </div>
+
+                    <div className="mt-3 grid gap-2">
+                      {type.options.length > 0 && (
+                        <div className="flex flex-wrap gap-2">
+                          {type.options.map(option => (
+                            <div key={option.id} className="flex h-8 items-center gap-2 rounded-full border border-border bg-background pl-2 pr-1 text-[12px] font-medium tracking-[-0.003em]">
+                              {option.imageUrl ? (
+                                <img src={resolveMediaUrl(option.imageUrl) ?? ''} alt={option.name} className="h-5 w-5 rounded-full object-contain" />
+                              ) : (
+                                <span className="h-5 w-5 rounded-full bg-muted" />
                               )}
+                              <span>{option.name}</span>
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteOption(option.id)}
+                                className="grid h-6 w-6 place-items-center rounded-full text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                                aria-label={t('products.deleteOption', { defaultValue: 'Delete option' })}
+                              >
+                                <Trash2 size={12} />
+                              </button>
                             </div>
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <Button size="sm" variant="outline" onClick={() => handleSaveVariant(variant.id)} disabled={row.saving}>
-                              {row.saving ? '...' : <CheckCircle2 size={14} />}
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      )
-                    })}
-                  </TableBody>
-                </Table>
-              )}
-            </CardContent>
-            <div className="flex justify-between gap-2 border-t border-border px-6 py-4">
-              <Button variant="outline" onClick={() => setActiveStep(2)}>{t('common.back', { defaultValue: 'Back' })}</Button>
-              {product?.variants.length > 0 && (
-                <Button onClick={handleSaveAllVariants} disabled={savingAllVariants}>
-                  <Save size={16} className="mr-2" />
-                  {savingAllVariants ? t('common.saving', { defaultValue: 'Saving...' }) : t('products.saveAllSkuData', { defaultValue: 'Save all SKU data' })}
+                          ))}
+                        </div>
+                      )}
+
+                      <div className="grid gap-2 md:grid-cols-[minmax(0,1fr)_220px_40px]">
+                        <Input
+                          placeholder={t('products.addOptionPlaceholder', { type: type.name.toLowerCase(), defaultValue: 'Add {{type}} option' })}
+                          value={optionInputs[type.id]?.name ?? ''}
+                          onFocus={() => setPreviewHighlight('variants')}
+                          onBlur={() => setPreviewHighlight(null)}
+                          onChange={event =>
+                            setOptionInputs(previous => ({
+                              ...previous,
+                              [type.id]: { name: event.target.value, file: previous[type.id]?.file ?? null },
+                            }))
+                          }
+                          onKeyDown={event => {
+                            if (event.key === 'Enter') void handleAddOption(type.id)
+                          }}
+                        />
+                        <ImagePicker
+                          label={t('products.optionImage', { defaultValue: 'Option image' })}
+                          fileName={optionInputs[type.id]?.file?.name}
+                          onFocus={() => setPreviewHighlight('variants')}
+                          onBlur={() => setPreviewHighlight(null)}
+                          onSelect={file =>
+                            setOptionInputs(previous => ({
+                              ...previous,
+                              [type.id]: { name: previous[type.id]?.name ?? '', file },
+                            }))
+                          }
+                        />
+                        <Button
+                          type="button"
+                          size="icon"
+                          variant="outline"
+                          disabled={addingOption[type.id] || !optionInputs[type.id]?.name.trim()}
+                          onClick={() => handleAddOption(type.id)}
+                        >
+                          <Plus size={16} />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+
+                <div className="grid gap-2 md:grid-cols-[minmax(0,1fr)_auto]">
+                  <Input
+                    placeholder={t('products.newVariantTypePlaceholder', { defaultValue: 'New variant type, e.g. Color' })}
+                    value={newTypeName}
+                    disabled={!canManageVariants}
+                    onFocus={() => setPreviewHighlight('variants')}
+                    onBlur={() => setPreviewHighlight(null)}
+                    onChange={event => setNewTypeName(event.target.value)}
+                    onKeyDown={event => {
+                      if (event.key === 'Enter') void handleAddType()
+                    }}
+                  />
+                  <Button onClick={handleAddType} disabled={!canManageVariants || addingType || !newTypeName.trim()}>
+                    <Plus size={16} className="mr-2" />
+                    {t('products.addType', { defaultValue: 'Add type' })}
+                  </Button>
+                </div>
+              </CardContent>
+              <div className="flex justify-between gap-2 border-t border-border px-6 py-4">
+                <Button variant="outline" onClick={() => setActiveStep(1)}>{t('common.back', { defaultValue: 'Back' })}</Button>
+                <Button onClick={() => setActiveStep(3)} disabled={!canManageVariants}>
+                  {t('products.continueToSkuData', { defaultValue: 'Continue to SKU data' })}
                 </Button>
-              )}
-            </div>
-          </Card>}
+              </div>
+            </Card>}
+
+            {activeStep === 3 && <Card className={!canManageVariants ? 'opacity-75' : undefined}>
+              <CardHeader>
+                <CardTitle className="flex flex-wrap items-center justify-between gap-3 text-[18px] font-semibold tracking-[-0.016em] leading-[1.2]">
+                  <span className="flex items-center gap-2">
+                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-accent/10 text-sm font-semibold text-accent">3</span>
+                    {t('products.skuCombinations', { defaultValue: 'SKU combinations' })}
+                  </span>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Button type="button" variant="ghost" size="icon" className="h-8 w-8 rounded-full" onClick={() => openGuide(3)} aria-label={t('products.guide.open', { defaultValue: 'Product creation guide' })}>
+                      <Info size={15} />
+                    </Button>
+                    <Button size="sm" variant="outline" onClick={handleRegenerate} disabled={!canManageVariants || regenerating || (product?.variantTypes.length ?? 0) === 0}>
+                      <RefreshCw size={14} className={`mr-2 ${regenerating ? 'animate-spin' : ''}`} />
+                      {t('products.generateSkus', { defaultValue: 'Generate SKUs' })}
+                    </Button>
+                  </div>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {!canManageVariants ? (
+                  <div className="rounded-lg border border-dashed border-border bg-muted/35 p-4 text-[14px] font-normal tracking-[-0.006em] text-muted-foreground">
+                    {t('products.skuAvailableAfterCreate', { defaultValue: 'SKU combinations become available after product creation.' })}
+                  </div>
+                ) : product.variants.length === 0 ? (
+                  <div className="grid place-items-center rounded-lg border border-dashed border-border bg-muted/35 px-4 py-10 text-center">
+                    <Wand2 className="mb-3 text-muted-foreground" size={28} />
+                    <p className="text-[15px] font-semibold tracking-[-0.011em]">{t('products.noSkuCombinations', { defaultValue: 'No SKU combinations yet' })}</p>
+                    <p className="mt-1 max-w-md text-[14px] font-normal tracking-[-0.006em] text-muted-foreground">
+                      {t('products.generateSkuHint', { defaultValue: 'You already added variant options. Generate SKUs to create every color and model combination.' })}
+                    </p>
+                    <Button className="mt-4" onClick={handleRegenerate} disabled={regenerating}>
+                      <RefreshCw size={16} className={`mr-2 ${regenerating ? 'animate-spin' : ''}`} />
+                      {regenerating ? t('products.generating', { defaultValue: 'Generating...' }) : t('products.generateSkus', { defaultValue: 'Generate SKUs' })}
+                    </Button>
+                  </div>
+                ) : (
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="w-20">{t('common.id', { defaultValue: 'ID' })}</TableHead>
+                        <TableHead>{t('common.name', { defaultValue: 'Name' })}</TableHead>
+                        <TableHead className="w-32">{t('common.price', { defaultValue: 'Price' })}</TableHead>
+                        <TableHead className="w-28">{t('products.quantity', { defaultValue: 'Quantity' })}</TableHead>
+                        <TableHead className="w-24">{t('products.isActive', { defaultValue: 'Is active' })}</TableHead>
+                        <TableHead className="w-48">{t('products.images', { defaultValue: 'Images' })}</TableHead>
+                        <TableHead>{t('products.combination', { defaultValue: 'Combination' })}</TableHead>
+                        <TableHead className="w-24 text-right">{t('common.save', { defaultValue: 'Save' })}</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {product.variants.map(variant => {
+                        const row = variantRows[variant.id]
+                        if (!row) return null
+
+                        return (
+                          <TableRow key={variant.id}>
+                            <TableCell className="font-mono text-[12px] tracking-[-0.003em] text-muted-foreground tabular-nums">{variant.id}</TableCell>
+                            <TableCell>
+                              <Input
+                                className="h-9"
+                                value={row.name}
+                                onFocus={() => setPreviewHighlight('name')}
+                                onBlur={() => setPreviewHighlight(null)}
+                                onChange={event => updateVariantRow(variant.id, { name: event.target.value })}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Input
+                                type="number"
+                                min={0}
+                                className="h-9"
+                                value={row.price}
+                                onFocus={() => setPreviewHighlight('skuPrice')}
+                                onBlur={() => setPreviewHighlight(null)}
+                                onChange={event => updateVariantRow(variant.id, { price: event.target.value })}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Input
+                                type="number"
+                                min={0}
+                                className="h-9"
+                                value={row.quantity}
+                                onFocus={() => setPreviewHighlight('skuStock')}
+                                onBlur={() => setPreviewHighlight(null)}
+                                onChange={event => updateVariantRow(variant.id, { quantity: event.target.value })}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Switch checked={row.isActive} onFocus={() => setPreviewHighlight('badges')} onBlur={() => setPreviewHighlight(null)} onCheckedChange={checked => updateVariantRow(variant.id, { isActive: checked })} />
+                            </TableCell>
+                            <TableCell>
+                              <ImagePicker
+                                label={t('products.primaryImage', { defaultValue: 'Primary image' })}
+                                fileName={row.image?.name}
+                                previewUrl={resolveMediaUrl(variant.images[0])}
+                                compact
+                                onFocus={() => setPreviewHighlight('image')}
+                                onBlur={() => setPreviewHighlight(null)}
+                                onSelect={file => updateVariantRow(variant.id, { image: file })}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex flex-wrap gap-1.5">
+                                {variant.combination.length > 0 ? variant.combination.map(item => (
+                                  <span key={`${variant.id}-${item.variantTypeName}-${item.optionId}`} className="rounded-md border border-border px-2 py-1 text-[11px] font-normal tracking-[-0.003em] text-muted-foreground">
+                                    {item.variantTypeName}: <span className="font-semibold tracking-[-0.005em] text-foreground">{item.optionName}</span>
+                                  </span>
+                                )) : (
+                                  <span className="text-[12px] font-normal tracking-[-0.003em] text-muted-foreground">{getVariantLabel(variant)}</span>
+                                )}
+                              </div>
+                            </TableCell>
+                            <TableCell className="text-right">
+                              <Button size="sm" variant="outline" onClick={() => handleSaveVariant(variant.id)} disabled={row.saving}>
+                                {row.saving ? '...' : <CheckCircle2 size={14} />}
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        )
+                      })}
+                    </TableBody>
+                  </Table>
+                )}
+              </CardContent>
+              <div className="flex justify-between gap-2 border-t border-border px-6 py-4">
+                <Button variant="outline" onClick={() => setActiveStep(2)}>{t('common.back', { defaultValue: 'Back' })}</Button>
+                {product?.variants.length > 0 && (
+                  <Button onClick={handleSaveAllVariants} disabled={savingAllVariants}>
+                    <Save size={16} className="mr-2" />
+                    {savingAllVariants ? t('common.saving', { defaultValue: 'Saving...' }) : t('products.saveAllSkuData', { defaultValue: 'Save all SKU data' })}
+                  </Button>
+                )}
+              </div>
+            </Card>}
           </div>
         </ResizablePanel>
 
         <ResizableHandle withHandle className="hidden w-4 bg-transparent after:w-1 xl:flex" />
 
         <ResizablePanel defaultSize={50} minSize={28} className="min-w-0" onResize={setPreviewPanelSize}>
-        <aside className="min-w-0 pl-2">
-          <div className="sticky top-20 space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-[18px] font-semibold tracking-[-0.016em] leading-[1.2]">
-                  <Package size={18} />
-                  {t('products.livePreview', { defaultValue: 'Live preview' })}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className={previewIsHorizontal ? 'grid gap-4 lg:grid-cols-[minmax(180px,42%)_minmax(0,1fr)]' : 'space-y-4'}>
-                  <div className={`${previewIsHorizontal ? 'min-h-80' : 'aspect-[4/3]'} overflow-hidden rounded-lg border border-border bg-muted transition-all ${previewHighlightClass('image')}`}>
-                    {previewImage ? (
-                      <img src={previewImage} alt="" className="h-full w-full object-contain" />
-                    ) : (
-                      <div className="grid h-full place-items-center text-muted-foreground">
-                        <Package size={42} />
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="min-w-0 space-y-4">
-                    <div className="space-y-2 rounded-lg p-2">
-                      <p className={`inline-block rounded px-1 text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground transition-all ${previewHighlightClass('category')}`}>
-                        {selectedCategory?.name ?? product?.categoryName ?? t('common.category', { defaultValue: 'Category' })}
-                      </p>
-                      <h2 className={`${previewIsHorizontal ? 'text-[24px]' : 'text-[20px]'} rounded px-1 font-display font-bold tracking-[-0.018em] leading-[1.15] transition-all ${previewHighlightClass('name')}`}>
-                        {infoForm.name || t('products.productNameFallback', { defaultValue: 'Product name' })}
-                      </h2>
-                      {infoForm.description && (
-                        <p className={`line-clamp-3 rounded px-1 text-[14px] font-normal tracking-[-0.006em] leading-[1.5] text-muted-foreground transition-all ${previewHighlightClass('description')}`}>{infoForm.description}</p>
+          <aside className="min-w-0 pl-2">
+            <div className="sticky top-20 space-y-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-[18px] font-semibold tracking-[-0.016em] leading-[1.2]">
+                    <Package size={18} />
+                    {t('products.livePreview', { defaultValue: 'Live preview' })}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className={previewIsHorizontal ? 'grid gap-4 lg:grid-cols-[minmax(180px,42%)_minmax(0,1fr)]' : 'space-y-4'}>
+                    <div className={`${previewIsHorizontal ? 'min-h-80' : 'aspect-[4/3]'} overflow-hidden rounded-lg border border-border bg-muted transition-all ${previewHighlightClass('image')}`}>
+                      {previewImage ? (
+                        <img src={previewImage} alt="" className="h-full w-full object-contain" />
+                      ) : (
+                        <div className="grid h-full place-items-center text-muted-foreground">
+                          <Package size={42} />
+                        </div>
                       )}
                     </div>
 
-                    <div className={`flex flex-wrap gap-2 rounded-lg p-2 transition-all ${previewHighlightClass('badges')}`}>
-                      <Badge variant={infoForm.isActive ? 'default' : 'secondary'}>{infoForm.isActive ? t('common.active', { defaultValue: 'Active' }) : t('common.inactive', { defaultValue: 'Inactive' })}</Badge>
-                      <Badge variant="outline">{infoForm.syncSource === 0 ? t('products.manual', { defaultValue: 'Manual' }) : t('products.external', { defaultValue: 'External' })}</Badge>
-                      <Badge variant="outline">{product?.variants.length ?? 0} {t('products.sku', { defaultValue: 'SKU' })}</Badge>
-                    </div>
-
-                    {product?.variantTypes.length ? (
-                      <div className={`space-y-3 rounded-lg border-t border-border p-2 pt-3 transition-all ${previewHighlightClass('variants')}`}>
-                        {product.variantTypes.map(type => (
-                          <div key={type.id}>
-                            <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground">{type.name}</p>
-                            <div className="flex flex-wrap gap-2">
-                              {type.options.slice(0, 6).map(option => (
-                                <span key={option.id} className="rounded-md border border-border px-2 py-1 text-[12px] font-medium tracking-[-0.003em]">
-                                  {option.name}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        ))}
+                    <div className="min-w-0 space-y-4">
+                      <div className="space-y-2 rounded-lg p-2">
+                        <p className={`inline-block rounded px-1 text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground transition-all ${previewHighlightClass('category')}`}>
+                          {selectedCategory?.name ?? product?.categoryName ?? t('common.category', { defaultValue: 'Category' })}
+                        </p>
+                        <h2 className={`${previewIsHorizontal ? 'text-[24px]' : 'text-[20px]'} rounded px-1 font-display font-bold tracking-[-0.018em] leading-[1.15] transition-all ${previewHighlightClass('name')}`}>
+                          {infoForm.name || t('products.productNameFallback', { defaultValue: 'Product name' })}
+                        </h2>
+                        {infoForm.description && (
+                          <p className={`line-clamp-3 rounded px-1 text-[14px] font-normal tracking-[-0.006em] leading-[1.5] text-muted-foreground transition-all ${previewHighlightClass('description')}`}>{infoForm.description}</p>
+                        )}
                       </div>
-                    ) : null}
 
-                    <div className="rounded-lg bg-accent/10 p-4">
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-accent">{t('products.startingPrice', { defaultValue: 'Starting price' })}</p>
-                      <p className={`mt-1 rounded px-1 text-[24px] font-bold tracking-[-0.018em] leading-[1.15] font-display text-accent tabular-nums transition-all ${previewHighlightClass('skuPrice')}`}>
-                        {previewPrice > 0 ? `${formatCurrency(previewPrice)} ${t('products.currencySom', { defaultValue: "so'm" })}` : t('products.setSkuPrice', { defaultValue: 'Set SKU price' })}
-                      </p>
-                      <p className={`mt-1 inline-block rounded px-1 text-[12px] font-normal tracking-[-0.003em] text-muted-foreground transition-all ${previewHighlightClass('skuStock')}`}>
-                        {t('products.quantity', { defaultValue: 'Quantity' })}
-                      </p>
+                      <div className={`flex flex-wrap gap-2 rounded-lg p-2 transition-all ${previewHighlightClass('badges')}`}>
+                        <Badge variant={infoForm.isActive ? 'default' : 'secondary'}>{infoForm.isActive ? t('common.active', { defaultValue: 'Active' }) : t('common.inactive', { defaultValue: 'Inactive' })}</Badge>
+                        <Badge variant="outline">{infoForm.syncSource === 0 ? t('products.manual', { defaultValue: 'Manual' }) : t('products.external', { defaultValue: 'External' })}</Badge>
+                        <Badge variant="outline">{product?.variants.length ?? 0} {t('products.sku', { defaultValue: 'SKU' })}</Badge>
+                      </div>
+
+                      {product?.variantTypes.length ? (
+                        <div className={`space-y-3 rounded-lg border-t border-border p-2 pt-3 transition-all ${previewHighlightClass('variants')}`}>
+                          {product.variantTypes.map(type => (
+                            <div key={type.id}>
+                              <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground">{type.name}</p>
+                              <div className="flex flex-wrap gap-2">
+                                {type.options.slice(0, 6).map(option => (
+                                  <span key={option.id} className="rounded-md border border-border px-2 py-1 text-[12px] font-medium tracking-[-0.003em]">
+                                    {option.name}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : null}
+
+                      <div className="rounded-lg bg-accent/10 p-4">
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-accent">{t('products.startingPrice', { defaultValue: 'Starting price' })}</p>
+                        <p className={`mt-1 rounded px-1 text-[24px] font-bold tracking-[-0.018em] leading-[1.15] font-display text-accent tabular-nums transition-all ${previewHighlightClass('skuPrice')}`}>
+                          {previewPrice > 0 ? `${formatCurrency(previewPrice)} ${t('products.currencySom', { defaultValue: "so'm" })}` : t('products.setSkuPrice', { defaultValue: 'Set SKU price' })}
+                        </p>
+                        <p className={`mt-1 inline-block rounded px-1 text-[12px] font-normal tracking-[-0.003em] text-muted-foreground transition-all ${previewHighlightClass('skuStock')}`}>
+                          {t('products.quantity', { defaultValue: 'Quantity' })}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
 
-            <Card>
-              <CardContent className="space-y-2 pt-6 text-[14px] font-normal tracking-[-0.006em]">
-                <div className="flex items-start gap-2">
-                  <span className="mt-1 h-2 w-2 rounded-full bg-accent" />
-                  <p className="text-muted-foreground">{t('products.createFirstHint', { defaultValue: 'Create product first, then manage variants from the same page.' })}</p>
-                </div>
-                <div className="flex items-start gap-2">
-                  <span className="mt-1 h-2 w-2 rounded-full bg-accent" />
-                  <p className="text-muted-foreground">{t('products.refreshPreservesHint', { defaultValue: 'Refreshing combinations preserves existing matching SKUs.' })}</p>
-                </div>
-                <Link to="/admin/products" className="inline-flex pt-2 text-[14px] font-medium tracking-[-0.011em] text-accent hover:underline">
-                  {t('products.backToProducts', { defaultValue: 'Back to products' })}
-                </Link>
-              </CardContent>
-            </Card>
-          </div>
-        </aside>
+              <Card>
+                <CardContent className="space-y-2 pt-6 text-[14px] font-normal tracking-[-0.006em]">
+                  <div className="flex items-start gap-2">
+                    <span className="mt-1 h-2 w-2 rounded-full bg-accent" />
+                    <p className="text-muted-foreground">{t('products.createFirstHint', { defaultValue: 'Create product first, then manage variants from the same page.' })}</p>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="mt-1 h-2 w-2 rounded-full bg-accent" />
+                    <p className="text-muted-foreground">{t('products.refreshPreservesHint', { defaultValue: 'Refreshing combinations preserves existing matching SKUs.' })}</p>
+                  </div>
+                  <Link to="/admin/products" className="inline-flex pt-2 text-[14px] font-medium tracking-[-0.011em] text-accent hover:underline">
+                    {t('products.backToProducts', { defaultValue: 'Back to products' })}
+                  </Link>
+                </CardContent>
+              </Card>
+            </div>
+          </aside>
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>

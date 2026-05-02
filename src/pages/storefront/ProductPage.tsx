@@ -136,7 +136,7 @@ const ProductPage = () => {
   return (
     <StorefrontLayout>
       <div className="container py-6 animate-fade-in">
-        <div className="mb-6 flex items-center gap-2 text-[13px] font-normal tracking-[-0.006em] text-muted-foreground">
+        <div className="mb-6 hidden md:flex items-center gap-2 text-[13px] font-normal tracking-[-0.006em] text-muted-foreground">
           <Link to="/" className="hover:text-accent">{t('nav.home')}</Link> <span>/</span>
           <Link to={`/category/${createCategorySlug(product.categoryName)}`} className="hover:text-accent">{product.categoryName}</Link> <span>/</span>
           <span className="line-clamp-1 text-foreground font-medium">{product.name}</span>
