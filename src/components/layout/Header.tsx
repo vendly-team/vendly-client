@@ -118,7 +118,7 @@ const Header = () => {
   );
 
   return (
-    <header className={`sticky top-0 z-50 border-b transition-all duration-300 ${isTelegram && (isIos || isAndroid) ? 'pt-24' : ''} ${scrolled ? 'bg-background/70 backdrop-blur-xl backdrop-saturate-150 border-black/[0.06] shadow-[0_4px_24px_rgba(0,0,0,0.06)]' : 'bg-card border-border'}`}>
+    <header className={`sticky top-0 z-50 border-b transition-all duration-300 ${isTelegram && isIos ? 'pt-24' : isTelegram && isAndroid ? 'pt-20' : ''} ${scrolled ? 'bg-background/70 backdrop-blur-xl backdrop-saturate-150 border-black/[0.06] shadow-[0_4px_24px_rgba(0,0,0,0.06)]' : 'bg-card border-border'}`}>
       <div className="container flex items-center gap-4 py-3">
 
         <Link to="/" className="flex items-center gap-2 shrink-0">

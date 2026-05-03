@@ -113,7 +113,7 @@ const AdminLayout = () => {
 
       {/* Mobile drawer */}
       <aside className={`fixed inset-y-0 left-0 z-50 flex flex-col w-72 bg-sidebar text-sidebar-foreground border-r border-sidebar-border transition-transform duration-300 ease-[cubic-bezier(0.28,0.11,0.32,1)] md:hidden ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        <div className={`shrink-0 border-b border-sidebar-border px-4 flex items-center justify-between ${isTelegram && (isIos || isAndroid) ? 'pt-24 h-auto' : 'h-16'}`}>
+        <div className={`shrink-0 border-b border-sidebar-border px-4 flex items-center justify-between ${isTelegram && isIos ? 'pt-24 h-auto' : isTelegram && isAndroid ? 'pt-20 h-auto' : 'h-16'}`}>
           <div className="flex items-center gap-2">
             <OptoLogo />
           </div>
@@ -131,7 +131,7 @@ const AdminLayout = () => {
 
       {/* Desktop sidebar */}
       <aside className={`${collapsed ? 'w-16' : 'w-60'} bg-sidebar text-sidebar-foreground border-r border-sidebar-border shrink-0 transition-[width] duration-300 ease-in-out hidden md:flex flex-col`}>
-        <div className={`shrink-0 border-b border-sidebar-border px-3 flex bg-card items-center ${isTelegram && (isIos || isAndroid) ? 'pt-24 h-auto' : 'h-16'}`}>
+        <div className={`shrink-0 border-b border-sidebar-border px-3 flex bg-card items-center ${isTelegram && isIos ? 'pt-24 h-auto' : isTelegram && isAndroid ? 'pt-20 h-auto' : 'h-16'}`}>
           <button
             type="button"
             onClick={() => setCollapsed(!collapsed)}
@@ -149,7 +149,7 @@ const AdminLayout = () => {
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
 
         {/* Sticky header */}
-        <header className={`shrink-0 bg-card border-b border-border flex items-center justify-between px-4 ${isTelegram && (isIos || isAndroid) ? 'pt-24 h-auto' : 'h-16'}`}>
+        <header className={`shrink-0 bg-card border-b border-border flex items-center justify-between px-4 ${isTelegram && isIos ? 'pt-24 h-auto' : isTelegram && isAndroid ? 'pt-20 h-auto' : 'h-16'}`}>
           <div className="flex items-center gap-2">
             <button
               type="button"

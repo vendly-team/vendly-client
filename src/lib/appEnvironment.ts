@@ -3,7 +3,8 @@ const SESSION_KEY = 'app-source';
 if (typeof window !== 'undefined') {
   try {
     const params = new URLSearchParams(window.location.search);
-    if (params.get('from') === 'telegram') {
+    const from = params.get('from');
+    if (from === 'telegram' || from === 'tg') {
       sessionStorage.setItem(SESSION_KEY, 'tg');
     }
   } catch {}
