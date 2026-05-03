@@ -125,6 +125,9 @@ export function initAppEnvironment(): void {
   if (tg) {
     tg.ready();
     tg.expand();
+    if (typeof tg.requestFullscreen === 'function') {
+      tg.requestFullscreen();
+    }
     tg.onEvent('viewportChanged', update);
     tg.onEvent('themeChanged', update);
   }
