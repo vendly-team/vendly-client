@@ -1,4 +1,6 @@
-export const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? "/backend").replace(/\/$/, "");
+export const API_BASE_URL = (
+  import.meta.env.VITE_API_BASE_URL ?? "https://api-stage-opto.vestor.uz"
+).replace(/\/$/, "");
 
 export const getStoredAccessToken = () => {
   const directToken =
