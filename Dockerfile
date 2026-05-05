@@ -7,7 +7,7 @@ ARG BUILD_MODE=production
 ENV BUILD_MODE=${BUILD_MODE}
 
 COPY package.json bun.lock ./
-RUN bun install --frozen-lockfile
+RUN bun install
 
 COPY . .
 RUN bunx vite build --mode "$BUILD_MODE"
