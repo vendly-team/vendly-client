@@ -497,7 +497,11 @@
     "recentSearches": "Сўнгги қидирувлар",
     "results": "'{{query}}' бўйича {{count}} та натижа",
     "noResults": "Маҳсулот топилмади",
-    "tryDifferent": "Бошқа сўз билан қидиринг"
+    "tryDifferent": "Бошқа сўз билан қидиринг",
+    "minChars": "Камида {{count}} та белги киритинг",
+    "errorTitle": "Қидирувда хатолик",
+    "viewAll": "Барча {{count}} та натижани кўриш",
+    "variantsCount": "{{count}} вариант"
   },
   "profile": {
     "myInfo": "Менинг маълумотларим",
