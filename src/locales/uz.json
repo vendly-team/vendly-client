@@ -497,7 +497,11 @@
     "recentSearches": "So'nggi qidiruvlar",
     "results": "'{{query}}' bo'yicha {{count}} ta natija",
     "noResults": "Mahsulot topilmadi",
-    "tryDifferent": "Boshqa so'z bilan qidiring"
+    "tryDifferent": "Boshqa so'z bilan qidiring",
+    "minChars": "Kamida {{count}} ta belgi kiriting",
+    "errorTitle": "Qidiruvda xatolik",
+    "viewAll": "Barcha {{count}} ta natijani ko'rish",
+    "variantsCount": "{{count}} variant"
   },
   "profile": {
     "myInfo": "Mening ma'lumotlarim",

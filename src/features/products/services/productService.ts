@@ -2,6 +2,7 @@ import { apiRequest } from '@/shared/api/http'
 import type {
   ProductListResponse,
   ProductAdminDetailResponse,
+  ProductSearchResponse,
   CreateProductRequest,
   UpdateProductRequest,
   CreateVariantTypeRequest,
@@ -15,6 +16,12 @@ export const productService = {
 
   getById: (id: number) =>
     apiRequest<ProductAdminDetailResponse>(`/api/products/${id}`),
+
+  search: (query: string, signal?: AbortSignal) =>
+    apiRequest<ProductSearchResponse[]>(
+      `/api/products/search?q=${encodeURIComponent(query)}`,
+      { signal },
+    ),
 
   create: (data: CreateProductRequest) =>
     apiRequest<number>('/api/products', {

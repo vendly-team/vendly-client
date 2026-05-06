@@ -497,7 +497,11 @@
     "recentSearches": "Недавние запросы",
     "results": "{{count}} результат(ов) по запросу '{{query}}'",
     "noResults": "Товары не найдены",
-    "tryDifferent": "Попробуйте другой запрос"
+    "tryDifferent": "Попробуйте другой запрос",
+    "minChars": "Введите минимум {{count}} символа",
+    "errorTitle": "Ошибка поиска",
+    "viewAll": "Показать все {{count}} результат(ов)",
+    "variantsCount": "{{count}} вариант(ов)"
   },
   "profile": {
     "myInfo": "Мои данные",

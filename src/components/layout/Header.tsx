@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import { Search, ShoppingCart, User, Heart, X, ChevronDown, LogOut, Package, Shield, Globe } from "lucide-react";
+import { Search, ShoppingCart, User, Heart, X, ChevronDown, LogOut, Package, Shield, Globe, Loader2 } from "lucide-react";
 import { OptoLogo } from "@/components/ui/OptoLogo";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { categoriesApi, mapCategoryDto } from "@/shared/api/categoriesApi";
 import type { Category } from "@/shared/types";
@@ -10,6 +10,9 @@ import { useAuthStore } from "@/shared/store/authStore";
 import { useTranslation } from "react-i18next";
 import { languages } from "@/lib/i18n";
 import { useAppEnvironment } from "@/hooks/useAppEnvironment";
+import { useProductSearch } from "@/features/products/hooks/useProductSearch";
+import { PRODUCT_SEARCH_MIN_LENGTH } from "@/features/products/types";
+import { SearchSuggestionsPanel } from "@/components/storefront/SearchSuggestionsPanel";
 
 const LANG_LABELS: Record<string, string> = {
   en: 'EN',
@@ -17,6 +20,8 @@ const LANG_LABELS: Record<string, string> = {
   uz: "O'Z",
   'uz-Cyrl': 'ЎЗ',
 };
+
+const MAX_SUGGESTIONS = 6;
 
 const Header = () => {
   const { t, i18n } = useTranslation();
@@ -36,11 +41,31 @@ const Header = () => {
   const mobileLangRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const mobileSearchInputRef = useRef<HTMLInputElement>(null);
+  const desktopSearchRef = useRef<HTMLDivElement>(null);
+  const [searchSuggestionsOpen, setSearchSuggestionsOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(-1);
 
+  const trimmedQuery = searchQuery.trim();
+  const { results: searchResults, loading: searchLoading, error: searchError } =
+    useProductSearch(trimmedQuery);
+  const hasMinChars = trimmedQuery.length >= PRODUCT_SEARCH_MIN_LENGTH;
+  const showDesktopSuggestions = searchOpen && searchSuggestionsOpen && hasMinChars;
+  const showMobileSuggestions = mobileSearchOpen && hasMinChars;
+  const visibleResults = searchResults.slice(0, MAX_SUGGESTIONS);
+
+  // Reset active index when results change
+  useEffect(() => {
+    setActiveIndex(-1);
+  }, [trimmedQuery]);
+
+  // Close handlers
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (profileRef.current && !profileRef.current.contains(e.target as Node)) setProfileOpen(false);
       if (mobileLangRef.current && !mobileLangRef.current.contains(e.target as Node)) setMobileLangOpen(false);
+      if (desktopSearchRef.current && !desktopSearchRef.current.contains(e.target as Node)) {
+        setSearchSuggestionsOpen(false);
+      }
     };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
@@ -78,16 +103,86 @@ const Header = () => {
   useEffect(() => { if (searchOpen) searchInputRef.current?.focus(); }, [searchOpen]);
   useEffect(() => { if (mobileSearchOpen) mobileSearchInputRef.current?.focus(); }, [mobileSearchOpen]);
 
+  // Lock body scroll while desktop spotlight is open
+  useEffect(() => {
+    if (!showDesktopSuggestions) return;
+    const original = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = original; };
+  }, [showDesktopSuggestions]);
+
+  const closeAllSearch = useCallback(() => {
+    setSearchSuggestionsOpen(false);
+    setMobileSearchOpen(false);
+    searchInputRef.current?.blur();
+    mobileSearchInputRef.current?.blur();
+  }, []);
+
+  const closeAfterNavigate = useCallback(() => {
+    setSearchSuggestionsOpen(false);
+    setMobileSearchOpen(false);
+    setSearchQuery('');
+    setActiveIndex(-1);
+  }, []);
+
+  const goToSearchPage = useCallback(() => {
+    if (!hasMinChars) return;
+    navigate(`/search?q=${encodeURIComponent(trimmedQuery)}`);
+    closeAfterNavigate();
+  }, [hasMinChars, navigate, trimmedQuery, closeAfterNavigate]);
+
+  // Global Esc to close
+  useEffect(() => {
+    if (!showDesktopSuggestions && !showMobileSuggestions) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeAllSearch();
+      }
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [showDesktopSuggestions, showMobileSuggestions, closeAllSearch]);
+
+  // Keyboard navigation in input (Arrow Up/Down/Enter)
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!hasMinChars || visibleResults.length === 0) return;
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setActiveIndex((prev) => (prev + 1) % visibleResults.length);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setActiveIndex((prev) => (prev <= 0 ? visibleResults.length - 1 : prev - 1));
+    } else if (e.key === 'Enter') {
+      if (activeIndex >= 0 && activeIndex < visibleResults.length) {
+        e.preventDefault();
+        const target = visibleResults[activeIndex];
+        const url = target.redirectUrl;
+        if (url) {
+          const path = url.startsWith('http')
+            ? new URL(url).pathname + new URL(url).search
+            : url;
+          navigate(path);
+          closeAfterNavigate();
+        }
+      }
+      // Otherwise let the form submit handler navigate to /search?q=
+    }
+  };
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     const isDesktop = window.matchMedia('(min-width: 768px)').matches;
     if (isDesktop && !searchOpen) { setSearchOpen(true); return; }
-    if (searchQuery.trim().length >= 4) navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+    if (hasMinChars) goToSearchPage();
   };
 
   const handleDesktopSearchBlur = () => {
     window.setTimeout(() => {
-      if (!searchInputRef.current?.value.trim()) setSearchOpen(false);
+      if (!searchInputRef.current?.value.trim() && !searchSuggestionsOpen) {
+        setSearchOpen(false);
+      }
     }, 120);
   };
 
@@ -118,7 +213,17 @@ const Header = () => {
   );
 
   return (
-    <header className={`sticky top-0 z-50 border-b transition-all duration-300 ${isTelegram && isIos ? 'pt-24' : isTelegram && isAndroid ? 'pt-16' : ''} ${scrolled ? 'bg-background/70 backdrop-blur-xl backdrop-saturate-150 border-black/[0.06] shadow-[0_4px_24px_rgba(0,0,0,0.06)]' : 'bg-card border-border'}`}>
+    <>
+      {/* Spotlight backdrop — dims rest of page when desktop dropdown is open */}
+      <div
+        aria-hidden={!showDesktopSuggestions}
+        onClick={closeAllSearch}
+        className={`hidden md:block fixed inset-0 z-40 bg-foreground/30 backdrop-blur-[2px] transition-opacity duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          showDesktopSuggestions ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+      />
+
+      <header className={`sticky top-0 z-50 border-b transition-all duration-300 ${isTelegram && isIos ? 'pt-24' : isTelegram && isAndroid ? 'pt-16' : ''} ${scrolled ? 'bg-background/70 backdrop-blur-xl backdrop-saturate-150 border-black/[0.06] shadow-[0_4px_24px_rgba(0,0,0,0.06)]' : 'bg-card border-border'}`}>
       <div className="container flex items-center gap-4 py-3">
 
         <Link to="/" className="flex items-center gap-2 shrink-0">
@@ -166,28 +271,63 @@ const Header = () => {
         {/* ── Desktop icon row ──────────────────────────── */}
         <div className="hidden md:flex items-center gap-1 ml-auto">
           {/* Expanding search */}
-          <form
-            onSubmit={handleSearch}
-            className={`relative h-10 shrink-0 overflow-hidden rounded-full border bg-background transition-[width,border-color,box-shadow] duration-500 ease-out ${searchOpen ? 'w-[min(34vw,22rem)] border-accent/60 shadow-sm' : 'w-10 border-transparent hover:border-border'}`}
-          >
-            <input
-              ref={searchInputRef}
-              type="text"
-              placeholder={t("header.searchPlaceholder")}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onFocus={() => setSearchOpen(true)}
-              onBlur={handleDesktopSearchBlur}
-              className={`h-full w-full bg-transparent pl-4 pr-10 text-[14px] font-normal tracking-[-0.011em] text-foreground placeholder:text-muted-foreground outline-none transition-opacity duration-200 ${searchOpen ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
-            />
-            <button
-              type="submit"
-              className={`absolute right-0 top-0 grid h-10 w-10 place-items-center rounded-full text-muted-foreground transition-colors hover:text-accent ${searchOpen ? '' : 'search-icon-shake'}`}
-              aria-label="Search"
+          <div ref={desktopSearchRef} className="relative">
+            <form
+              onSubmit={handleSearch}
+              role="search"
+              className={`relative h-10 shrink-0 overflow-hidden rounded-full border bg-background transition-[width,border-color,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${searchOpen ? 'w-[min(40vw,28rem)] border-accent/60 shadow-[0_4px_24px_rgba(0,0,0,0.08)]' : 'w-10 border-transparent hover:border-border'} ${showDesktopSuggestions ? 'ring-2 ring-accent/30' : ''}`}
             >
-              <Search size={18} aria-hidden="true" />
-            </button>
-          </form>
+              <input
+                ref={searchInputRef}
+                type="text"
+                placeholder={t("header.searchPlaceholder")}
+                value={searchQuery}
+                onChange={(e) => { setSearchQuery(e.target.value); setSearchSuggestionsOpen(true); }}
+                onFocus={() => { setSearchOpen(true); setSearchSuggestionsOpen(true); }}
+                onBlur={handleDesktopSearchBlur}
+                onKeyDown={handleSearchKeyDown}
+                role="combobox"
+                aria-expanded={showDesktopSuggestions}
+                aria-autocomplete="list"
+                aria-controls="search-suggestions-desktop"
+                aria-activedescendant={activeIndex >= 0 ? `suggestion-${visibleResults[activeIndex]?.id}` : undefined}
+                className={`h-full w-full bg-transparent pl-4 pr-10 text-[14px] font-normal tracking-[-0.011em] text-foreground placeholder:text-muted-foreground outline-none transition-opacity duration-200 ${searchOpen ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+              />
+              <button
+                type="submit"
+                className={`absolute right-0 top-0 grid h-10 w-10 place-items-center rounded-full text-muted-foreground transition-colors hover:text-accent ${searchOpen ? '' : 'search-icon-shake'}`}
+                aria-label="Search"
+              >
+                {searchLoading && hasMinChars
+                  ? <Loader2 size={18} className="animate-spin" aria-hidden="true" />
+                  : <Search size={18} aria-hidden="true" />}
+              </button>
+            </form>
+
+            {/* Suggestions dropdown — animated */}
+            <div
+              id="search-suggestions-desktop"
+              className={`absolute right-0 top-full mt-2 w-[min(40vw,28rem)] z-50 origin-top transition-all duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                showDesktopSuggestions
+                  ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto'
+                  : 'opacity-0 -translate-y-2 scale-[0.98] pointer-events-none'
+              }`}
+            >
+              <div className="bg-card border border-border rounded-xl shadow-[0_16px_48px_-8px_rgba(0,0,0,0.18)] max-h-[70vh] overflow-y-auto">
+                <SearchSuggestionsPanel
+                  query={trimmedQuery}
+                  results={searchResults}
+                  loading={searchLoading}
+                  error={searchError}
+                  activeIndex={activeIndex}
+                  onHover={setActiveIndex}
+                  onNavigate={closeAfterNavigate}
+                  onViewAll={goToSearchPage}
+                  maxItems={MAX_SUGGESTIONS}
+                />
+              </div>
+            </div>
+          </div>
 
           <Link to="/profile/wishlist" className="p-2 text-foreground hover:text-accent transition-colors">
             <Heart size={20} />
@@ -249,7 +389,7 @@ const Header = () => {
       {/* Mobile search dropdown */}
       <div className={`grid md:hidden transition-[grid-template-rows] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${mobileSearchOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
         <div className="overflow-hidden">
-          <form onSubmit={handleSearch} className="px-4 pb-3 pt-1">
+          <form onSubmit={handleSearch} role="search" className="px-4 pb-3 pt-1">
             <div className="relative">
               <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-foreground/40 pointer-events-none" />
               <input
@@ -258,10 +398,52 @@ const Header = () => {
                 placeholder={t("header.searchPlaceholder")}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full h-10 pl-9 pr-4 rounded-full border border-border bg-background text-[14px] font-normal tracking-[-0.011em] text-foreground placeholder:text-muted-foreground glass-input"
+                onKeyDown={handleSearchKeyDown}
+                role="combobox"
+                aria-expanded={showMobileSuggestions}
+                aria-autocomplete="list"
+                aria-controls="search-suggestions-mobile"
+                className="w-full h-10 pl-9 pr-9 rounded-full border border-border bg-background text-[14px] font-normal tracking-[-0.011em] text-foreground placeholder:text-muted-foreground glass-input"
               />
+              {searchLoading && hasMinChars && (
+                <Loader2
+                  size={16}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground animate-spin pointer-events-none"
+                />
+              )}
+              {!searchLoading && searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery('')}
+                  aria-label={t('common.clear', { defaultValue: 'Clear' })}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-muted-foreground hover:text-foreground"
+                >
+                  <X size={14} />
+                </button>
+              )}
             </div>
           </form>
+
+          <div
+            id="search-suggestions-mobile"
+            className={`overflow-hidden transition-[max-height,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+              showMobileSuggestions ? 'max-h-[60vh] opacity-100' : 'max-h-0 opacity-0'
+            }`}
+          >
+            <div className="border-t border-border bg-card max-h-[60vh] overflow-y-auto">
+              <SearchSuggestionsPanel
+                query={trimmedQuery}
+                results={searchResults}
+                loading={searchLoading}
+                error={searchError}
+                activeIndex={activeIndex}
+                onHover={setActiveIndex}
+                onNavigate={closeAfterNavigate}
+                onViewAll={goToSearchPage}
+                maxItems={MAX_SUGGESTIONS}
+              />
+            </div>
+          </div>
         </div>
       </div>
 
@@ -286,6 +468,7 @@ const Header = () => {
         </div>
       </nav>
     </header>
+    </>
   );
 };
 
