@@ -37,7 +37,7 @@ function detectAndroid(): boolean {
 
 function compute(): AppEnvironment {
   const tg = window.Telegram?.WebApp;
-  const isTelegram = Boolean(tg) || sessionStorage.getItem(SESSION_KEY) === 'tg';
+  const isTelegram = isInsideTelegramHost(tg) || sessionStorage.getItem(SESSION_KEY) === 'tg';
   const isMobile = detectMobile();
   const isIos = detectIos();
   const isAndroid = detectAndroid();

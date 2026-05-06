@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Heart, ShoppingCart, Star } from "lucide-react";
+import { Heart, Minus, Plus, ShoppingCart, Star } from "lucide-react";
 import type { Product } from "@/shared/types";
 import { useCartStore } from "@/shared/store/cartStore";
-import { useWishlistStore } from "@/shared/store/wishlistStore";
+import { useWishlistToggle } from "@/features/wishlist/hooks/useWishlistToggle";
 import { formatPrice, getDiscountPercent } from "@/shared/utils";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
@@ -11,8 +11,11 @@ import { useTranslation } from "react-i18next";
 const ProductCard = ({ product }: { product: Product }) => {
   const { t } = useTranslation();
   const addItem = useCartStore((s) => s.addItem);
-  const toggle = useWishlistStore((s) => s.toggle);
-  const isWishlisted = useWishlistStore((s) => s.productIds.includes(product.id));
+  const updateQty = useCartStore((s) => s.updateQty);
+  const { toggle, isWishlisted: checkWishlisted } = useWishlistToggle();
+  const isWishlisted = checkWishlisted(product.id);
+  const [qty, setQty] = useState(1);
+  const [isAddedToCart, setIsAddedToCart] = useState(false);
   const discount = product.salePrice ? getDiscountPercent(product.price, product.salePrice) : 0;
   const isOutOfStock = product.stock === 0;
   const isLowStock = product.stock > 0 && product.stock < 5;
@@ -25,7 +28,9 @@ const ProductCard = ({ product }: { product: Product }) => {
 
   useEffect(() => {
     setActiveImage(0);
-  }, [product.id, images.length]);
+    setQty(1);
+    setIsAddedToCart(false);
+  }, [product.id]);
 
   useEffect(() => {
     if (isImageHovered || images.length <= 1) return;
@@ -45,7 +50,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         </span>
       )}
       <button
-        onClick={() => toggle(product.id)}
+        onClick={() => void toggle(product.id)}
         className={`absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-card/80 backdrop-blur-sm flex items-center justify-center transition-colors ${isWishlisted ? 'text-sale' : 'text-muted-foreground hover:text-sale'}`}
         aria-label={t("productCard.toggleWishlist")}
       >
@@ -87,7 +92,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         )}
       </Link>
 
-      <div className="p-3 space-y-1.5 flex flex-col flex-1">
+      <div className="p-3 flex flex-col flex-1 gap-1.5">
         <Link to={`/product/${product.slug}`}>
           <h3 className="text-[14px] font-semibold tracking-[-0.011em] text-foreground line-clamp-2 leading-[1.3] hover:text-accent transition-colors">{product.name}</h3>
         </Link>
@@ -100,8 +105,8 @@ const ProductCard = ({ product }: { product: Product }) => {
           <span className="text-[11px] font-normal tracking-[-0.003em] text-muted-foreground tabular-nums">({product.reviewCount})</span>
         </div>
         {isLowStock && <p className="text-[11px] font-semibold tracking-[-0.005em] text-warning">{t("productCard.onlyLeft", { count: product.stock })}</p>}
-        <div className="mt-auto pt-2">
-          <div className="flex items-baseline gap-2 mb-2">
+        <div className="mt-auto pt-1.5">
+          <div className="flex items-baseline gap-2">
             {product.salePrice ? (
               <>
                 <span className="text-[16px] font-bold tracking-[-0.014em] text-sale tabular-nums">{formatPrice(product.salePrice)}</span>
@@ -111,14 +116,48 @@ const ProductCard = ({ product }: { product: Product }) => {
               <span className="text-[16px] font-bold tracking-[-0.014em] text-foreground tabular-nums">{formatPrice(product.price)}</span>
             )}
           </div>
-          <button
-            onClick={() => { if (!isOutOfStock) { addItem(product); toast.success(t("productCard.success.addedToCart", { name: product.name })); } }}
-            disabled={isOutOfStock}
-            className="w-full h-9 rounded-md bg-accent text-accent-foreground text-[13px] font-semibold tracking-[-0.006em] flex items-center justify-center gap-1.5 hover:bg-accent/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <ShoppingCart size={14} />
-            {t("productCard.addToCart")}
-          </button>
+        </div>
+        <div className="pt-2">
+          {isAddedToCart ? (
+            <div className="flex items-center w-full h-9 rounded-md border border-border overflow-hidden">
+              <button
+                onClick={() => {
+                  const n = qty - 1;
+                  if (n <= 0) { updateQty(product.id, 0); setIsAddedToCart(false); setQty(1); }
+                  else { setQty(n); updateQty(product.id, n); }
+                }}
+                className="flex h-full w-9 shrink-0 items-center justify-center text-foreground hover:bg-muted transition-colors"
+              >
+                <Minus size={13} />
+              </button>
+              <span className="flex flex-1 h-full items-center justify-center border-x border-border bg-background text-[13px] font-semibold tabular-nums">{qty}</span>
+              <button
+                onClick={() => {
+                  const n = Math.min(product.stock > 0 ? product.stock : 99, qty + 1);
+                  setQty(n);
+                  updateQty(product.id, n);
+                }}
+                className="flex h-full w-9 shrink-0 items-center justify-center text-foreground hover:bg-muted transition-colors"
+              >
+                <Plus size={13} />
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => {
+                if (!isOutOfStock) {
+                  addItem(product);
+                  setIsAddedToCart(true);
+                  toast.success(t("productCard.success.addedToCart", { name: product.name }));
+                }
+              }}
+              disabled={isOutOfStock}
+              className="w-full h-9 rounded-md bg-accent text-accent-foreground text-[13px] font-semibold tracking-[-0.006em] flex items-center justify-center gap-1.5 hover:bg-accent/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <ShoppingCart size={14} />
+              {t("productCard.addToCart")}
+            </button>
+          )}
         </div>
       </div>
     </div>

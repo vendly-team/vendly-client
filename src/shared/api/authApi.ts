@@ -13,6 +13,7 @@ type ServerUserInfo = {
 export type AuthResponse = {
   accessToken: string;
   refreshToken: string;
+  expiresIn: number;
   user: ServerUserInfo;
 };
 

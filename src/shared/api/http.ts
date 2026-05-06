@@ -35,6 +35,7 @@ const getStoredRefreshToken = (): string | null => {
 export type RefreshedSession = {
   accessToken: string;
   refreshToken: string;
+  expiresIn: number;
   user: { id: number; firstName: string; lastName: string; email?: string | null; phone: string; role: string };
 };
 
