@@ -5,6 +5,7 @@ import HeroBanner from "@/components/storefront/HeroBanner";
 import CategoryGrid from "@/components/storefront/CategoryGrid";
 import ProductSection from "@/components/storefront/ProductSection";
 import PromoBanner from "@/components/storefront/PromoBanner";
+import RecentlyViewedSection from "@/components/storefront/RecentlyViewedSection";
 import { categoriesApi, mapCategoryDto } from "@/shared/api/categoriesApi";
 import type { Category, Product } from "@/shared/types";
 import { productService } from "@/features/products/services/productService";
@@ -79,6 +80,7 @@ const Index = () => {
       {!loading && newestProducts.length > 0 && (
         <ProductSection title={t("home.newArrivals", { defaultValue: "New arrivals" })} products={newestProducts.slice(0, 4)} />
       )}
+      <RecentlyViewedSection />
       <PromoBanner />
       {!loading && categorySections.map(section => (
         <ProductSection

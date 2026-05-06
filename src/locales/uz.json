@@ -68,6 +68,9 @@
   "home": {
     "newArrivals": "Yangi mahsulotlar"
   },
+  "recentlyViewed": {
+    "title": "Yaqinda ko'rilganlar"
+  },
   "footer": {
     "brand": "baytech",
     "tagline": "Sifatli maishiy texnika do'koni. Arzon narxlarda eng yaxshi mahsulotlar.",

@@ -68,6 +68,9 @@
   "home": {
     "newArrivals": "New arrivals"
   },
+  "recentlyViewed": {
+    "title": "Recently viewed"
+  },
   "footer": {
     "brand": "baytech",
     "tagline": "Your trusted destination for premium home appliances. Quality products, competitive prices.",
