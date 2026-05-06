@@ -417,7 +417,16 @@
     "payment": "Payment",
     "deliveryAddress": "Delivery Address",
     "addNewAddress": "+ Add new address",
-    "city": "City",
+    "savedAddresses": "Saved addresses",
+    "newAddress": "Add new address",
+    "saveAsDefault": "Save as default",
+    "label": "Address label",
+    "defaultLabel": "My address",
+    "region": "Region",
+    "selectRegion": "Select region",
+    "selectCity": "Select city/district",
+    "selectRegionFirst": "Select a region first",
+    "city": "City/District",
     "district": "District",
     "street": "Street",
     "house": "House",
@@ -432,7 +441,12 @@
     "placeOrder": "Place Order",
     "errors": {
       "fillAddress": "Please fill all address fields",
-      "selectAddress": "Please select an address"
+      "selectAddress": "Please select an address",
+      "labelRequired": "Address label is required",
+      "regionRequired": "Region is required",
+      "cityRequired": "City/district is required",
+      "streetRequired": "Street is required",
+      "houseRequired": "House is required"
     }
   },
   "checkoutSuccess": {
@@ -509,7 +523,13 @@
     "district": "District",
     "street": "Street",
     "house": "House",
-    "notes": "Notes"
+    "notes": "Notes",
+    "created": "Address saved",
+    "updated": "Address updated",
+    "deleted": "Address deleted",
+    "defaultSet": "Default address set",
+    "loadFailed": "Failed to load addresses",
+    "saveFailed": "Failed to save address"
   },
   "profileOrders": {
     "noOrders": "No orders yet",

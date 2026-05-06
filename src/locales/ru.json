@@ -417,7 +417,16 @@
     "payment": "Оплата",
     "deliveryAddress": "Адрес доставки",
     "addNewAddress": "+ Добавить новый адрес",
-    "city": "Город",
+    "savedAddresses": "Сохранённые адреса",
+    "newAddress": "Добавить новый адрес",
+    "saveAsDefault": "Сохранить как основной",
+    "label": "Название адреса",
+    "defaultLabel": "Мой адрес",
+    "region": "Регион",
+    "selectRegion": "Выберите регион",
+    "selectCity": "Выберите город/район",
+    "selectRegionFirst": "Сначала выберите регион",
+    "city": "Город/Район",
     "district": "Район",
     "street": "Улица",
     "house": "Дом",
@@ -432,7 +441,12 @@
     "placeOrder": "Оформить заказ",
     "errors": {
       "fillAddress": "Пожалуйста, заполните все поля адреса",
-      "selectAddress": "Пожалуйста, выберите адрес"
+      "selectAddress": "Пожалуйста, выберите адрес",
+      "labelRequired": "Введите название адреса",
+      "regionRequired": "Выберите регион",
+      "cityRequired": "Выберите город/район",
+      "streetRequired": "Введите название улицы",
+      "houseRequired": "Введите номер дома"
     }
   },
   "checkoutSuccess": {
@@ -509,7 +523,13 @@
     "district": "Район",
     "street": "Улица",
     "house": "Дом",
-    "notes": "Примечания"
+    "notes": "Примечания",
+    "created": "Адрес сохранён",
+    "updated": "Адрес обновлён",
+    "deleted": "Адрес удалён",
+    "defaultSet": "Основной адрес установлен",
+    "loadFailed": "Не удалось загрузить адреса",
+    "saveFailed": "Не удалось сохранить адрес"
   },
   "profileOrders": {
     "noOrders": "Заказов пока нет",
