@@ -2,7 +2,36 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { authApi, mapServerUser } from '@/shared/api/authApi';
 import { configureTokenRefresh } from '@/shared/api/http';
+import { recentlyViewedService } from '@/features/recently-viewed/services/recentlyViewedService';
+import { useRecentlyViewedStore } from './recentlyViewedStore';
 import type { User } from '../types';
+
+const syncRecentlyViewedAfterLogin = async () => {
+  const { items, hydrateFromServer } = useRecentlyViewedStore.getState();
+
+  // Push local guest views to backend (oldest first so server timestamps reflect view order).
+  if (items.length > 0) {
+    const productIds = [...items]
+      .sort((a, b) => a.viewedAt - b.viewedAt)
+      .map((item) => item.productId);
+
+    try {
+      await recentlyViewedService.sync(productIds);
+    } catch {
+      // Sync failed; merged list will still reflect local entries.
+    }
+  }
+
+  // Pull authoritative list from backend.
+  try {
+    const entries = await recentlyViewedService.getAll();
+    hydrateFromServer(
+      entries.map((entry) => ({ productId: entry.productId, viewedAt: new Date(entry.viewedAt).getTime() })),
+    );
+  } catch {
+    // Hydrate failed; keep local list as-is.
+  }
+};
 
 interface AuthState {
   user: User | null;
@@ -33,6 +62,7 @@ export const useAuthStore = create<AuthState>()(
             refreshToken: auth.refreshToken,
             isAuthenticated: true,
           });
+          void syncRecentlyViewedAfterLogin();
           return true;
         } catch {
           set({ user: null, accessToken: null, refreshToken: null, isAuthenticated: false });
@@ -49,6 +79,7 @@ export const useAuthStore = create<AuthState>()(
             refreshToken: auth.refreshToken,
             isAuthenticated: true,
           });
+          void syncRecentlyViewedAfterLogin();
           return true;
         } catch {
           set({ user: null, accessToken: null, refreshToken: null, isAuthenticated: false });

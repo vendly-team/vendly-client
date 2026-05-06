@@ -6,6 +6,7 @@ import { products } from '@/shared/data/products';
 import { formatPrice } from '@/shared/utils';
 import { Heart, ShoppingCart } from 'lucide-react';
 import { toast } from 'sonner';
+import RecentlyViewedSection from '@/components/storefront/RecentlyViewedSection';
 
 const ProfileWishlistPage = () => {
   const { t } = useTranslation();
@@ -15,10 +16,13 @@ const ProfileWishlistPage = () => {
 
   if (wishlistProducts.length === 0) {
     return (
-      <div className="text-center py-20">
-        <Heart className="mx-auto mb-4 text-muted-foreground" size={48} />
-        <h3 className="text-[20px] font-semibold tracking-[-0.016em] leading-[1.2] font-display mb-2">{t('wishlist.empty')}</h3>
-        <Link to="/" className="text-[14px] font-medium tracking-[-0.011em] text-accent hover:underline">{t('wishlist.browse')}</Link>
+      <div>
+        <div className="text-center py-20">
+          <Heart className="mx-auto mb-4 text-muted-foreground" size={48} />
+          <h3 className="text-[20px] font-semibold tracking-[-0.016em] leading-[1.2] font-display mb-2">{t('wishlist.empty')}</h3>
+          <Link to="/" className="text-[14px] font-medium tracking-[-0.011em] text-accent hover:underline">{t('wishlist.browse')}</Link>
+        </div>
+        <RecentlyViewedSection className="py-8" />
       </div>
     );
   }

@@ -5,6 +5,7 @@ import { useCartStore } from '@/shared/store/cartStore';
 import { useAuthStore } from '@/shared/store/authStore';
 import { formatPrice } from '@/shared/utils';
 import { ShoppingCart, Trash2, Minus, Plus } from 'lucide-react';
+import RecentlyViewedSection from '@/components/storefront/RecentlyViewedSection';
 
 const CartPage = () => {
   const { t } = useTranslation();
@@ -27,6 +28,7 @@ const CartPage = () => {
           <p className="text-[15px] font-normal tracking-[-0.011em] text-muted-foreground mb-6">{t('cart.emptyHint')}</p>
           <Link to="/" className="inline-flex h-11 px-8 items-center rounded-lg bg-accent text-accent-foreground font-semibold text-[15px] tracking-[-0.014em]">{t('cart.continueShopping')}</Link>
         </div>
+        <RecentlyViewedSection />
       </StorefrontLayout>
     );
   }

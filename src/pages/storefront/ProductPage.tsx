@@ -18,6 +18,8 @@ import {
   resolveProductMediaUrl,
 } from '@/features/products/services/storefrontProductMapper';
 import { createCategorySlug } from '@/shared/api/categoriesApi';
+import { trackProductView } from '@/features/recently-viewed/lib/trackProductView';
+import RecentlyViewedSection from '@/components/storefront/RecentlyViewedSection';
 import type { Product } from '@/shared/types';
 
 const ProductPage = () => {
@@ -70,6 +72,10 @@ const ProductPage = () => {
 
     void loadProduct();
   }, [productId]);
+
+  useEffect(() => {
+    if (product?.id) trackProductView(product.id);
+  }, [product?.id]);
 
   const selectedVariant = useMemo<ProductVariantResponse | null>(() => {
     if (!product) return null;
@@ -271,6 +277,8 @@ const ProductPage = () => {
             </div>
           </div>
         )}
+
+        <RecentlyViewedSection excludeProductId={product.id} className="mt-12" />
       </div>
     </StorefrontLayout>
   );
