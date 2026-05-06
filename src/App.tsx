@@ -118,13 +118,17 @@ const App = () => (
           {/* Profile hub — mobile landing */}
           <Route path="/profile" element={<AuthRoute><StorefrontLayout><ProfileHubPage /></StorefrontLayout></AuthRoute>} />
 
+          {/* Wishlist - public, guests see localStorage items */}
+          <Route element={<ProfileLayout />}>
+            <Route path="/profile/wishlist" element={<ProfileWishlistPage />} />
+          </Route>
+
           {/* Profile sub-pages - auth required */}
           <Route element={<AuthRoute><ProfileLayout /></AuthRoute>}>
             <Route path="/profile/info" element={<ProfileInfoPage />} />
             <Route path="/profile/orders" element={<ProfileOrdersPage />} />
             <Route path="/profile/orders/:id" element={<ProfileOrderDetailPage />} />
             <Route path="/profile/addresses" element={<ProfileAddressesPage />} />
-            <Route path="/profile/wishlist" element={<ProfileWishlistPage />} />
           </Route>
 
           {/* Admin - admin/manager required */}

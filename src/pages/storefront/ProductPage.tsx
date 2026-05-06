@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import StorefrontLayout from '@/components/layout/StorefrontLayout';
 import ProductCard from '@/components/storefront/ProductCard';
 import { useCartStore } from '@/shared/store/cartStore';
-import { useWishlistStore } from '@/shared/store/wishlistStore';
+import { useWishlistToggle } from '@/features/wishlist/hooks/useWishlistToggle';
 import { formatPrice } from '@/shared/utils';
 import { Heart, ImagePlus, Info, Minus, Package, Plus, ShoppingCart } from 'lucide-react';
 import { toast } from 'sonner';
@@ -26,18 +26,20 @@ const ProductPage = () => {
   const { t } = useTranslation();
   const { slug } = useParams();
   const addItem = useCartStore((s) => s.addItem);
-  const toggle = useWishlistStore((s) => s.toggle);
+  const updateQty = useCartStore((s) => s.updateQty);
+  const { toggle, isWishlisted: checkWishlisted } = useWishlistToggle();
   const [product, setProduct] = useState<ProductAdminDetailResponse | null>(null);
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedOptions, setSelectedOptions] = useState<Record<number, number>>({});
   const [mainImage, setMainImage] = useState(0);
   const [qty, setQty] = useState(1);
+  const [isAddedToCart, setIsAddedToCart] = useState(false);
   const [tab, setTab] = useState<'description' | 'variants'>('description');
 
   const productId = getProductIdFromSlug(slug);
   const storeProduct = product ? mapProductDetailToStorefrontProduct(product) : null;
-  const isWishlisted = useWishlistStore((s) => storeProduct ? s.productIds.includes(storeProduct.id) : false);
+  const isWishlisted = storeProduct ? checkWishlisted(storeProduct.id) : false;
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -83,6 +85,8 @@ const ProductPage = () => {
     return variants.find(variant => variant.combination.every(item => selectedOptions[item.optionId] === item.optionId)) ?? variants[0] ?? null;
   }, [product, selectedOptions]);
 
+  const cartProductId = product && selectedVariant ? `${product.id}:${selectedVariant.id}` : '';
+
   const images = useMemo(() => {
     if (!product) return [];
     const selectedImages = selectedVariant ? getVariantImages([selectedVariant]) : [];
@@ -93,6 +97,7 @@ const ProductPage = () => {
   useEffect(() => {
     setMainImage(0);
     setQty(1);
+    setIsAddedToCart(false);
   }, [selectedVariant?.id]);
 
   const selectOption = (typeName: string, optionId: number) => {
@@ -113,6 +118,7 @@ const ProductPage = () => {
     cartProduct.sku = `SKU-${selectedVariant.id}`;
     cartProduct.stock = selectedVariant.quantity;
     addItem(cartProduct, qty);
+    setIsAddedToCart(true);
     toast.success(t('productPage.success.addedToCart', { name: product.name }));
   };
 
@@ -213,19 +219,38 @@ const ProductPage = () => {
               ))}
             </div>
 
-            <div className="mb-4 flex items-center gap-3">
-              <div className="flex items-center rounded-md border border-border">
-                <button onClick={() => setQty(Math.max(1, qty - 1))} className="flex h-10 w-10 items-center justify-center text-foreground hover:bg-muted"><Minus size={16} /></button>
-                <input type="number" value={qty} onChange={(event) => setQty(Math.max(1, Math.min(selectedVariant?.quantity ?? 1, Number(event.target.value) || 1)))} className="h-10 w-14 border-x border-border bg-background text-center text-[15px] font-medium tracking-[-0.011em] tabular-nums" />
-                <button onClick={() => setQty(Math.min(selectedVariant?.quantity ?? 1, qty + 1))} className="flex h-10 w-10 items-center justify-center text-foreground hover:bg-muted"><Plus size={16} /></button>
-              </div>
-            </div>
-
-            <div className="mb-6 flex gap-3">
-              <button onClick={handleAddToCart} disabled={isOutOfStock} className="flex h-12 flex-1 items-center justify-center gap-2 rounded-lg bg-accent text-[16px] font-semibold tracking-[-0.014em] text-accent-foreground hover:bg-accent/90 disabled:cursor-not-allowed disabled:opacity-50">
-                <ShoppingCart size={20} /> {t('productPage.addToCart')}
-              </button>
-              <button onClick={() => toggle(storeProduct.id)} className={`flex h-12 w-12 items-center justify-center rounded-lg border transition-colors ${isWishlisted ? 'border-sale text-sale' : 'border-border text-muted-foreground hover:text-sale'}`}>
+            <div className="mb-6 flex items-center gap-3">
+              {isAddedToCart ? (
+                <>
+                  <div className="flex items-center rounded-md border border-border shrink-0">
+                    <button
+                      onClick={() => {
+                        const n = qty - 1;
+                        if (n <= 0) { updateQty(cartProductId, 0); setIsAddedToCart(false); setQty(1); }
+                        else { setQty(n); updateQty(cartProductId, n); }
+                      }}
+                      className="flex h-10 w-10 items-center justify-center text-foreground hover:bg-muted"
+                    >
+                      <Minus size={16} />
+                    </button>
+                    <span className="flex h-10 w-12 items-center justify-center border-x border-border bg-background text-[15px] font-medium tracking-[-0.011em] tabular-nums">{qty}</span>
+                    <button
+                      onClick={() => { const n = Math.min(selectedVariant?.quantity ?? 1, qty + 1); setQty(n); updateQty(cartProductId, n); }}
+                      className="flex h-10 w-10 items-center justify-center text-foreground hover:bg-muted"
+                    >
+                      <Plus size={16} />
+                    </button>
+                  </div>
+                  <Link to="/cart" className="flex h-12 flex-1 items-center justify-center gap-2 rounded-lg bg-accent text-[16px] font-semibold tracking-[-0.014em] text-accent-foreground hover:bg-accent/90">
+                    <ShoppingCart size={20} /> {t('productPage.goToCart', { defaultValue: 'Cartga o\'tish' })}
+                  </Link>
+                </>
+              ) : (
+                <button onClick={handleAddToCart} disabled={isOutOfStock} className="flex h-12 flex-1 items-center justify-center gap-2 rounded-lg bg-accent text-[16px] font-semibold tracking-[-0.014em] text-accent-foreground hover:bg-accent/90 disabled:cursor-not-allowed disabled:opacity-50">
+                  <ShoppingCart size={20} /> {t('productPage.addToCart')}
+                </button>
+              )}
+              <button onClick={() => void toggle(storeProduct.id)} className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border transition-colors ${isWishlisted ? 'border-sale text-sale' : 'border-border text-muted-foreground hover:text-sale'}`}>
                 <Heart size={20} fill={isWishlisted ? 'currentColor' : 'none'} />
               </button>
             </div>
