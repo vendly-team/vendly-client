@@ -1,6 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { PageMeta } from '@/lib/seo'
 
 const NotFound = () => {
   const { t } = useTranslation();
@@ -12,6 +13,7 @@ const NotFound = () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted">
+      <PageMeta title="Page Not Found — Opto Vestor" pageType="private" />
       <div className="text-center">
         <h1 className="mb-4 text-[40px] font-bold tracking-[-0.024em] leading-[1.08] font-display">{t("notFound.title")}</h1>
         <p className="mb-4 text-[20px] font-normal tracking-[-0.011em] leading-[1.4] text-muted-foreground">{t("notFound.message")}</p>

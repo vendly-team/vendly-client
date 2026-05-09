@@ -3,6 +3,8 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import StorefrontLayout from '@/components/layout/StorefrontLayout';
 import { useAuthStore } from '@/shared/store/authStore';
+import { PageMeta } from '@/lib/seo'
+import { trackLogin } from '@/lib/analytics'
 import { toast } from 'sonner';
 
 const LoginPage = () => {
@@ -21,12 +23,13 @@ const LoginPage = () => {
     setLoading(true);
     const success = await login(loginValue, password);
     setLoading(false);
-    if (success) { toast.success(t('auth.success.welcome')); navigate(redirect); }
+    if (success) { trackLogin('email_phone'); toast.success(t('auth.success.welcome')); navigate(redirect); }
     else toast.error(t('auth.errors.invalidCredentials'));
   };
 
   return (
     <StorefrontLayout>
+      <PageMeta title="Sign In — Opto Vestor" pageType="private" />
       <div className="container py-12 max-w-md mx-auto animate-fade-in">
         <h1 className="text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground mb-6 text-center">{t('auth.signIn')}</h1>
         <form onSubmit={handleSubmit} className="bg-card border border-border rounded-lg p-6 space-y-4">

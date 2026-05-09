@@ -1,5 +1,6 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { PageMeta } from '@/lib/seo'
 
 export function ServerErrorPage() {
   const { t } = useTranslation();
@@ -13,6 +14,7 @@ export function ServerErrorPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted">
+      <PageMeta title="Server Error — Opto Vestor" pageType="private" />
       <div className="text-center">
         <h1 className="mb-4 text-[40px] font-bold tracking-[-0.024em] leading-[1.08] font-display">
           {t("serverError.title")}

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '@/shared/store/authStore';
 import { toast } from 'sonner';
+import { PageMeta } from '@/lib/seo'
 
 const ProfileInfoPage = () => {
   const { t } = useTranslation();
@@ -16,6 +17,7 @@ const ProfileInfoPage = () => {
 
   return (
     <div>
+      <PageMeta title="Profile Info — Opto Vestor" pageType="private" />
       <h1 className="text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground mb-6">{t('profile.myInfo')}</h1>
       <form onSubmit={handleSubmit} className="bg-card border border-border rounded-lg p-6 space-y-4 max-w-lg">
         <div className="grid grid-cols-2 gap-4">

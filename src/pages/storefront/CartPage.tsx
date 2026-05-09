@@ -1,6 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import StorefrontLayout from '@/components/layout/StorefrontLayout';
+import { PageMeta } from '@/lib/seo'
+import { trackViewCart, trackRemoveFromCart } from '@/lib/analytics'
+import type { GA4Item } from '@/lib/analytics'
+import { useEffect } from 'react'
 import { useCartStore } from '@/shared/store/cartStore';
 import { useAuthStore } from '@/shared/store/authStore';
 import { formatPrice } from '@/shared/utils';
@@ -14,6 +18,17 @@ const CartPage = () => {
   const navigate = useNavigate();
   const totalItems = items.reduce((s, i) => s + i.qty, 0);
 
+  useEffect(() => {
+    if (items.length === 0) return
+    const ga4Items: GA4Item[] = items.map(item => ({
+      item_id: item.productId,
+      item_name: item.name,
+      price: item.price,
+      quantity: item.qty,
+    }))
+    trackViewCart(ga4Items, totalAmount)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   const handleCheckout = () => {
     if (!isAuthenticated) { navigate('/login?redirect=/checkout'); return; }
     navigate('/checkout');
@@ -22,6 +37,7 @@ const CartPage = () => {
   if (items.length === 0) {
     return (
       <StorefrontLayout>
+        <PageMeta title="Cart — Opto Vestor" pageType="private" />
         <div className="container py-20 text-center animate-fade-in">
           <ShoppingCart className="mx-auto mb-4 text-muted-foreground" size={64} />
           <h1 className="text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground mb-2">{t('cart.empty')}</h1>
@@ -35,6 +51,7 @@ const CartPage = () => {
 
   return (
     <StorefrontLayout>
+      <PageMeta title="Cart — Opto Vestor" pageType="private" />
       <div className="container py-6 animate-fade-in">
         <h1 className="text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground mb-6">{t('cart.title', { count: totalItems })}</h1>
         <div className="flex flex-col lg:flex-row gap-8">
@@ -48,7 +65,16 @@ const CartPage = () => {
                   <p className="text-[15px] font-bold tracking-[-0.011em] text-foreground mt-1 tabular-nums">{formatPrice(item.price)}</p>
                 </div>
                 <div className="flex flex-col items-end gap-2">
-                  <button onClick={() => removeItem(item.productId)} className="text-muted-foreground hover:text-destructive"><Trash2 size={16} /></button>
+                  <button onClick={() => {
+                    const ga4Item: GA4Item = {
+                      item_id: item.productId,
+                      item_name: item.name,
+                      price: item.price,
+                      quantity: item.qty,
+                    }
+                    trackRemoveFromCart(ga4Item, item.price * item.qty)
+                    removeItem(item.productId)
+                  }} className="text-muted-foreground hover:text-destructive"><Trash2 size={16} /></button>
                   <div className="flex items-center border border-border rounded">
                     <button onClick={() => updateQty(item.productId, item.qty - 1)} className="w-8 h-8 flex items-center justify-center hover:bg-muted"><Minus size={14} /></button>
                     <span className="w-10 text-center text-[14px] font-medium tracking-[-0.011em] tabular-nums">{item.qty}</span>
