@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import StorefrontLayout from '@/components/layout/StorefrontLayout';
 import { toast } from 'sonner';
+import { PageMeta } from '@/lib/seo'
 
 const ForgotPasswordPage = () => {
   const { t } = useTranslation();
@@ -18,6 +19,7 @@ const ForgotPasswordPage = () => {
 
   return (
     <StorefrontLayout>
+      <PageMeta title="Forgot Password — Opto Vestor" pageType="private" />
       <div className="container py-12 max-w-md mx-auto animate-fade-in">
         <h1 className="text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground mb-6 text-center">{t('auth.forgotPasswordTitle')}</h1>
         {!sent ? (

@@ -2,6 +2,10 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import StorefrontLayout from '@/components/layout/StorefrontLayout';
+import { PageMeta } from '@/lib/seo'
+import { trackBeginCheckout, trackAddPaymentInfo } from '@/lib/analytics'
+import type { GA4Item } from '@/lib/analytics'
+import { useEffect } from 'react'
 import { useCartStore } from '@/shared/store/cartStore';
 import { useCheckoutSelectionStore } from '@/shared/store/checkoutSelectionStore';
 import { useOrderStore } from '@/shared/store/orderStore';
@@ -26,6 +30,17 @@ const CheckoutPage = () => {
 
   const selectedAddress = addresses.find((a) => a.id === selectedAddressId);
   const grandTotal = totalAmount + DELIVERY_COST;
+
+  useEffect(() => {
+    if (items.length === 0) return
+    const ga4Items: GA4Item[] = items.map(item => ({
+      item_id: item.productId,
+      item_name: item.name,
+      price: item.price,
+      quantity: item.qty,
+    }))
+    trackBeginCheckout(ga4Items, grandTotal)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handlePlaceOrder = () => {
     if (!selectedAddress) return;
@@ -58,6 +73,13 @@ const CheckoutPage = () => {
       statusHistory: [{ status: 'new', date: new Date().toISOString() }],
       createdAt: new Date().toISOString(),
     });
+    const ga4Items: GA4Item[] = items.map(item => ({
+      item_id: item.productId,
+      item_name: item.name,
+      price: item.price,
+      quantity: item.qty,
+    }))
+    trackAddPaymentInfo(ga4Items, grandTotal, paymentMethod)
     clearCart();
     navigate('/checkout/success', { replace: true, state: { orderNumber: orderNum } });
   };
@@ -66,6 +88,7 @@ const CheckoutPage = () => {
 
   return (
     <StorefrontLayout>
+      <PageMeta title="Checkout — Opto Vestor" pageType="private" />
       <div className="container py-6 animate-fade-in max-w-3xl mx-auto px-4">
         <h1 className="text-[24px] sm:text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground mb-6">
           {t('checkout.title')}

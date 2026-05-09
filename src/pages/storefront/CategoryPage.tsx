@@ -3,6 +3,9 @@ import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import StorefrontLayout from '@/components/layout/StorefrontLayout';
+import { PageMeta } from '@/lib/seo'
+import { trackViewItemList } from '@/lib/analytics'
+import type { GA4Item } from '@/lib/analytics'
 import ProductCard from '@/components/storefront/ProductCard';
 import { SlidersHorizontal, X } from 'lucide-react';
 import { categoriesApi, mapCategoryDto } from '@/shared/api/categoriesApi';
@@ -78,6 +81,18 @@ const CategoryPage = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [priceMin, priceMax, onSaleOnly, inStockOnly, sort]);
+
+  useEffect(() => {
+    if (!category || products.length === 0) return
+    const ga4Items: GA4Item[] = products.slice(0, 20).map(product => ({
+      item_id: String(product.id),
+      item_name: product.name,
+      item_category: category.name,
+      price: product.salePrice ?? product.price,
+      quantity: 1,
+    }))
+    trackViewItemList(category.slug, category.name, ga4Items)
+  }, [category?.slug, products.length]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const closeSheet = () => {
     setIsClosing(true);
@@ -188,6 +203,12 @@ const CategoryPage = () => {
 
   return (
     <StorefrontLayout>
+      <PageMeta
+        title={category ? `${category.name} — Opto Vestor` : 'Category — Opto Vestor'}
+        description={category ? `Browse ${category.name} products at wholesale prices on Opto Vestor.` : undefined}
+        canonical={category ? `/category/${category.slug}` : undefined}
+        pageType="public"
+      />
       <div className="container py-6 animate-fade-in">
         <div className="flex items-center gap-2 text-[13px] font-normal tracking-[-0.006em] text-muted-foreground mb-4">
           <Link to="/" className="hover:text-accent">{t('nav.home')}</Link>

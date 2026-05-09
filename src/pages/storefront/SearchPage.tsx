@@ -3,6 +3,8 @@ import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Search, X, AlertCircle } from 'lucide-react';
 import StorefrontLayout from '@/components/layout/StorefrontLayout';
+import { PageMeta } from '@/lib/seo'
+import { trackSearch } from '@/lib/analytics'
 import { SearchResultCard } from '@/components/storefront/SearchResultCard';
 import { useProductSearch } from '@/features/products/hooks/useProductSearch';
 import { PRODUCT_SEARCH_MIN_LENGTH } from '@/features/products/types';
@@ -42,6 +44,7 @@ const SearchPage = () => {
       return;
     }
     setParams({ q: trimmed });
+    trackSearch(trimmed)
 
     const updated = [trimmed, ...history.filter((h) => h !== trimmed)].slice(0, MAX_HISTORY);
     setHistory(updated);
@@ -81,6 +84,7 @@ const SearchPage = () => {
 
   return (
     <StorefrontLayout>
+      <PageMeta title="Search — Opto Vestor" pageType="private" />
       <div className="container py-6 animate-fade-in px-4">
         <form
           onSubmit={(e) => {

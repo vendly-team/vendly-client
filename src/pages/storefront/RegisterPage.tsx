@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next';
 import StorefrontLayout from '@/components/layout/StorefrontLayout';
 import { useAuthStore } from '@/shared/store/authStore';
 import { toast } from 'sonner';
+import { PageMeta } from '@/lib/seo'
+import { trackSignUp } from '@/lib/analytics'
 
 const RegisterPage = () => {
   const { t } = useTranslation();
@@ -35,6 +37,7 @@ const RegisterPage = () => {
     setLoading(false);
 
     if (success) {
+      trackSignUp('email')
       toast.success(t('auth.success.accountCreated'));
       navigate('/');
     } else {
@@ -52,6 +55,7 @@ const RegisterPage = () => {
 
   return (
     <StorefrontLayout>
+      <PageMeta title="Create Account — Opto Vestor" pageType="private" />
       <div className="container py-12 max-w-md mx-auto animate-fade-in">
         <h1 className="text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground mb-6 text-center">{t('auth.createAccount')}</h1>
         <form onSubmit={handleSubmit} className="bg-card border border-border rounded-lg p-6 space-y-4">

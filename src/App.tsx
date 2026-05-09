@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { useAuthStore } from "@/shared/store/authStore";
 import { lazy, Suspense, useEffect, type ReactNode } from "react";
 import { configureServerErrorHandler } from "@/shared/api/http";
+import { usePageTracking } from '@/lib/analytics'
 
 // Layouts
 import StorefrontLayout from "@/components/layout/StorefrontLayout";
@@ -81,6 +82,11 @@ const NavigationWatcher = () => {
   return null;
 };
 
+const AnalyticsTracker = () => {
+  usePageTracking()
+  return null
+}
+
 const AdminOnlyRoute = ({ children }: { children: ReactNode }) => {
   const { isAuthenticated, user } = useAuthStore();
   const location = useLocation();
@@ -100,6 +106,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <NavigationWatcher />
+        <AnalyticsTracker />
         <Routes>
           {/* Storefront - public */}
           <Route path="/" element={<Index />} />

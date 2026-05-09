@@ -2,6 +2,9 @@ import { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import StorefrontLayout from '@/components/layout/StorefrontLayout';
+import { PageMeta } from '@/lib/seo'
+import { trackViewItem, trackAddToCart } from '@/lib/analytics'
+import type { GA4Item } from '@/lib/analytics'
 import ProductCard from '@/components/storefront/ProductCard';
 import { useCartStore } from '@/shared/store/cartStore';
 import { useWishlistToggle } from '@/features/wishlist/hooks/useWishlistToggle';
@@ -79,6 +82,18 @@ const ProductPage = () => {
     if (product?.id) trackProductView(product.id);
   }, [product?.id]);
 
+  useEffect(() => {
+    if (!storeProduct) return
+    const ga4Item: GA4Item = {
+      item_id: String(storeProduct.id),
+      item_name: storeProduct.name,
+      item_category: storeProduct.category,
+      price: storeProduct.salePrice ?? storeProduct.price,
+      quantity: 1,
+    }
+    trackViewItem(ga4Item)
+  }, [storeProduct?.id]) // eslint-disable-line react-hooks/exhaustive-deps
+
   const selectedVariant = useMemo<ProductVariantResponse | null>(() => {
     if (!product) return null;
     const variants = getDisplayVariants(product);
@@ -120,6 +135,14 @@ const ProductPage = () => {
     addItem(cartProduct, qty);
     setIsAddedToCart(true);
     toast.success(t('productPage.success.addedToCart', { name: product.name }));
+    const ga4Item: GA4Item = {
+      item_id: String(storeProduct.id),
+      item_name: storeProduct.name,
+      item_category: storeProduct.category,
+      price: storeProduct.salePrice ?? storeProduct.price,
+      quantity: qty,
+    }
+    trackAddToCart(ga4Item, ga4Item.price * qty)
   };
 
   if (loading) {
@@ -147,6 +170,13 @@ const ProductPage = () => {
 
   return (
     <StorefrontLayout>
+      <PageMeta
+        title={storeProduct ? `${storeProduct.name} — Opto Vestor` : 'Product — Opto Vestor'}
+        description={storeProduct ? `Buy ${storeProduct.name} at wholesale price on Opto Vestor.` : undefined}
+        canonical={storeProduct ? `/product/${slug}` : undefined}
+        ogType="product"
+        pageType="public"
+      />
       <div className="container py-6 animate-fade-in">
         <div className="mb-6 hidden md:flex items-center gap-2 text-[13px] font-normal tracking-[-0.006em] text-muted-foreground">
           <Link to="/" className="hover:text-accent">{t('nav.home')}</Link> <span>/</span>

@@ -4,6 +4,7 @@ import { useAuthStore } from '@/shared/store/authStore';
 import { useOrderStore } from '@/shared/store/orderStore';
 import { orders as mockOrders } from '@/shared/data/orders';
 import { formatPrice } from '@/shared/utils';
+import { PageMeta } from '@/lib/seo'
 import { Package } from 'lucide-react';
 
 const statusColors: Record<string, string> = { new: 'bg-info/10 text-info', accepted: 'bg-purple-100 text-purple-700', in_transit: 'bg-warning/10 text-warning', delivered: 'bg-success/10 text-success', cancelled: 'bg-destructive/10 text-destructive' };
@@ -26,6 +27,7 @@ const ProfileOrdersPage = () => {
 
   return (
     <div>
+      <PageMeta title="My Orders — Opto Vestor" pageType="private" />
       <h1 className="text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground mb-6">{t('profileOrders.title')}</h1>
       <div className="space-y-4">
         {allOrders.map((order) => (

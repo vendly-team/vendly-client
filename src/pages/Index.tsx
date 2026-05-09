@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { PageMeta } from '@/lib/seo'
 import { useTranslation } from "react-i18next";
 import StorefrontLayout from "@/components/layout/StorefrontLayout";
 import HeroBanner from "@/components/storefront/HeroBanner";
@@ -70,6 +71,12 @@ const Index = () => {
 
   return (
     <StorefrontLayout>
+      <PageMeta
+        title="Opto Vestor — Wholesale Marketplace"
+        description="Buy wholesale products at the best prices. Browse thousands of products across all categories."
+        canonical="/"
+        pageType="public"
+      />
       <HeroBanner />
       <CategoryGrid />
       {loading && (
