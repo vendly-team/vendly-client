@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { User, Package, MapPin, Heart, Shield, LogOut, ChevronRight, ShieldCheck } from "lucide-react";
 import { useAuthStore } from "@/shared/store/authStore";
 import { useTranslation } from "react-i18next";
+import { PageMeta } from '@/lib/seo'
 
 export function ProfileHubPage() {
   const { t } = useTranslation();
@@ -20,6 +21,7 @@ export function ProfileHubPage() {
 
   return (
     <div className="container max-w-lg mx-auto py-6 px-4 space-y-4 animate-fade-in">
+      <PageMeta title="My Profile — Opto Vestor" pageType="private" />
       {/* User info card */}
       <div className="bg-card border border-border rounded-2xl shadow-sm overflow-hidden">
 

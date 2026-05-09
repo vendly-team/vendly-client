@@ -51,9 +51,12 @@ interface TelegramWebApp {
   viewportStableHeight: number;
   safeAreaInset?: TelegramSafeAreaInset;
   contentSafeAreaInset?: TelegramSafeAreaInset;
+  isFullscreen?: boolean;
   ready(): void;
   expand(): void;
   close(): void;
+  requestFullscreen?(): void;
+  exitFullscreen?(): void;
   onEvent(eventType: string, handler: () => void): void;
   offEvent(eventType: string, handler: () => void): void;
 }

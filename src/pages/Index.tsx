@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
+import { PageMeta } from '@/lib/seo'
 import { useTranslation } from "react-i18next";
 import StorefrontLayout from "@/components/layout/StorefrontLayout";
 import HeroBanner from "@/components/storefront/HeroBanner";
 import CategoryGrid from "@/components/storefront/CategoryGrid";
 import ProductSection from "@/components/storefront/ProductSection";
 import PromoBanner from "@/components/storefront/PromoBanner";
+import RecentlyViewedSection from "@/components/storefront/RecentlyViewedSection";
 import { categoriesApi, mapCategoryDto } from "@/shared/api/categoriesApi";
 import type { Category, Product } from "@/shared/types";
 import { productService } from "@/features/products/services/productService";
@@ -69,6 +71,12 @@ const Index = () => {
 
   return (
     <StorefrontLayout>
+      <PageMeta
+        title="Opto Vestor — Wholesale Marketplace"
+        description="Buy wholesale products at the best prices. Browse thousands of products across all categories."
+        canonical="/"
+        pageType="public"
+      />
       <HeroBanner />
       <CategoryGrid />
       {loading && (
@@ -79,6 +87,7 @@ const Index = () => {
       {!loading && newestProducts.length > 0 && (
         <ProductSection title={t("home.newArrivals", { defaultValue: "New arrivals" })} products={newestProducts.slice(0, 4)} />
       )}
+      <RecentlyViewedSection />
       <PromoBanner />
       {!loading && categorySections.map(section => (
         <ProductSection

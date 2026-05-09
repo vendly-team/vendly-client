@@ -1,4 +1,6 @@
-export const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? "/backend").replace(/\/$/, "");
+export const API_BASE_URL = (
+  import.meta.env.VITE_API_BASE_URL ?? "https://api-stage-opto.vestor.uz"
+).replace(/\/$/, "");
 
 export const getStoredAccessToken = () => {
   const directToken =
@@ -33,6 +35,7 @@ const getStoredRefreshToken = (): string | null => {
 export type RefreshedSession = {
   accessToken: string;
   refreshToken: string;
+  expiresIn: number;
   user: { id: number; firstName: string; lastName: string; email?: string | null; phone: string; role: string };
 };
 

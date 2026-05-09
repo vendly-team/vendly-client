@@ -68,6 +68,9 @@
   "home": {
     "newArrivals": "Yangi mahsulotlar"
   },
+  "recentlyViewed": {
+    "title": "Yaqinda ko'rilganlar"
+  },
   "footer": {
     "brand": "baytech",
     "tagline": "Sifatli maishiy texnika do'koni. Arzon narxlarda eng yaxshi mahsulotlar.",
@@ -414,11 +417,20 @@
     "payment": "To'lov",
     "deliveryAddress": "Yetkazib berish manzili",
     "addNewAddress": "+ Yangi manzil qo'shish",
-    "city": "Shahar",
+    "savedAddresses": "Saqlangan manzillar",
+    "newAddress": "Yangi manzil qo'shish",
+    "saveAsDefault": "Asosiy manzil sifatida saqlash",
+    "label": "Manzil nomi",
+    "defaultLabel": "Mening manzilim",
+    "region": "Viloyat",
+    "selectRegion": "Viloyatni tanlang",
+    "selectCity": "Shahar/tuman tanlang",
+    "selectRegionFirst": "Avval viloyatni tanlang",
+    "city": "Shahar/Tuman",
     "district": "Tuman",
     "street": "Ko'cha",
     "house": "Uy",
-    "notes": "Izohlar",
+    "notes": "Izoh",
     "orderSummary": "Buyurtma xulosasi",
     "estDelivery": "Taxminiy yetkazib berish",
     "businessDays": "3–5 ish kuni",
@@ -429,7 +441,12 @@
     "placeOrder": "Buyurtma berish",
     "errors": {
       "fillAddress": "Iltimos, barcha manzil maydonlarini to'ldiring",
-      "selectAddress": "Iltimos, manzilni tanlang"
+      "selectAddress": "Iltimos, manzilni tanlang",
+      "labelRequired": "Manzil nomini kiriting",
+      "regionRequired": "Viloyatni tanlang",
+      "cityRequired": "Shahar/tumanni tanlang",
+      "streetRequired": "Ko'cha nomini kiriting",
+      "houseRequired": "Uy raqamini kiriting"
     }
   },
   "checkoutSuccess": {
@@ -480,7 +497,11 @@
     "recentSearches": "So'nggi qidiruvlar",
     "results": "'{{query}}' bo'yicha {{count}} ta natija",
     "noResults": "Mahsulot topilmadi",
-    "tryDifferent": "Boshqa so'z bilan qidiring"
+    "tryDifferent": "Boshqa so'z bilan qidiring",
+    "minChars": "Kamida {{count}} ta belgi kiriting",
+    "errorTitle": "Qidiruvda xatolik",
+    "viewAll": "Barcha {{count}} ta natijani ko'rish",
+    "variantsCount": "{{count}} variant"
   },
   "profile": {
     "myInfo": "Mening ma'lumotlarim",
@@ -506,7 +527,13 @@
     "district": "Tuman",
     "street": "Ko'cha",
     "house": "Uy",
-    "notes": "Izohlar"
+    "notes": "Izohlar",
+    "created": "Manzil saqlandi",
+    "updated": "Manzil yangilandi",
+    "deleted": "Manzil o'chirildi",
+    "defaultSet": "Asosiy manzil belgilandi",
+    "loadFailed": "Manzillarni yuklashda xatolik",
+    "saveFailed": "Manzilni saqlashda xatolik"
   },
   "profileOrders": {
     "noOrders": "Hali buyurtmalar yo'q",

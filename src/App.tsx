@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { useAuthStore } from "@/shared/store/authStore";
 import { lazy, Suspense, useEffect, type ReactNode } from "react";
 import { configureServerErrorHandler } from "@/shared/api/http";
+import { usePageTracking } from '@/lib/analytics'
 
 // Layouts
 import StorefrontLayout from "@/components/layout/StorefrontLayout";
@@ -81,6 +82,11 @@ const NavigationWatcher = () => {
   return null;
 };
 
+const AnalyticsTracker = () => {
+  usePageTracking()
+  return null
+}
+
 const AdminOnlyRoute = ({ children }: { children: ReactNode }) => {
   const { isAuthenticated, user } = useAuthStore();
   const location = useLocation();
@@ -100,6 +106,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <NavigationWatcher />
+        <AnalyticsTracker />
         <Routes>
           {/* Storefront - public */}
           <Route path="/" element={<Index />} />
@@ -118,13 +125,17 @@ const App = () => (
           {/* Profile hub — mobile landing */}
           <Route path="/profile" element={<AuthRoute><StorefrontLayout><ProfileHubPage /></StorefrontLayout></AuthRoute>} />
 
+          {/* Wishlist - public, guests see localStorage items */}
+          <Route element={<ProfileLayout />}>
+            <Route path="/profile/wishlist" element={<ProfileWishlistPage />} />
+          </Route>
+
           {/* Profile sub-pages - auth required */}
           <Route element={<AuthRoute><ProfileLayout /></AuthRoute>}>
             <Route path="/profile/info" element={<ProfileInfoPage />} />
             <Route path="/profile/orders" element={<ProfileOrdersPage />} />
             <Route path="/profile/orders/:id" element={<ProfileOrderDetailPage />} />
             <Route path="/profile/addresses" element={<ProfileAddressesPage />} />
-            <Route path="/profile/wishlist" element={<ProfileWishlistPage />} />
           </Route>
 
           {/* Admin - admin/manager required */}

@@ -1,5 +1,17 @@
 export type SyncSource = 0 | 1 // 0 = Manual, 1 = External
 
+export type ProductSearchResponse = {
+  id: number
+  name: string
+  price: number
+  skuCount: number
+  images: string[]
+  isAvailableForSale: boolean
+  redirectUrl: string
+}
+
+export const PRODUCT_SEARCH_MIN_LENGTH = 2
+
 export type ProductListResponse = {
   id: number
   categoryId: number

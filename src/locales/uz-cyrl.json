@@ -68,6 +68,9 @@
   "home": {
     "newArrivals": "Янги маҳсулотлар"
   },
+  "recentlyViewed": {
+    "title": "Яқинда кўрилганлар"
+  },
   "footer": {
     "brand": "baytech",
     "tagline": "Сифатли маиший техника дўкони. Арзон нархларда энг яхши маҳсулотлар.",
@@ -414,11 +417,20 @@
     "payment": "Тўлов",
     "deliveryAddress": "Етказиб бериш манзили",
     "addNewAddress": "+ Янги манзил қўшиш",
-    "city": "Шаҳар",
+    "savedAddresses": "Сақланган манзиллар",
+    "newAddress": "Янги манзил қўшиш",
+    "saveAsDefault": "Асосий манзил сифатида сақлаш",
+    "label": "Манзил номи",
+    "defaultLabel": "Менинг манзилим",
+    "region": "Вилоят",
+    "selectRegion": "Вилоятни танланг",
+    "selectCity": "Шаҳар/туман танланг",
+    "selectRegionFirst": "Аввал вилоятни танланг",
+    "city": "Шаҳар/Туман",
     "district": "Туман",
     "street": "Кўча",
     "house": "Уй",
-    "notes": "Изоҳлар",
+    "notes": "Изоҳ",
     "orderSummary": "Буюртма хулосаси",
     "estDelivery": "Тахминий етказиб бериш",
     "businessDays": "3–5 иш куни",
@@ -429,7 +441,12 @@
     "placeOrder": "Буюртма бериш",
     "errors": {
       "fillAddress": "Илтимос, барча манзил майдонларини тўлдиринг",
-      "selectAddress": "Илтимос, манзилни танланг"
+      "selectAddress": "Илтимос, манзилни танланг",
+      "labelRequired": "Манзил номини киритинг",
+      "regionRequired": "Вилоятни танланг",
+      "cityRequired": "Шаҳар/туманни танланг",
+      "streetRequired": "Кўча номини киритинг",
+      "houseRequired": "Уй рақамини киритинг"
     }
   },
   "checkoutSuccess": {
@@ -480,7 +497,11 @@
     "recentSearches": "Сўнгги қидирувлар",
     "results": "'{{query}}' бўйича {{count}} та натижа",
     "noResults": "Маҳсулот топилмади",
-    "tryDifferent": "Бошқа сўз билан қидиринг"
+    "tryDifferent": "Бошқа сўз билан қидиринг",
+    "minChars": "Камида {{count}} та белги киритинг",
+    "errorTitle": "Қидирувда хатолик",
+    "viewAll": "Барча {{count}} та натижани кўриш",
+    "variantsCount": "{{count}} вариант"
   },
   "profile": {
     "myInfo": "Менинг маълумотларим",
@@ -506,7 +527,13 @@
     "district": "Туман",
     "street": "Кўча",
     "house": "Уй",
-    "notes": "Изоҳлар"
+    "notes": "Изоҳлар",
+    "created": "Манзил сақланди",
+    "updated": "Манзил янгиланди",
+    "deleted": "Манзил ўчирилди",
+    "defaultSet": "Асосий манзил белгиланди",
+    "loadFailed": "Манзилларни юклашда хатолик",
+    "saveFailed": "Манзилни сақлашда хатолик"
   },
   "profileOrders": {
     "noOrders": "Ҳали буюртмалар йўқ",

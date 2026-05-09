@@ -37,7 +37,7 @@ function detectAndroid(): boolean {
 
 function compute(): AppEnvironment {
   const tg = window.Telegram?.WebApp;
-  const isTelegram = Boolean(tg) || sessionStorage.getItem(SESSION_KEY) === 'tg';
+  const isTelegram = isInsideTelegramHost(tg) || sessionStorage.getItem(SESSION_KEY) === 'tg';
   const isMobile = detectMobile();
   const isIos = detectIos();
   const isAndroid = detectAndroid();
@@ -116,19 +116,46 @@ export function subscribe(fn: Listener): () => void {
   return () => listeners.delete(fn);
 }
 
+// `window.Telegram.WebApp` exists in any browser that loads telegram-web-app.js,
+// not just inside Telegram. The script defaults to `platform: 'unknown'` and
+// `version: '6.0'` in non-Telegram hosts, and methods like `requestFullscreen`
+// throw `WebAppMethodUnsupported`. Only call Telegram APIs when we are really
+// running inside the Telegram client.
+function isInsideTelegramHost(tg: TelegramWebApp | undefined): boolean {
+  if (!tg) return false;
+  const hasInitData = typeof tg.initData === 'string' && tg.initData.length > 0;
+  const hasKnownPlatform =
+    typeof tg.platform === 'string' && tg.platform !== '' && tg.platform !== 'unknown';
+  return hasInitData || hasKnownPlatform;
+}
+
+function botApiVersionAtLeast(tg: TelegramWebApp, target: number): boolean {
+  const parsed = parseFloat(tg.version ?? '0');
+  return Number.isFinite(parsed) && parsed >= target;
+}
+
 export function initAppEnvironment(): void {
   update();
 
   window.addEventListener('resize', update, { passive: true });
 
   const tg = window.Telegram?.WebApp;
-  if (tg) {
-    tg.ready();
-    tg.expand();
-    if (typeof tg.requestFullscreen === 'function') {
+  if (!tg || !isInsideTelegramHost(tg)) return;
+
+  tg.ready();
+  tg.expand();
+
+  // requestFullscreen was introduced in Bot API 8.0 (Dec 2024). Older clients
+  // throw `WebAppMethodUnsupported` even though the method exists on the JS shim.
+  if (botApiVersionAtLeast(tg, 8.0) && typeof tg.requestFullscreen === 'function') {
+    try {
       tg.requestFullscreen();
+    } catch {
+      // Some clients advertise version >= 8.0 but still reject the method —
+      // swallow silently, the visual fallback is the regular expanded viewport.
     }
-    tg.onEvent('viewportChanged', update);
-    tg.onEvent('themeChanged', update);
   }
+
+  tg.onEvent('viewportChanged', update);
+  tg.onEvent('themeChanged', update);
 }
