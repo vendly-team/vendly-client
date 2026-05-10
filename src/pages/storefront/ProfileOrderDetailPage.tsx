@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useOrderStore } from '@/shared/store/orderStore';
 import { orders as mockOrders } from '@/shared/data/orders';
 import { formatPrice } from '@/shared/utils';
+import { useProductPlaceholder } from '@/hooks/useProductPlaceholder';
 import type { OrderStatus } from '@/shared/data/orders';
 import { PageMeta } from '@/lib/seo'
 
@@ -12,6 +13,7 @@ const statusColors: Record<string, string> = { new: 'bg-info/10 text-info', acce
 
 const ProfileOrderDetailPage = () => {
   const { t } = useTranslation();
+  const placeholder = useProductPlaceholder();
   const { id } = useParams();
   const { userOrders } = useOrderStore();
   const order = [...userOrders, ...mockOrders].find((o) => o.id === id);
@@ -48,7 +50,7 @@ const ProfileOrderDetailPage = () => {
         <h3 className="text-[18px] font-semibold tracking-[-0.016em] leading-[1.2] font-display mb-3">{t('orders.items')}</h3>
         {order.items.map((item, i) => (
           <div key={i} className="flex items-center gap-3 py-2 border-b border-border last:border-0">
-            <img src={item.productImage || '/placeholder.svg'} alt="" className="w-12 h-12 rounded bg-muted object-contain" />
+            <img src={item.productImage || placeholder} alt="" className="w-12 h-12 rounded bg-muted object-contain" />
             <div className="flex-1"><p className="text-[14px] font-semibold tracking-[-0.011em]">{item.productName}</p><p className="text-[12px] font-normal tracking-[-0.003em] text-muted-foreground tabular-nums">SKU: {item.sku} × {item.qty}</p></div>
             <span className="text-[14px] font-semibold tracking-[-0.011em] tabular-nums">{formatPrice(item.priceSnapshot * item.qty)}</span>
           </div>

@@ -4,8 +4,10 @@ import type { Category } from "@/shared/types";
 export type CategoryDto = {
   id: number;
   name: string;
+  slug: string | null;
   imageUrl: string | null;
   isActive: boolean;
+  productCount: number;
   createdAt: string;
   updatedAt: string | null;
 };
@@ -39,9 +41,9 @@ export const createCategorySlug = (value: string) =>
 export const mapCategoryDto = (category: CategoryDto): Category => ({
   id: String(category.id),
   name: category.name,
-  slug: createCategorySlug(category.name),
+  slug: category.slug || createCategorySlug(category.name),
   image: getCategoryImageUrl(category.imageUrl),
-  productCount: 0,
+  productCount: category.productCount,
   isActive: category.isActive,
 });
 

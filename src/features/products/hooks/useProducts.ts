@@ -11,7 +11,7 @@ export function useProducts() {
     setLoading(true)
     setError(null)
     try {
-      const data = await productService.getAll()
+      const data = await productService.getAllAdmin()
       setProducts(data)
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Failed to load products')

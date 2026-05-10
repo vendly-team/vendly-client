@@ -13,12 +13,14 @@ import { useAuthStore } from '@/shared/store/authStore';
 import { useAddresses } from '@/features/addresses';
 import { AddressSelector } from '@/features/checkout';
 import { formatPrice } from '@/shared/utils';
+import { useProductPlaceholder } from '@/hooks/useProductPlaceholder';
 import { Check } from 'lucide-react';
 
 const DELIVERY_COST = 10;
 
 const CheckoutPage = () => {
   const { t } = useTranslation();
+  const placeholder = useProductPlaceholder();
   const navigate = useNavigate();
   const { items, totalAmount, clearCart } = useCartStore();
   const { addresses } = useAddresses();
@@ -161,7 +163,7 @@ const CheckoutPage = () => {
               {items.map((item) => (
                 <div key={item.productId} className="flex items-center gap-3">
                   <img
-                    src={item.image || '/placeholder.svg'}
+                    src={item.image || placeholder}
                     alt=""
                     className="w-12 h-12 rounded bg-muted object-contain"
                   />

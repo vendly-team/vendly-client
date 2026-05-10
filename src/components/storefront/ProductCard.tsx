@@ -7,9 +7,11 @@ import { useWishlistToggle } from "@/features/wishlist/hooks/useWishlistToggle";
 import { formatPrice, getDiscountPercent } from "@/shared/utils";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { useProductPlaceholder } from "@/hooks/useProductPlaceholder";
 
 const ProductCard = ({ product }: { product: Product }) => {
   const { t } = useTranslation();
+  const placeholder = useProductPlaceholder();
   const addItem = useCartStore((s) => s.addItem);
   const updateQty = useCartStore((s) => s.updateQty);
   const { toggle, isWishlisted: checkWishlisted } = useWishlistToggle();
@@ -21,8 +23,8 @@ const ProductCard = ({ product }: { product: Product }) => {
   const isLowStock = product.stock > 0 && product.stock < 5;
   const images = useMemo(() => {
     const unique = product.images.filter(Boolean).filter((image, index, list) => list.indexOf(image) === index);
-    return unique.length > 0 ? unique : ['/placeholder.svg'];
-  }, [product.images]);
+    return unique.length > 0 ? unique : [placeholder];
+  }, [product.images, placeholder]);
   const [activeImage, setActiveImage] = useState(0);
   const [isImageHovered, setIsImageHovered] = useState(false);
 
