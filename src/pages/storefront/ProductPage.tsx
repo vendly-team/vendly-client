@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useProductPlaceholder } from '@/hooks/useProductPlaceholder';
 import StorefrontLayout from '@/components/layout/StorefrontLayout';
 import { PageMeta } from '@/lib/seo'
 import { trackViewItem, trackAddToCart } from '@/lib/analytics'
@@ -9,7 +10,7 @@ import ProductCard from '@/components/storefront/ProductCard';
 import { useCartStore } from '@/shared/store/cartStore';
 import { useWishlistToggle } from '@/features/wishlist/hooks/useWishlistToggle';
 import { formatPrice } from '@/shared/utils';
-import { Heart, ImagePlus, Info, Minus, Package, Plus, ShoppingCart } from 'lucide-react';
+import { Heart, ImagePlus, Minus, Plus, ShoppingCart } from 'lucide-react';
 import { toast } from 'sonner';
 import { productService } from '@/features/products/services/productService';
 import type { ProductAdminDetailResponse, ProductVariantResponse } from '@/features/products/types';
@@ -17,6 +18,7 @@ import {
   getDisplayVariants,
   getProductIdFromSlug,
   getVariantImages,
+  mapProductCardToStorefrontProduct,
   mapProductDetailToStorefrontProduct,
   resolveProductMediaUrl,
 } from '@/features/products/services/storefrontProductMapper';
@@ -27,6 +29,7 @@ import type { Product } from '@/shared/types';
 
 const ProductPage = () => {
   const { t } = useTranslation();
+  const placeholder = useProductPlaceholder();
   const { slug } = useParams();
   const addItem = useCartStore((s) => s.addItem);
   const updateQty = useCartStore((s) => s.updateQty);
@@ -59,13 +62,11 @@ const ProductPage = () => {
         const firstVariant = getDisplayVariants(detail)[0];
         setSelectedOptions(Object.fromEntries(firstVariant?.combination.map(item => [item.optionId, item.optionId]) ?? []));
 
-        const all = await productService.getAll();
-        const related = await Promise.all(
-          all
-            .filter(item => item.isActive && item.categoryId === detail.categoryId && item.id !== detail.id)
-            .slice(0, 4)
-            .map(async item => mapProductDetailToStorefrontProduct(await productService.getById(item.id))),
-        );
+        const page = await productService.getAll({ categoryId: detail.categoryId, pageSize: 5 });
+        const related = page.items
+          .filter(item => item.id !== detail.id)
+          .slice(0, 4)
+          .map(mapProductCardToStorefrontProduct);
         setRelatedProducts(related);
       } catch {
         setProduct(null);
@@ -187,13 +188,11 @@ const ProductPage = () => {
         <div className="mb-12 grid grid-cols-1 gap-8 lg:grid-cols-2">
           <div>
             <div className="mb-3 aspect-square overflow-hidden rounded-lg bg-muted">
-              {currentImage ? (
-                <img src={currentImage} alt={product.name} className="h-full w-full object-contain" />
-              ) : (
-                <div className="grid h-full place-items-center text-muted-foreground">
-                  <Package size={54} />
-                </div>
-              )}
+              <img
+                src={currentImage || placeholder}
+                alt={product.name}
+                className="h-full w-full object-contain"
+              />
             </div>
             {images.length > 1 && (
               <div className="flex flex-wrap gap-2">
@@ -210,11 +209,7 @@ const ProductPage = () => {
             <h1 className="mb-2 text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground lg:text-[34px] lg:tracking-[-0.024em]">{product.name}</h1>
             <p className="mb-4 text-[13px] font-medium tracking-[-0.006em] text-muted-foreground uppercase">{product.categoryName}</p>
 
-            {product.syncSource === 1 && (
-              <div className="mb-4 flex items-center gap-2 rounded-md border border-warning/30 bg-warning/10 px-3 py-2 text-[13px] font-medium tracking-[-0.006em] text-warning">
-                <Info size={16} /> {t('products.external', { defaultValue: 'External' })}
-              </div>
-            )}
+
 
             <div className="mb-4 flex items-baseline gap-3">
               <span className="text-[32px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground tabular-nums">{selectedVariant && selectedVariant.price > 0 ? formatPrice(selectedVariant.price) : t('products.setSkuPrice', { defaultValue: 'Set SKU price' })}</span>

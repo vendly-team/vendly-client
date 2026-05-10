@@ -139,7 +139,7 @@ const AdminLayout = () => {
             aria-label={collapsed ? t("admin.sidebar.brand") : t("nav.toggleMenu")}
             title={t("nav.toggleMenu")}
           >
-            {!collapsed && <OptoLogo />}
+            {collapsed ? <OptoLogo mini /> : <OptoLogo />}
           </button>
         </div>
         <SidebarNav />

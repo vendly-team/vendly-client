@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { Paginator } from '@/components/ui/Paginator';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { ImagePlus, Pencil, Plus, RefreshCw, Search, Trash2 } from 'lucide-react';
@@ -332,28 +333,7 @@ const AdminProductsPage = () => {
           </TableBody>
         </Table>
 
-        {/* Pagination — anchored inside the table container */}
-        {totalPages > 1 && (
-          <div className="border-t border-border px-4 py-3 flex justify-center gap-2">
-            {Array.from({ length: totalPages }, (_, index) => {
-              const pageNumber = index + 1;
-              return (
-                <button
-                  key={pageNumber}
-                  type="button"
-                  onClick={() => setPage(pageNumber)}
-                  className={`h-8 w-8 rounded-lg text-[13px] font-medium tracking-[-0.006em] tabular-nums transition-colors ${
-                    currentPage === pageNumber
-                      ? 'bg-accent text-accent-foreground'
-                      : 'border border-border hover:bg-muted/50'
-                  }`}
-                >
-                  {pageNumber}
-                </button>
-              );
-            })}
-          </div>
-        )}
+        <Paginator page={currentPage} totalPages={totalPages} onChange={setPage} />
       </div>
 
     </div>

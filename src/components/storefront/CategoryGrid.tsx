@@ -69,6 +69,9 @@ const CategoryGrid = () => {
                     <span className="line-clamp-2 text-center text-[10px] leading-[1.3] font-medium text-foreground">
                       {cat.name}
                     </span>
+                    <span className="text-[9px] font-normal text-muted-foreground tabular-nums">
+                      {cat.productCount}
+                    </span>
                   </Link>
                 ))}
           </div>

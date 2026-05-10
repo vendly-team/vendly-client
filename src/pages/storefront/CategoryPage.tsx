@@ -10,7 +10,8 @@ import ProductCard from '@/components/storefront/ProductCard';
 import { SlidersHorizontal, X } from 'lucide-react';
 import { categoriesApi, mapCategoryDto } from '@/shared/api/categoriesApi';
 import { productService } from '@/features/products/services/productService';
-import { mapProductDetailToStorefrontProduct, mapProductListFallback } from '@/features/products/services/storefrontProductMapper';
+import { mapProductCardToStorefrontProduct } from '@/features/products/services/storefrontProductMapper';
+import { Paginator } from '@/components/ui/Paginator';
 import type { Category, Product } from '@/shared/types';
 
 const CategoryPage = () => {
@@ -25,43 +26,34 @@ const CategoryPage = () => {
   const [inStockOnly, setInStockOnly] = useState(false);
   const [sort, setSort] = useState('newest');
   const [page, setPage] = useState(1);
+  const [totalServerPages, setTotalServerPages] = useState(1);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const filtersReadyRef = useRef(false);
-  const perPage = 12;
   const category = categories.find((c) => c.slug === slug);
 
+  // Reset to page 1 when category slug changes
+  useEffect(() => { setPage(1); }, [slug]);
+
+  // Load categories once
   useEffect(() => {
-    const loadCategoryProducts = async () => {
-      setLoading(true);
-      try {
-        const [categoryDtos, productList] = await Promise.all([
-          categoriesApi.getAll(),
-          productService.getAll(),
-        ]);
-        const mappedCategories = categoryDtos.map(mapCategoryDto).filter(item => item.isActive);
-        setCategories(mappedCategories);
-        const details = await Promise.all(
-          productList
-            .filter(product => product.isActive)
-            .map(async product => {
-              try {
-                return mapProductDetailToStorefrontProduct(await productService.getById(product.id));
-              } catch {
-                return mapProductListFallback(product);
-              }
-            }),
-        );
-        setProducts(details.filter(product => product.isActive));
-      } catch {
-        setCategories([]);
-        setProducts([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    void loadCategoryProducts();
+    categoriesApi.getAll()
+      .then(dtos => setCategories(dtos.map(mapCategoryDto).filter(c => c.isActive)))
+      .catch(() => setCategories([]));
   }, []);
+
+  // Load products when category or page changes
+  useEffect(() => {
+    if (!category) return;
+    setLoading(true);
+    productService.getAll({ categoryId: Number(category.id), page, pageSize: 24 })
+      .then(result => {
+        setProducts(result.items.map(mapProductCardToStorefrontProduct));
+        setTotalServerPages(result.totalPages);
+      })
+      .catch(() => setProducts([]))
+      .finally(() => setLoading(false));
+  }, [category?.id, page]);
 
   useEffect(() => {
     document.body.style.overflow = mobileFiltersOpen ? 'hidden' : '';
@@ -103,9 +95,7 @@ const CategoryPage = () => {
   };
 
   const filtered = useMemo(() => {
-    let list = category
-      ? products.filter((p) => p.categoryId === category.id && p.isActive)
-      : products.filter((p) => p.isActive);
+    let list = [...products];
     if (priceMin) list = list.filter((p) => (p.salePrice ?? p.price) >= Number(priceMin));
     if (priceMax) list = list.filter((p) => (p.salePrice ?? p.price) <= Number(priceMax));
     if (onSaleOnly) list = list.filter((p) => p.salePrice !== undefined);
@@ -117,10 +107,7 @@ const CategoryPage = () => {
       default: list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     }
     return list;
-  }, [category, inStockOnly, onSaleOnly, priceMax, priceMin, products, sort]);
-
-  const totalPages = Math.ceil(filtered.length / perPage);
-  const paged = filtered.slice((page - 1) * perPage, page * perPage);
+  }, [inStockOnly, onSaleOnly, priceMax, priceMin, products, sort]);
 
   const resetFilters = () => {
     setPriceMin(''); setPriceMax(''); setOnSaleOnly(false); setInStockOnly(false); setPage(1);
@@ -252,31 +239,17 @@ const CategoryPage = () => {
               <div className="rounded-lg border border-border bg-card p-8 text-center text-[14px] font-normal tracking-[-0.006em] text-muted-foreground">
                 {t('products.loading', { defaultValue: 'Loading products...' })}
               </div>
-            ) : paged.length > 0 ? (
+            ) : filtered.length > 0 ? (
               <>
                 <p className="text-[13px] font-normal tracking-[-0.006em] text-muted-foreground mb-4">
                   {t('categoryPage.productsFound', { count: filtered.length })}
                 </p>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-                  {paged.map((p) => <ProductCard key={p.id} product={p} />)}
+                  {filtered.map((p) => <ProductCard key={p.id} product={p} />)}
                 </div>
-                {totalPages > 1 && (
-                  <div className="flex items-center justify-center gap-2 mt-8">
-                    <button disabled={page === 1} onClick={() => setPage(page - 1)} className="h-9 px-3 border border-border rounded text-[13px] font-medium tracking-[-0.006em] disabled:opacity-50">
-                      {t('common.prev')}
-                    </button>
-                    {Array.from({ length: totalPages }, (_, i) => (
-                      <button
-                        key={i}
-                        onClick={() => setPage(i + 1)}
-                        className={`h-9 w-9 rounded text-[13px] font-medium tracking-[-0.006em] tabular-nums ${page === i + 1 ? 'bg-accent text-accent-foreground' : 'border border-border'}`}
-                      >
-                        {i + 1}
-                      </button>
-                    ))}
-                    <button disabled={page === totalPages} onClick={() => setPage(page + 1)} className="h-9 px-3 border border-border rounded text-[13px] font-medium tracking-[-0.006em] disabled:opacity-50">
-                      {t('common.next')}
-                    </button>
+                {totalServerPages > 1 && (
+                  <div className="mt-8">
+                    <Paginator page={page} totalPages={totalServerPages} onChange={setPage} />
                   </div>
                 )}
               </>

@@ -8,11 +8,13 @@ import { useEffect } from 'react'
 import { useCartStore } from '@/shared/store/cartStore';
 import { useAuthStore } from '@/shared/store/authStore';
 import { formatPrice } from '@/shared/utils';
+import { useProductPlaceholder } from '@/hooks/useProductPlaceholder';
 import { ShoppingCart, Trash2, Minus, Plus } from 'lucide-react';
 import RecentlyViewedSection from '@/components/storefront/RecentlyViewedSection';
 
 const CartPage = () => {
   const { t } = useTranslation();
+  const placeholder = useProductPlaceholder();
   const { items, removeItem, updateQty, totalAmount } = useCartStore();
   const { isAuthenticated } = useAuthStore();
   const navigate = useNavigate();
@@ -58,7 +60,7 @@ const CartPage = () => {
           <div className="flex-1 space-y-4">
             {items.map((item) => (
               <div key={item.productId} className="flex gap-4 bg-card border border-border rounded-lg p-4">
-                <img src={item.image || '/placeholder.svg'} alt={item.name} className="w-20 h-20 rounded-md object-contain bg-muted" />
+                <img src={item.image || placeholder} alt={item.name} className="w-20 h-20 rounded-md object-contain bg-muted" />
                 <div className="flex-1 min-w-0">
                   <Link to={`/product/${item.productId}`} className="text-[15px] font-semibold tracking-[-0.011em] text-foreground hover:text-accent line-clamp-1">{item.name}</Link>
                   <p className="text-[12px] font-normal tracking-[-0.003em] text-muted-foreground tabular-nums">SKU: {item.sku}</p>

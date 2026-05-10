@@ -10,7 +10,7 @@ import RecentlyViewedSection from "@/components/storefront/RecentlyViewedSection
 import { categoriesApi, mapCategoryDto } from "@/shared/api/categoriesApi";
 import type { Category, Product } from "@/shared/types";
 import { productService } from "@/features/products/services/productService";
-import { mapProductDetailToStorefrontProduct, mapProductListFallback } from "@/features/products/services/storefrontProductMapper";
+import { mapProductCardToStorefrontProduct } from "@/features/products/services/storefrontProductMapper";
 
 const Index = () => {
   const { t } = useTranslation();
@@ -22,23 +22,12 @@ const Index = () => {
     const loadHomeProducts = async () => {
       setLoading(true);
       try {
-        const [categoryDtos, productList] = await Promise.all([
+        const [categoryDtos, productsPage] = await Promise.all([
           categoriesApi.getAll(),
-          productService.getAll(),
+          productService.getAll({ pageSize: 40 }),
         ]);
 
-        const activeProducts = productList.filter(product => product.isActive);
-        const details = await Promise.all(
-          activeProducts.map(async product => {
-            try {
-              return mapProductDetailToStorefrontProduct(await productService.getById(product.id));
-            } catch {
-              return mapProductListFallback(product);
-            }
-          }),
-        );
-
-        setProducts(details.filter(product => product.isActive));
+        setProducts(productsPage.items.map(mapProductCardToStorefrontProduct));
         setCategories(categoryDtos.map(mapCategoryDto).filter(category => category.isActive));
       } catch {
         setProducts([]);

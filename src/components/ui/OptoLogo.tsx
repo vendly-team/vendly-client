@@ -1,14 +1,36 @@
 type OptoLogoProps = {
   className?: string
+  mini?: boolean
 }
 
-export function OptoLogo({ className }: OptoLogoProps) {
+export function OptoLogo({ className, mini }: OptoLogoProps) {
+  if (mini) {
+    return (
+      <img
+        src="/opto-mini.svg"
+        alt="Opto"
+        className={`h-12 w-12 select-none ${className ?? ''}`}
+        draggable={false}
+      />
+    )
+  }
+
   return (
-    <span
-      className={`font-brand text-[1.375rem] uppercase tracking-[0.05em] bg-gradient-to-r from-[#0071e3] to-[#38bdf8] bg-clip-text text-transparent select-none ${className ?? ''}`}
-      style={{ fontWeight: 600 }}
-    >
-      Opto
+    <span className={`inline-flex items-center select-none ${className ?? ''}`}>
+      {/* Mobile: mini icon */}
+      <img
+        src="/opto-mini.svg"
+        alt="Opto"
+        className="block md:hidden h-12 w-12"
+        draggable={false}
+      />
+      {/* Desktop: full logo */}
+      <img
+        src="/opto.svg"
+        alt="Opto"
+        className="hidden md:block h-12 w-auto"
+        draggable={false}
+      />
     </span>
   )
 }

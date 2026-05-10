@@ -1,3 +1,13 @@
+const PLACEHOLDER_MAP: Record<string, string> = {
+  en: '/placeholder-en.png',
+  ru: '/placeholder-ru.png',
+  uz: '/placeholder-uz.png',
+  'uz-Cyrl': '/placeholder-crillic.png',
+};
+
+export const getProductPlaceholder = (lang: string): string =>
+  PLACEHOLDER_MAP[lang] ?? '/placeholder-en.png';
+
 export const formatPrice = (price: number): string => {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
 };

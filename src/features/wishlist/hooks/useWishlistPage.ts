@@ -5,7 +5,7 @@ import { wishlistService } from '../services/wishlistService';
 import { productService } from '@/features/products/services/productService';
 import {
   mapProductDetailToStorefrontProduct,
-  mapProductListFallback,
+  mapProductCardToStorefrontProduct,
 } from '@/features/products/services/storefrontProductMapper';
 import type { Product } from '@/shared/types';
 
@@ -16,9 +16,9 @@ async function fetchProductsByIds(ids: number[]): Promise<Product[]> {
         return mapProductDetailToStorefrontProduct(await productService.getById(id));
       } catch {
         try {
-          const list = await productService.getAll();
-          const found = list.find((p) => p.id === id);
-          return found ? mapProductListFallback(found) : null;
+          const page = await productService.getAll();
+          const found = page.items.find((p) => p.id === id);
+          return found ? mapProductCardToStorefrontProduct(found) : null;
         } catch {
           return null;
         }
