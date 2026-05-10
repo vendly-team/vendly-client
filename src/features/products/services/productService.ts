@@ -1,5 +1,6 @@
 import { apiRequest } from '@/shared/api/http'
 import type {
+  ProductCardsPage,
   ProductListResponse,
   ProductAdminDetailResponse,
   ProductSearchResponse,
@@ -12,7 +13,14 @@ import type {
 } from '../types'
 
 export const productService = {
-  getAll: () => apiRequest<ProductListResponse[]>('/api/products'),
+  getAll: (params: { page?: number; pageSize?: number; categoryId?: number } = {}) => {
+    const { page = 1, pageSize = 20, categoryId } = params
+    const qs = new URLSearchParams({ page: String(page), pageSize: String(pageSize) })
+    if (categoryId != null) qs.set('categoryId', String(categoryId))
+    return apiRequest<ProductCardsPage>(`/api/products?${qs}`)
+  },
+
+  getAllAdmin: () => apiRequest<ProductListResponse[]>('/api/products/admin'),
 
   getById: (id: number) =>
     apiRequest<ProductAdminDetailResponse>(`/api/products/${id}`),

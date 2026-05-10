@@ -1,7 +1,7 @@
 import { API_BASE_URL } from '@/shared/api/http';
 import { createCategorySlug } from '@/shared/api/categoriesApi';
 import type { Product } from '@/shared/types';
-import type { ProductAdminDetailResponse, ProductListResponse, ProductVariantResponse } from '../types';
+import type { ProductAdminDetailResponse, ProductCardResponse, ProductVariantResponse } from '../types';
 
 export const resolveProductMediaUrl = (url?: string | null) => {
   if (!url) return '';
@@ -70,20 +70,20 @@ export const mapProductDetailToStorefrontProduct = (
   };
 };
 
-export const mapProductListFallback = (product: ProductListResponse): Product => ({
+export const mapProductCardToStorefrontProduct = (product: ProductCardResponse): Product => ({
   id: String(product.id),
   sku: `PRODUCT-${product.id}`,
   name: product.name,
   slug: createProductSlug(product.name, product.id),
   categoryId: String(product.categoryId),
   description: product.description ?? '',
-  images: [],
-  price: 0,
-  stock: 0,
+  images: product.firstImage ? [resolveProductMediaUrl(product.firstImage)] : [],
+  price: product.minPrice ?? 0,
+  stock: product.totalQuantity,
   rating: 0,
   reviewCount: 0,
   specifications: [],
-  syncSource: product.syncSource === 0 ? 'manual' : 'external',
-  isActive: product.isActive,
-  createdAt: product.createdAt,
+  syncSource: 'external',
+  isActive: true,
+  createdAt: new Date().toISOString(),
 });

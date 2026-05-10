@@ -12,6 +12,29 @@ export type ProductSearchResponse = {
 
 export const PRODUCT_SEARCH_MIN_LENGTH = 2
 
+// Public storefront card — backend already filters isActive=true, includes images & stock
+export type ProductCardResponse = {
+  id: number
+  name: string
+  categoryId: number
+  categoryName: string
+  description: string | null
+  minPrice: number | null
+  totalQuantity: number
+  variantCount: number
+  firstImage: string | null
+}
+
+export type ProductCardsPage = {
+  items: ProductCardResponse[]
+  totalCount: number
+  page: number
+  pageSize: number
+  totalPages: number
+  hasNextPage: boolean
+  hasPreviousPage: boolean
+}
+
 export type ProductListResponse = {
   id: number
   categoryId: number

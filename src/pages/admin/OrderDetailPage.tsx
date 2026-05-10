@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { orders } from '@/shared/data/orders';
 import { customers } from '@/shared/data/customers';
 import { formatPrice } from '@/shared/utils';
+import { useProductPlaceholder } from '@/hooks/useProductPlaceholder';
 import { toast } from 'sonner';
 import type { OrderStatus } from '@/shared/data/orders';
 import { useTranslation } from 'react-i18next';
@@ -12,6 +13,7 @@ const statusColors: Record<string, string> = { new: 'bg-info/10 text-info', acce
 
 const AdminOrderDetailPage = () => {
   const { t } = useTranslation();
+  const placeholder = useProductPlaceholder();
   const { id } = useParams();
   const order = orders.find(o => o.id === id);
   const [status, setStatus] = useState<OrderStatus>(order?.status || 'new');
@@ -91,7 +93,7 @@ const AdminOrderDetailPage = () => {
         <h3 className="text-[18px] font-semibold tracking-[-0.016em] leading-[1.2] mb-3 font-display">{t('orders.items')}</h3>
         {order.items.map((item, i) => (
           <div key={i} className="flex items-center gap-3 py-2 border-b border-border last:border-0">
-            <img src={item.productImage || '/placeholder.svg'} className="w-10 h-10 rounded bg-muted object-contain" alt="" />
+            <img src={item.productImage || placeholder} className="w-10 h-10 rounded bg-muted object-contain" alt="" />
             <div className="flex-1"><p className="text-[14px] font-semibold tracking-[-0.011em]">{item.productName}</p><p className="text-[12px] font-normal tracking-[-0.003em] text-muted-foreground tabular-nums">SKU: {item.sku} × {item.qty}</p></div>
             <span className="text-[14px] font-semibold tracking-[-0.011em] tabular-nums">{formatPrice(item.priceSnapshot * item.qty)}</span>
           </div>
