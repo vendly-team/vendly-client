@@ -334,9 +334,22 @@
     "internalNotes": "Internal Notes",
     "addNotePlaceholder": "Add a note...",
     "success": {
-      "statusUpdated": "Order status updated to {{status}}"
+      "statusUpdated": "Order status updated to {{status}}",
+      "noteAdded": "Note added",
+      "cancelled": "Order cancelled"
     },
-    "wasCancelled": "Order was cancelled"
+    "wasCancelled": "Order was cancelled",
+    "loadFailed": "Failed to load orders",
+    "trackPackage": "Track package",
+    "barcode": "Barcode",
+    "sticker": "Sticker",
+    "cancelOrder": "Cancel order",
+    "confirmCancel": "Cancel this order?",
+    "error": {
+      "statusFailed": "Failed to update status",
+      "noteFailed": "Failed to add note",
+      "cancelFailed": "Failed to cancel order"
+    }
   },
   "discounts": {
     "title": "Discounts",
@@ -447,13 +460,23 @@
       "cityRequired": "City/district is required",
       "streetRequired": "Street is required",
       "houseRequired": "House is required"
-    }
+    },
+    "comingSoon": "Coming soon"
   },
   "checkoutSuccess": {
     "title": "Order Placed Successfully!",
     "orderNumber": "Your order number is",
     "goToOrders": "Go to My Orders",
     "continueShopping": "Continue Shopping"
+  },
+  "payment": {
+    "processing": "Processing your payment…",
+    "processingDesc": "Please wait while we confirm your payment.",
+    "failedTitle": "Payment Failed",
+    "failedDesc": "Your payment could not be completed. Please try again.",
+    "tryAgain": "Try Again",
+    "backToCart": "Back to Cart",
+    "paymentFailed": "Payment failed. Please try again."
   },
   "categoryPage": {
     "allProducts": "Products",
@@ -631,6 +654,19 @@
     "rejected": "Rejected",
     "active": "Active",
     "inactive": "Inactive",
-    "blocked": "Blocked"
+    "blocked": "Blocked",
+    "refunded": "Refunded"
+  },
+  "orderStatus": {
+    "New": "New",
+    "Accepted": "Accepted",
+    "Preparing": "Preparing",
+    "Shipped": "Shipped",
+    "InTransit": "In Transit",
+    "OutForDelivery": "Out for Delivery",
+    "Delivered": "Delivered",
+    "Cancelled": "Cancelled",
+    "ReturnRequested": "Return Requested",
+    "Returned": "Returned"
   }
 }
