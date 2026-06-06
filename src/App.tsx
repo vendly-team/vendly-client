@@ -21,6 +21,8 @@ import SearchPage from "./pages/storefront/SearchPage";
 import CartPage from "./pages/storefront/CartPage";
 import CheckoutPage from "./pages/storefront/CheckoutPage";
 import CheckoutSuccessPage from "./pages/storefront/CheckoutSuccessPage";
+import PaymentSuccessPage from "./pages/storefront/PaymentSuccessPage";
+import PaymentFailedPage from "./pages/storefront/PaymentFailedPage";
 import LoginPage from "./pages/storefront/LoginPage";
 import RegisterPage from "./pages/storefront/RegisterPage";
 import ForgotPasswordPage from "./pages/storefront/ForgotPasswordPage";
@@ -121,6 +123,8 @@ const App = () => (
           {/* Storefront - auth required */}
           <Route path="/checkout" element={<AuthRoute><CheckoutPage /></AuthRoute>} />
           <Route path="/checkout/success" element={<AuthRoute><CheckoutSuccessPage /></AuthRoute>} />
+          <Route path="/payment/success" element={<AuthRoute><PaymentSuccessPage /></AuthRoute>} />
+          <Route path="/payment/fail" element={<AuthRoute><PaymentFailedPage /></AuthRoute>} />
 
           {/* Profile hub — mobile landing */}
           <Route path="/profile" element={<AuthRoute><StorefrontLayout><ProfileHubPage /></StorefrontLayout></AuthRoute>} />
