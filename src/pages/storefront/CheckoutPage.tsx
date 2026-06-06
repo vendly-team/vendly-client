@@ -20,7 +20,8 @@ const DELIVERY_COST = 10;
 const CheckoutPage = () => {
   const { t } = useTranslation();
   const placeholder = useProductPlaceholder();
-  const { items, totalAmount } = useCartStore();
+  const { items } = useCartStore();
+  const totalAmount = items.reduce((s, i) => s + i.price * i.qty, 0);
   const { addresses } = useAddresses();
   const { selectedAddressId } = useCheckoutSelectionStore();
   const { loading: paying, startCheckout } = usePayment();

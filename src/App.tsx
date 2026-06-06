@@ -4,7 +4,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useAuthStore } from "@/shared/store/authStore";
-import { lazy, Suspense, useEffect, type ReactNode } from "react";
+import { useCartStore } from "@/shared/store/cartStore";
+import { lazy, Suspense, useEffect, useRef, type ReactNode } from "react";
 import { configureServerErrorHandler } from "@/shared/api/http";
 import { usePageTracking } from '@/lib/analytics'
 
@@ -89,6 +90,21 @@ const AnalyticsTracker = () => {
   return null
 }
 
+const CartHydrator = () => {
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const hydrated = useRef(false);
+  useEffect(() => {
+    if (!isAuthenticated) {
+      hydrated.current = false;
+      return;
+    }
+    if (hydrated.current) return;
+    hydrated.current = true;
+    void useCartStore.getState().hydrateFromServer();
+  }, [isAuthenticated]);
+  return null;
+};
+
 const AdminOnlyRoute = ({ children }: { children: ReactNode }) => {
   const { isAuthenticated, user } = useAuthStore();
   const location = useLocation();
@@ -109,6 +125,7 @@ const App = () => (
       <BrowserRouter>
         <NavigationWatcher />
         <AnalyticsTracker />
+        <CartHydrator />
         <Routes>
           {/* Storefront - public */}
           <Route path="/" element={<Index />} />

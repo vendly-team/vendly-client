@@ -27,6 +27,8 @@ const ProductCard = ({ product }: { product: Product }) => {
   }, [product.images, placeholder]);
   const [activeImage, setActiveImage] = useState(0);
   const [isImageHovered, setIsImageHovered] = useState(false);
+  // Composite id used by the cart store to key items (matches addItem implementation).
+  const cartItemKey = product.variantId ? `${product.id}:${product.variantId}` : product.id;
 
   useEffect(() => {
     setActiveImage(0);
@@ -125,8 +127,8 @@ const ProductCard = ({ product }: { product: Product }) => {
               <button
                 onClick={() => {
                   const n = qty - 1;
-                  if (n <= 0) { updateQty(product.id, 0); setIsAddedToCart(false); setQty(1); }
-                  else { setQty(n); updateQty(product.id, n); }
+                  if (n <= 0) { void updateQty(cartItemKey, 0); setIsAddedToCart(false); setQty(1); }
+                  else { setQty(n); void updateQty(cartItemKey, n); }
                 }}
                 className="flex h-full w-9 shrink-0 items-center justify-center text-foreground hover:bg-muted transition-colors"
               >
@@ -137,7 +139,7 @@ const ProductCard = ({ product }: { product: Product }) => {
                 onClick={() => {
                   const n = Math.min(product.stock > 0 ? product.stock : 99, qty + 1);
                   setQty(n);
-                  updateQty(product.id, n);
+                  void updateQty(cartItemKey, n);
                 }}
                 className="flex h-full w-9 shrink-0 items-center justify-center text-foreground hover:bg-muted transition-colors"
               >
@@ -148,7 +150,7 @@ const ProductCard = ({ product }: { product: Product }) => {
             <button
               onClick={() => {
                 if (!isOutOfStock) {
-                  addItem(product);
+                  void addItem(product);
                   setIsAddedToCart(true);
                   toast.success(t("productCard.success.addedToCart", { name: product.name }));
                 }

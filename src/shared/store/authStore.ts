@@ -6,6 +6,7 @@ import { recentlyViewedService } from '@/features/recently-viewed/services/recen
 import { wishlistService } from '@/features/wishlist/services/wishlistService';
 import { useRecentlyViewedStore } from './recentlyViewedStore';
 import { useWishlistStore } from './wishlistStore';
+import { useCartStore } from './cartStore';
 import type { User } from '../types';
 
 const syncWishlistAfterLogin = async () => {
@@ -99,6 +100,7 @@ export const useAuthStore = create<AuthState>()(
           });
           void syncRecentlyViewedAfterLogin();
           void syncWishlistAfterLogin();
+          void useCartStore.getState().mergeIntoServer();
           return true;
         } catch {
           set({ user: null, accessToken: null, refreshToken: null, isAuthenticated: false });
@@ -117,6 +119,7 @@ export const useAuthStore = create<AuthState>()(
           });
           void syncRecentlyViewedAfterLogin();
           void syncWishlistAfterLogin();
+          void useCartStore.getState().mergeIntoServer();
           return true;
         } catch {
           set({ user: null, accessToken: null, refreshToken: null, isAuthenticated: false });
@@ -134,6 +137,7 @@ export const useAuthStore = create<AuthState>()(
           }
         }
         set({ user: null, accessToken: null, refreshToken: null, isAuthenticated: false });
+        useCartStore.getState().resetLocal();
       },
 
       updateProfile: (data) => set((state) => ({ user: state.user ? { ...state.user, ...data } : null })),
