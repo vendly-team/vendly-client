@@ -129,11 +129,9 @@ const ProductPage = () => {
 
   const handleAddToCart = () => {
     if (!product || !storeProduct || !selectedVariant) return;
+    // Mapper already populates variantId / sku / stock from the selected variant.
     const cartProduct = mapProductDetailToStorefrontProduct(product, selectedVariant);
-    cartProduct.id = `${product.id}:${selectedVariant.id}`;
-    cartProduct.sku = `SKU-${selectedVariant.id}`;
-    cartProduct.stock = selectedVariant.quantity;
-    addItem(cartProduct, qty);
+    void addItem(cartProduct, qty);
     setIsAddedToCart(true);
     toast.success(t('productPage.success.addedToCart', { name: product.name }));
     const ga4Item: GA4Item = {

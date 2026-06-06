@@ -15,10 +15,11 @@ import RecentlyViewedSection from '@/components/storefront/RecentlyViewedSection
 const CartPage = () => {
   const { t } = useTranslation();
   const placeholder = useProductPlaceholder();
-  const { items, removeItem, updateQty, totalAmount } = useCartStore();
+  const { items, removeItem, updateQty } = useCartStore();
   const { isAuthenticated } = useAuthStore();
   const navigate = useNavigate();
   const totalItems = items.reduce((s, i) => s + i.qty, 0);
+  const totalAmount = items.reduce((s, i) => s + i.price * i.qty, 0);
 
   useEffect(() => {
     if (items.length === 0) return
