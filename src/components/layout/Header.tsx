@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
-import { Search, ShoppingCart, User, Heart, X, ChevronDown, LogOut, Package, Shield, Globe, Loader2 } from "lucide-react";
+import { Search, ShoppingCart, User, Heart, X, ChevronDown, LogOut, Package, Shield, Globe, Loader2, LayoutGrid } from "lucide-react";
+import { CategoryNav, type CategoryNavHandle } from "@/components/layout/CategoryNav";
 import { OptoLogo } from "@/components/ui/OptoLogo";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { categoriesApi, mapCategoryDto } from "@/shared/api/categoriesApi";
+import { useI18nLanguage } from "@/hooks/useI18nLanguage";
 import type { Category } from "@/shared/types";
 import { useCartStore } from "@/shared/store/cartStore";
 import { useAuthStore } from "@/shared/store/authStore";
@@ -26,7 +28,7 @@ const MAX_SUGGESTIONS = 6;
 const Header = () => {
   const { t, i18n } = useTranslation();
   const { isTelegram, isIos, isAndroid } = useAppEnvironment();
-  const [searchOpen, setSearchOpen] = useState(false);
+  const language = useI18nLanguage();
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [mobileLangOpen, setMobileLangOpen] = useState(false);
@@ -34,8 +36,10 @@ const Header = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [scrolled, setScrolled] = useState(false);
   const [showCategoryNav, setShowCategoryNav] = useState(false);
+  const [catalogOpen, setCatalogOpen] = useState(false);
+  const categoryNavRef = useRef<CategoryNavHandle>(null);
   const navigate = useNavigate();
-  const totalItems = useCartStore((s) => s.items.reduce((sum, i) => sum + i.qty, 0));
+  const totalItems = useCartStore((s) => s.items.length);
   const { user, isAuthenticated, logout } = useAuthStore();
   const profileRef = useRef<HTMLDivElement>(null);
   const mobileLangRef = useRef<HTMLDivElement>(null);
@@ -49,7 +53,7 @@ const Header = () => {
   const { results: searchResults, loading: searchLoading, error: searchError } =
     useProductSearch(trimmedQuery);
   const hasMinChars = trimmedQuery.length >= PRODUCT_SEARCH_MIN_LENGTH;
-  const showDesktopSuggestions = searchOpen && searchSuggestionsOpen && hasMinChars;
+  const showDesktopSuggestions = searchSuggestionsOpen && hasMinChars;
   const showMobileSuggestions = mobileSearchOpen && hasMinChars;
   const visibleResults = searchResults.slice(0, MAX_SUGGESTIONS);
 
@@ -81,7 +85,7 @@ const Header = () => {
       }
     };
     void loadCategories();
-  }, []);
+  }, [language]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -100,7 +104,6 @@ const Header = () => {
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => { if (searchOpen) searchInputRef.current?.focus(); }, [searchOpen]);
   useEffect(() => { if (mobileSearchOpen) mobileSearchInputRef.current?.focus(); }, [mobileSearchOpen]);
 
   // Lock body scroll while desktop spotlight is open
@@ -173,17 +176,7 @@ const Header = () => {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    const isDesktop = window.matchMedia('(min-width: 768px)').matches;
-    if (isDesktop && !searchOpen) { setSearchOpen(true); return; }
     if (hasMinChars) goToSearchPage();
-  };
-
-  const handleDesktopSearchBlur = () => {
-    window.setTimeout(() => {
-      if (!searchInputRef.current?.value.trim() && !searchSuggestionsOpen) {
-        setSearchOpen(false);
-      }
-    }, 120);
   };
 
   const LangSegmented = ({ onSelect }: { onSelect?: () => void }) => (
@@ -224,78 +217,59 @@ const Header = () => {
       />
 
       <header className={`sticky top-0 z-50 border-b transition-all duration-300 ${isTelegram && isIos ? 'pt-24' : isTelegram && isAndroid ? 'pt-16' : ''} ${scrolled ? 'bg-background/70 backdrop-blur-xl backdrop-saturate-150 border-black/[0.06] shadow-[0_4px_24px_rgba(0,0,0,0.06)]' : 'bg-card border-border'}`}>
-      <div className="container flex items-center gap-4 py-3">
+      <div className="container flex items-center gap-3 py-3">
 
         <Link to="/" className="flex items-center gap-2 shrink-0">
           <OptoLogo />
         </Link>
 
-        {/* ── Mobile icon row ───────────────────────────── */}
-        <div className="flex items-center gap-1 ml-auto md:hidden">
-          {/* Search toggle */}
+        {/* ── Desktop: Katalog + Search ─────────────────── */}
+        <div className="hidden md:flex items-center gap-3 flex-1 min-w-0">
+          {/* Katalog button */}
           <button
             type="button"
-            className="p-2 text-foreground hover:text-accent transition-colors"
-            onClick={() => setMobileSearchOpen(v => !v)}
-            aria-label="Search"
+            onClick={() => categoryNavRef.current?.togglePanel()}
+            className={`flex items-center gap-2 shrink-0 h-10 px-4 rounded-full border text-[14px] font-medium transition-colors ${
+              catalogOpen
+                ? 'bg-accent/10 text-accent border-accent/30'
+                : 'bg-muted border-border text-foreground hover:text-accent hover:border-accent/40'
+            }`}
           >
-            {mobileSearchOpen ? <X size={20} /> : <Search size={20} />}
+            <LayoutGrid size={16} aria-hidden="true" />
+            {t('nav.catalog')}
+            <ChevronDown
+              size={14}
+              aria-hidden="true"
+              className={`transition-transform duration-200 ${catalogOpen ? 'rotate-180' : ''}`}
+            />
           </button>
 
-          {/* Favourites */}
-          <Link to="/profile/wishlist" className="p-2 text-foreground hover:text-accent transition-colors">
-            <Heart size={20} />
-          </Link>
-
-          {/* Language dropdown */}
-          <div className="relative" ref={mobileLangRef}>
-            <button
-              type="button"
-              onClick={() => setMobileLangOpen(v => !v)}
-              className="flex items-center gap-1 p-2 text-foreground hover:text-accent transition-colors"
-              aria-label="Language"
-            >
-              <Globe size={20} />
-              <span className="text-[11px] font-semibold tracking-[-0.003em]">
-                {LANG_LABELS[i18n.language] ?? i18n.language.toUpperCase()}
-              </span>
-            </button>
-            {mobileLangOpen && (
-              <div className="absolute right-0 top-full mt-1 w-52 bg-card border border-border rounded-xl shadow-lg z-50 animate-fade-in">
-                <LangSegmented onSelect={() => setMobileLangOpen(false)} />
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* ── Desktop icon row ──────────────────────────── */}
-        <div className="hidden md:flex items-center gap-1 ml-auto">
-          {/* Expanding search */}
-          <div ref={desktopSearchRef} className="relative">
+          {/* Search — always visible */}
+          <div ref={desktopSearchRef} className="relative flex-1 min-w-0">
             <form
               onSubmit={handleSearch}
               role="search"
-              className={`relative h-10 shrink-0 overflow-hidden rounded-full border bg-background transition-[width,border-color,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${searchOpen ? 'w-[min(40vw,28rem)] border-accent/60 shadow-[0_4px_24px_rgba(0,0,0,0.08)]' : 'w-10 border-transparent hover:border-border'} ${showDesktopSuggestions ? 'ring-2 ring-accent/30' : ''}`}
+              className={`relative h-10 rounded-full border bg-background shadow-sm transition-[border-color,box-shadow] duration-200 ${showDesktopSuggestions ? 'border-accent/60 ring-2 ring-accent/20' : 'border-border'}`}
             >
+              <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" aria-hidden="true" />
               <input
                 ref={searchInputRef}
                 type="text"
                 placeholder={t("header.searchPlaceholder")}
                 value={searchQuery}
                 onChange={(e) => { setSearchQuery(e.target.value); setSearchSuggestionsOpen(true); }}
-                onFocus={() => { setSearchOpen(true); setSearchSuggestionsOpen(true); }}
-                onBlur={handleDesktopSearchBlur}
+                onFocus={() => setSearchSuggestionsOpen(true)}
                 onKeyDown={handleSearchKeyDown}
                 role="combobox"
                 aria-expanded={showDesktopSuggestions}
                 aria-autocomplete="list"
                 aria-controls="search-suggestions-desktop"
                 aria-activedescendant={activeIndex >= 0 ? `suggestion-${visibleResults[activeIndex]?.id}` : undefined}
-                className={`h-full w-full bg-transparent pl-4 pr-10 text-[14px] font-normal tracking-[-0.011em] text-foreground placeholder:text-muted-foreground outline-none transition-opacity duration-200 ${searchOpen ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+                className="h-full w-full bg-transparent pl-10 pr-10 text-[14px] font-normal tracking-[-0.011em] text-foreground placeholder:text-muted-foreground outline-none"
               />
               <button
                 type="submit"
-                className={`absolute right-0 top-0 grid h-10 w-10 place-items-center rounded-full text-muted-foreground transition-colors hover:text-accent ${searchOpen ? '' : 'search-icon-shake'}`}
+                className="absolute right-0 top-0 grid h-10 w-10 place-items-center rounded-full text-muted-foreground transition-colors hover:text-accent"
                 aria-label="Search"
               >
                 {searchLoading && hasMinChars
@@ -304,10 +278,10 @@ const Header = () => {
               </button>
             </form>
 
-            {/* Suggestions dropdown — animated */}
+            {/* Suggestions dropdown */}
             <div
               id="search-suggestions-desktop"
-              className={`absolute right-0 top-full mt-2 w-[min(40vw,28rem)] z-50 origin-top transition-all duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+              className={`absolute left-0 right-0 top-full mt-2 z-50 origin-top transition-all duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                 showDesktopSuggestions
                   ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto'
                   : 'opacity-0 -translate-y-2 scale-[0.98] pointer-events-none'
@@ -328,7 +302,45 @@ const Header = () => {
               </div>
             </div>
           </div>
+        </div>
 
+        {/* ── Mobile icon row ───────────────────────────── */}
+        <div className="flex items-center gap-1 ml-auto md:hidden">
+          <button
+            type="button"
+            className="p-2 text-foreground hover:text-accent transition-colors"
+            onClick={() => setMobileSearchOpen(v => !v)}
+            aria-label="Search"
+          >
+            {mobileSearchOpen ? <X size={20} /> : <Search size={20} />}
+          </button>
+
+          <Link to="/profile/wishlist" className="p-2 text-foreground hover:text-accent transition-colors">
+            <Heart size={20} />
+          </Link>
+
+          <div className="relative" ref={mobileLangRef}>
+            <button
+              type="button"
+              onClick={() => setMobileLangOpen(v => !v)}
+              className="flex items-center gap-1 p-2 text-foreground hover:text-accent transition-colors"
+              aria-label="Language"
+            >
+              <Globe size={20} />
+              <span className="text-[11px] font-semibold tracking-[-0.003em]">
+                {LANG_LABELS[i18n.language] ?? i18n.language.toUpperCase()}
+              </span>
+            </button>
+            {mobileLangOpen && (
+              <div className="absolute right-0 top-full mt-1 w-52 bg-card border border-border rounded-xl shadow-lg z-50 animate-fade-in">
+                <LangSegmented onSelect={() => setMobileLangOpen(false)} />
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* ── Desktop right icons ───────────────────────── */}
+        <div className="hidden md:flex items-center gap-1">
           <Link to="/profile/wishlist" className="p-2 text-foreground hover:text-accent transition-colors">
             <Heart size={20} />
           </Link>
@@ -447,26 +459,7 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Desktop category nav */}
-      <nav
-        className={`hidden md:grid border-t transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] overflow-hidden ${showCategoryNav ? 'grid-rows-[1fr] opacity-100 border-border/50' : 'grid-rows-[0fr] opacity-0 border-transparent'
-          }`}
-      >
-        <div className="overflow-hidden">
-          <div className={`container flex items-center gap-6 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${showCategoryNav ? 'py-2 translate-y-0' : 'py-0 -translate-y-2'} overflow-x-auto`}>
-            {categories.map((cat, i) => (
-              <Link
-                key={cat.id}
-                to={`/category/${cat.slug}`}
-                className={`text-[14px] tracking-[-0.011em] text-foreground/80 hover:text-accent whitespace-nowrap font-medium transition-all duration-500 ${showCategoryNav ? 'translate-y-0 opacity-100' : 'translate-y-3 opacity-0'}`}
-                style={{ transitionDelay: showCategoryNav ? `${i * 30}ms` : '0ms' }}
-              >
-                {cat.name}
-              </Link>
-            ))}
-          </div>
-        </div>
-      </nav>
+      <CategoryNav ref={categoryNavRef} categories={categories} show={showCategoryNav} onPanelChange={setCatalogOpen} />
     </header>
     </>
   );

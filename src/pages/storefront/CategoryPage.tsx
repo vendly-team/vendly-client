@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useI18nLanguage } from '@/hooks/useI18nLanguage';
 import { toast } from 'sonner';
 import StorefrontLayout from '@/components/layout/StorefrontLayout';
 import { PageMeta } from '@/lib/seo'
@@ -17,6 +18,7 @@ import type { Category, Product } from '@/shared/types';
 const CategoryPage = () => {
   const { t } = useTranslation();
   const { slug } = useParams();
+  const language = useI18nLanguage();
   const [categories, setCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -35,12 +37,12 @@ const CategoryPage = () => {
   // Reset to page 1 when category slug changes
   useEffect(() => { setPage(1); }, [slug]);
 
-  // Load categories once
+  // Load categories once, re-fetch when language changes
   useEffect(() => {
     categoriesApi.getAll()
       .then(dtos => setCategories(dtos.map(mapCategoryDto).filter(c => c.isActive)))
       .catch(() => setCategories([]));
-  }, []);
+  }, [language]);
 
   // Load products when category or page changes
   useEffect(() => {
@@ -53,7 +55,7 @@ const CategoryPage = () => {
       })
       .catch(() => setProducts([]))
       .finally(() => setLoading(false));
-  }, [category?.id, page]);
+  }, [category?.id, page, language]);
 
   useEffect(() => {
     document.body.style.overflow = mobileFiltersOpen ? 'hidden' : '';

@@ -1,6 +1,17 @@
+import { i18n } from "@/lib/i18n";
+
 export const API_BASE_URL = (
   import.meta.env.VITE_API_BASE_URL ?? "https://api-stage-opto.vestor.uz"
 ).replace(/\/$/, "");
+
+const langToAcceptLanguage: Record<string, string> = {
+  uz: "UZ",
+  ru: "RU",
+  en: "EN",
+  "uz-Cyrl": "UZ-CYRL",
+};
+
+const getAcceptLanguage = () => langToAcceptLanguage[i18n.language] ?? "UZ";
 
 export const getStoredAccessToken = () => {
   const directToken =
@@ -91,6 +102,7 @@ export const apiRequest = async <T>(path: string, options: RequestInit = {}) => 
 
   if (token) headers.set("Authorization", `Bearer ${token}`);
   headers.set("ngrok-skip-browser-warning", "true");
+  if (!headers.has("Accept-Language")) headers.set("Accept-Language", getAcceptLanguage());
 
   const response = await fetch(`${API_BASE_URL}${path}`, { ...options, headers });
 
@@ -107,6 +119,7 @@ export const apiRequest = async <T>(path: string, options: RequestInit = {}) => 
     const retryHeaders = new Headers(options.headers);
     retryHeaders.set("Authorization", `Bearer ${newToken}`);
     retryHeaders.set("ngrok-skip-browser-warning", "true");
+    if (!retryHeaders.has("Accept-Language")) retryHeaders.set("Accept-Language", getAcceptLanguage());
 
     const retryResponse = await fetch(`${API_BASE_URL}${path}`, { ...options, headers: retryHeaders });
 

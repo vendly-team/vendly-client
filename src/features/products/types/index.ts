@@ -23,6 +23,7 @@ export type ProductCardResponse = {
   totalQuantity: number
   variantCount: number
   firstImage: string | null
+  defaultVariantId: number | null
   firstVariantId: number | null
 }
 
