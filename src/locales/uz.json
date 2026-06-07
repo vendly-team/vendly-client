@@ -57,7 +57,8 @@
     "profile": "Profil",
     "adminPanel": "Admin panel",
     "myOrders": "Buyurtmalarim",
-    "toggleMenu": "Menyu"
+    "toggleMenu": "Menyu",
+    "more": "Yana"
   },
   "header": {
     "freeShipping": "$500 dan ortiq buyurtmalarga bepul yetkazib berish",
@@ -420,7 +421,11 @@
     "continueShopping": "Xarid davom ettirish",
     "title": "Savat ({{count}} ta mahsulot)",
     "orderSummary": "Buyurtma xulosasi",
-    "deliveryHint": "Yetkazib berish narxi rasmiylashtirish vaqtida hisoblanadi",
+    "deliveryHint": "Narxi manzil va usulga qarab rasmiylashtirish bosqichida hisoblanadi",
+    "delivery": "Yetkazib berish",
+    "kinds": "xil tovar",
+    "pcs": "dona",
+    "deliveryNotIncluded": "yetkazib berish hisobga olinmagan",
     "proceedToCheckout": "Rasmiylashtirish"
   },
   "checkout": {

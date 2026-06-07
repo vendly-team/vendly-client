@@ -7,6 +7,7 @@ import {
   mapProductDetailToStorefrontProduct,
   mapProductCardToStorefrontProduct,
 } from '@/features/products/services/storefrontProductMapper';
+import { useI18nLanguage } from '@/hooks/useI18nLanguage';
 import type { Product } from '@/shared/types';
 
 async function fetchProductsByIds(ids: number[]): Promise<Product[]> {
@@ -33,6 +34,7 @@ export function useWishlistPage() {
   const { productIds, hydrateFromServer } = useWishlistStore();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
+  const language = useI18nLanguage();
 
   useEffect(() => {
     setProducts((prev) => prev.filter((p) => productIds.includes(p.id)));
@@ -71,7 +73,7 @@ export function useWishlistPage() {
     return () => {
       cancelled = true;
     };
-  }, [isAuthenticated]);
+  }, [isAuthenticated, language]);
 
   return { products, loading };
 }

@@ -9,7 +9,7 @@ import { useCartStore } from '@/shared/store/cartStore';
 import { useAuthStore } from '@/shared/store/authStore';
 import { formatPrice } from '@/shared/utils';
 import { useProductPlaceholder } from '@/hooks/useProductPlaceholder';
-import { ShoppingCart, Trash2, Minus, Plus } from 'lucide-react';
+import { ShoppingCart, Trash2, Minus, Plus, ArrowRight, Package, Truck } from 'lucide-react';
 import RecentlyViewedSection from '@/components/storefront/RecentlyViewedSection';
 
 const CartPage = () => {
@@ -22,15 +22,15 @@ const CartPage = () => {
   const totalAmount = items.reduce((s, i) => s + i.price * i.qty, 0);
 
   useEffect(() => {
-    if (items.length === 0) return
+    if (items.length === 0) return;
     const ga4Items: GA4Item[] = items.map(item => ({
       item_id: item.productId,
       item_name: item.name,
       price: item.price,
       quantity: item.qty,
-    }))
-    trackViewCart(ga4Items, totalAmount)
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    }));
+    trackViewCart(ga4Items, totalAmount);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleCheckout = () => {
     if (!isAuthenticated) { navigate('/login?redirect=/checkout'); return; }
@@ -41,71 +41,179 @@ const CartPage = () => {
     return (
       <StorefrontLayout>
         <PageMeta title="Cart — Opto Vestor" pageType="private" />
-        <div className="container py-20 text-center animate-fade-in">
-          <ShoppingCart className="mx-auto mb-4 text-muted-foreground" size={64} />
-          <h1 className="text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground mb-2">{t('cart.empty')}</h1>
-          <p className="text-[15px] font-normal tracking-[-0.011em] text-muted-foreground mb-6">{t('cart.emptyHint')}</p>
-          <Link to="/" className="inline-flex h-11 px-8 items-center rounded-lg bg-accent text-accent-foreground font-semibold text-[15px] tracking-[-0.014em]">{t('cart.continueShopping')}</Link>
+        <div className="container py-24 flex flex-col items-center text-center animate-fade-in">
+          <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center mb-5">
+            <ShoppingCart className="text-muted-foreground" size={36} />
+          </div>
+          <h1 className="text-[24px] font-bold tracking-[-0.02em] text-foreground mb-2">{t('cart.empty')}</h1>
+          <p className="text-[15px] text-muted-foreground mb-6 max-w-xs">{t('cart.emptyHint')}</p>
+          <Link
+            to="/"
+            className="inline-flex h-11 px-8 items-center gap-2 rounded-xl bg-accent text-accent-foreground font-semibold text-[15px] tracking-[-0.014em] hover:bg-accent/90 transition-colors"
+          >
+            {t('cart.continueShopping')}
+            <ArrowRight size={16} />
+          </Link>
         </div>
         <RecentlyViewedSection />
       </StorefrontLayout>
     );
   }
 
+  const totalQty = totalItems;
+
   return (
     <StorefrontLayout>
       <PageMeta title="Cart — Opto Vestor" pageType="private" />
-      <div className="container py-6 animate-fade-in">
-        <h1 className="text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground mb-6">{t('cart.title', { count: totalItems })}</h1>
-        <div className="flex flex-col lg:flex-row gap-8">
-          <div className="flex-1 space-y-4">
+      <div className="container py-8 animate-fade-in">
+        <h1 className="text-[26px] font-bold tracking-[-0.022em] text-foreground mb-6">
+          {t('cart.title', { count: items.length })}
+        </h1>
+
+        <div className="flex flex-col lg:flex-row gap-6 items-start">
+          {/* Items list */}
+          <div className="flex-1 min-w-0 space-y-3">
             {items.map((item) => (
-              <div key={item.productId} className="flex gap-4 bg-card border border-border rounded-lg p-4">
-                <img src={item.image || placeholder} alt={item.name} className="w-20 h-20 rounded-md object-contain bg-muted" />
-                <div className="flex-1 min-w-0">
-                  <Link to={`/product/${item.productId}`} className="text-[15px] font-semibold tracking-[-0.011em] text-foreground hover:text-accent line-clamp-1">{item.name}</Link>
-                  <p className="text-[12px] font-normal tracking-[-0.003em] text-muted-foreground tabular-nums">SKU: {item.sku}</p>
-                  <p className="text-[15px] font-bold tracking-[-0.011em] text-foreground mt-1 tabular-nums">{formatPrice(item.price)}</p>
-                </div>
-                <div className="flex flex-col items-end gap-2">
-                  <button onClick={() => {
-                    const ga4Item: GA4Item = {
-                      item_id: item.productId,
-                      item_name: item.name,
-                      price: item.price,
-                      quantity: item.qty,
-                    }
-                    trackRemoveFromCart(ga4Item, item.price * item.qty)
-                    removeItem(item.productId)
-                  }} className="text-muted-foreground hover:text-destructive"><Trash2 size={16} /></button>
-                  <div className="flex items-center border border-border rounded">
-                    <button onClick={() => updateQty(item.productId, item.qty - 1)} className="w-8 h-8 flex items-center justify-center hover:bg-muted"><Minus size={14} /></button>
-                    <span className="w-10 text-center text-[14px] font-medium tracking-[-0.011em] tabular-nums">{item.qty}</span>
-                    <button onClick={() => updateQty(item.productId, item.qty + 1)} className="w-8 h-8 flex items-center justify-center hover:bg-muted"><Plus size={14} /></button>
+              <div
+                key={item.productId}
+                className="flex gap-4 bg-card border border-border rounded-xl p-4 hover:border-accent/30 transition-colors"
+              >
+                <Link to={`/product/${item.productId}`} className="shrink-0">
+                  <img
+                    src={item.image || placeholder}
+                    alt={item.name}
+                    className="w-24 h-24 rounded-lg object-contain bg-muted"
+                  />
+                </Link>
+
+                <div className="flex-1 min-w-0 flex flex-col justify-between gap-2">
+                  <div className="flex items-start justify-between gap-3">
+                    <Link
+                      to={`/product/${item.productId}`}
+                      className="text-[15px] font-semibold tracking-[-0.011em] text-foreground hover:text-accent transition-colors line-clamp-2 leading-snug"
+                    >
+                      {item.name}
+                    </Link>
+                    <button
+                      onClick={() => {
+                        const ga4Item: GA4Item = {
+                          item_id: item.productId,
+                          item_name: item.name,
+                          price: item.price,
+                          quantity: item.qty,
+                        };
+                        trackRemoveFromCart(ga4Item, item.price * item.qty);
+                        void removeItem(item.productId);
+                      }}
+                      className="shrink-0 p-1.5 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
+                    >
+                      <Trash2 size={15} />
+                    </button>
                   </div>
-                  <span className="text-[15px] font-semibold tracking-[-0.011em] tabular-nums">{formatPrice(item.price * item.qty)}</span>
+
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center border border-border rounded-lg overflow-hidden">
+                      <button
+                        onClick={() => void updateQty(item.productId, item.qty - 1)}
+                        className="w-8 h-8 flex items-center justify-center hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
+                      >
+                        <Minus size={13} />
+                      </button>
+                      <span className="w-10 text-center text-[14px] font-semibold tracking-[-0.011em] tabular-nums">
+                        {item.qty}
+                      </span>
+                      <button
+                        onClick={() => void updateQty(item.productId, item.qty + 1)}
+                        disabled={item.stock !== undefined && item.qty >= item.stock}
+                        className="w-8 h-8 flex items-center justify-center hover:bg-muted transition-colors text-muted-foreground hover:text-foreground disabled:opacity-40 disabled:cursor-not-allowed"
+                      >
+                        <Plus size={13} />
+                      </button>
+                    </div>
+
+                    <div className="text-right">
+                      <p className="text-[16px] font-bold tracking-[-0.014em] tabular-nums text-foreground">
+                        {formatPrice(item.price * item.qty)}
+                      </p>
+                      {item.qty > 1 && (
+                        <p className="text-[12px] text-muted-foreground tabular-nums">
+                          {formatPrice(item.price)} × {item.qty}
+                        </p>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
-          <div className="lg:w-80">
-            <div className="bg-card border border-border rounded-lg p-6 sticky top-24">
-              <h3 className="text-[18px] font-semibold tracking-[-0.016em] leading-[1.2] font-display text-foreground mb-4">{t('cart.orderSummary')}</h3>
-              <div className="space-y-2 text-[14px] font-normal tracking-[-0.006em] mb-4">
-                <div className="flex justify-between"><span className="text-muted-foreground">{t('common.subtotal')}</span><span className="font-semibold tracking-[-0.011em] tabular-nums">{formatPrice(totalAmount)}</span></div>
-                <p className="text-[12px] font-normal tracking-[-0.003em] text-muted-foreground">{t('cart.deliveryHint')}</p>
+
+          {/* Order summary */}
+          <div className="w-full lg:w-[320px] shrink-0">
+            <div className="bg-card border border-border rounded-xl p-5 sticky top-24 space-y-4">
+              <h2 className="text-[16px] font-bold tracking-[-0.014em] text-foreground">
+                {t('cart.orderSummary')}
+              </h2>
+
+              <div className="space-y-2.5 text-[14px]">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground flex items-center gap-1.5">
+                    <Package size={13} />
+                    {items.length} {t('cart.kinds', { count: items.length })}
+                  </span>
+                  <span className="font-medium tabular-nums">{totalQty} {t('cart.pcs')}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">{t('common.subtotal')}</span>
+                  <span className="font-semibold tabular-nums">{formatPrice(totalAmount)}</span>
+                </div>
               </div>
-              <hr className="border-border mb-4" />
-              <div className="flex justify-between text-[16px] font-bold tracking-[-0.014em] text-foreground mb-4">
-                <span>{t('common.total')}</span><span className="tabular-nums">{formatPrice(totalAmount)}</span>
+
+              {/* Delivery info block */}
+              <div className="flex items-start gap-3 bg-muted/60 rounded-xl px-3.5 py-3">
+                <div className="w-8 h-8 rounded-lg bg-background flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
+                  <Truck size={15} className="text-accent" />
+                </div>
+                <div>
+                  <p className="text-[13px] font-semibold text-foreground leading-snug">
+                    {t('cart.delivery')}
+                  </p>
+                  <p className="text-[12px] text-muted-foreground mt-0.5 leading-snug">
+                    {t('cart.deliveryHint')}
+                  </p>
+                </div>
               </div>
-              <button onClick={handleCheckout} className="w-full h-11 bg-accent text-accent-foreground rounded-lg font-semibold text-[15px] tracking-[-0.014em] hover:bg-accent/90">
+
+              <div className="border-t border-border pt-3 space-y-1">
+                <div className="flex justify-between items-baseline">
+                  <span className="text-[15px] font-bold tracking-[-0.011em]">{t('common.total')}</span>
+                  <span className="text-[20px] font-black tracking-[-0.02em] tabular-nums text-foreground">
+                    {formatPrice(totalAmount)}
+                  </span>
+                </div>
+                <p className="text-[11px] text-muted-foreground text-right">
+                  + {t('cart.deliveryNotIncluded')}
+                </p>
+              </div>
+
+              <button
+                onClick={handleCheckout}
+                className="w-full h-11 bg-accent text-accent-foreground rounded-xl font-semibold text-[15px] tracking-[-0.014em] hover:bg-accent/90 transition-colors flex items-center justify-center gap-2"
+              >
                 {t('cart.proceedToCheckout')}
+                <ArrowRight size={16} />
               </button>
+
+              <Link
+                to="/"
+                className="block text-center text-[13px] text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {t('cart.continueShopping')}
+              </Link>
             </div>
           </div>
         </div>
       </div>
+      <RecentlyViewedSection />
     </StorefrontLayout>
   );
 };

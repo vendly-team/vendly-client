@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { PageMeta } from '@/lib/seo'
 import { useTranslation } from "react-i18next";
+import { useI18nLanguage } from "@/hooks/useI18nLanguage";
 import StorefrontLayout from "@/components/layout/StorefrontLayout";
 import HeroBanner from "@/components/storefront/HeroBanner";
 import CategoryGrid from "@/components/storefront/CategoryGrid";
@@ -14,6 +15,7 @@ import { mapProductCardToStorefrontProduct } from "@/features/products/services/
 
 const Index = () => {
   const { t } = useTranslation();
+  const language = useI18nLanguage();
   const [categories, setCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -38,7 +40,7 @@ const Index = () => {
     };
 
     void loadHomeProducts();
-  }, []);
+  }, [language]);
 
   const newestProducts = useMemo(
     () => [...products].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 8),

@@ -57,7 +57,8 @@
     "profile": "Profile",
     "adminPanel": "Admin Panel",
     "myOrders": "My Orders",
-    "toggleMenu": "Toggle menu"
+    "toggleMenu": "Toggle menu",
+    "more": "More"
   },
   "header": {
     "freeShipping": "Free shipping on orders over $500",
@@ -420,7 +421,11 @@
     "continueShopping": "Continue Shopping",
     "title": "Shopping Cart ({{count}} items)",
     "orderSummary": "Order Summary",
-    "deliveryHint": "Delivery cost calculated at checkout",
+    "deliveryHint": "Cost depends on address and shipping method, calculated at checkout",
+    "delivery": "Delivery",
+    "kinds": "types",
+    "pcs": "pcs",
+    "deliveryNotIncluded": "delivery not included",
     "proceedToCheckout": "Proceed to Checkout"
   },
   "checkout": {
