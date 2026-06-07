@@ -1,4 +1,5 @@
 export type OrderStatusName =
+  | 'Draft'
   | 'New'
   | 'Accepted'
   | 'Preparing'
@@ -26,8 +27,12 @@ export interface OrderListItem {
   status: OrderStatusName;
   paymentStatus: PaymentStatusName;
   deliveryStatus: DeliveryStatusName;
+  subtotal: number;
+  deliveryCost: number;
   totalAmount: number;
   itemCount: number;
+  deliveryCity: string;
+  items: OrderItem[];
   customerName?: string | null;
   createdAt: string;
 }

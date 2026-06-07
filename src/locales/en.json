@@ -426,7 +426,10 @@
     "kinds": "types",
     "pcs": "pcs",
     "deliveryNotIncluded": "delivery not included",
-    "proceedToCheckout": "Proceed to Checkout"
+    "proceedToCheckout": "Proceed to Checkout",
+    "checkoutInProgress": "Checkout in progress",
+    "checkoutInProgressHint": "You have an unfinished order. Click below to continue.",
+    "continueCheckout": "Continue checkout"
   },
   "checkout": {
     "title": "Checkout",
@@ -663,6 +666,7 @@
     "refunded": "Refunded"
   },
   "orderStatus": {
+    "Draft": "Draft",
     "New": "New",
     "Accepted": "Accepted",
     "Preparing": "Preparing",

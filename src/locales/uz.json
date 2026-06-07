@@ -426,7 +426,10 @@
     "kinds": "xil tovar",
     "pcs": "dona",
     "deliveryNotIncluded": "yetkazib berish hisobga olinmagan",
-    "proceedToCheckout": "Rasmiylashtirish"
+    "proceedToCheckout": "Rasmiylashtirish",
+    "checkoutInProgress": "Buyurtma rasmiylashtirilmoqda",
+    "checkoutInProgressHint": "Savatingizdagi buyurtma hali tugatilmagan. Davom etish uchun bosing.",
+    "continueCheckout": "Buyurtmani davom ettirish"
   },
   "checkout": {
     "title": "Buyurtmani rasmiylashtirish",
@@ -663,6 +666,7 @@
     "refunded": "Qaytarildi"
   },
   "orderStatus": {
+    "Draft": "Qoralama",
     "New": "Yangi",
     "Accepted": "Qabul qilindi",
     "Preparing": "Tayyorlanmoqda",

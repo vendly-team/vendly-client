@@ -1,4 +1,5 @@
 export { orderService } from './services/orderService';
+export type { CreateOrderResponse } from './services/orderService';
 export { useMyOrders, useMyOrder } from './hooks/useOrders';
 export { useAdminOrders, useAdminOrder } from './hooks/useAdminOrders';
 export {
