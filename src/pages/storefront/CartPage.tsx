@@ -15,13 +15,11 @@ import RecentlyViewedSection from '@/components/storefront/RecentlyViewedSection
 const CartPage = () => {
   const { t } = useTranslation();
   const placeholder = useProductPlaceholder();
-  const { items, removeItem, updateQty, totalAmount, syncWithServer } = useCartStore();
+  const { items, removeItem, updateQty } = useCartStore();
   const { isAuthenticated } = useAuthStore();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    void syncWithServer();
-  }, [isAuthenticated]); // eslint-disable-line react-hooks/exhaustive-deps
+  const totalItems = items.reduce((s, i) => s + i.qty, 0);
+  const totalAmount = items.reduce((s, i) => s + i.price * i.qty, 0);
 
   useEffect(() => {
     if (items.length === 0) return;
@@ -62,7 +60,7 @@ const CartPage = () => {
     );
   }
 
-  const totalQty = items.reduce((s, i) => s + i.qty, 0);
+  const totalQty = totalItems;
 
   return (
     <StorefrontLayout>
@@ -105,7 +103,7 @@ const CartPage = () => {
                           quantity: item.qty,
                         };
                         trackRemoveFromCart(ga4Item, item.price * item.qty);
-                        removeItem(item.productId);
+                        void removeItem(item.productId);
                       }}
                       className="shrink-0 p-1.5 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
                     >
@@ -116,7 +114,7 @@ const CartPage = () => {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center border border-border rounded-lg overflow-hidden">
                       <button
-                        onClick={() => updateQty(item.productId, item.qty - 1)}
+                        onClick={() => void updateQty(item.productId, item.qty - 1)}
                         className="w-8 h-8 flex items-center justify-center hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
                       >
                         <Minus size={13} />
@@ -125,7 +123,7 @@ const CartPage = () => {
                         {item.qty}
                       </span>
                       <button
-                        onClick={() => updateQty(item.productId, item.qty + 1)}
+                        onClick={() => void updateQty(item.productId, item.qty + 1)}
                         disabled={item.stock !== undefined && item.qty >= item.stock}
                         className="w-8 h-8 flex items-center justify-center hover:bg-muted transition-colors text-muted-foreground hover:text-foreground disabled:opacity-40 disabled:cursor-not-allowed"
                       >

@@ -335,9 +335,22 @@
     "internalNotes": "Ички эслатмалар",
     "addNotePlaceholder": "Эслатма қўшиш...",
     "success": {
-      "statusUpdated": "Буюртма ҳолати {{status}} га ўзгартирилди"
+      "statusUpdated": "Буюртма ҳолати {{status}} га ўзгартирилди",
+      "noteAdded": "Изоҳ қўшилди",
+      "cancelled": "Буюртма бекор қилинди"
     },
-    "wasCancelled": "Буюртма бекор қилинди"
+    "wasCancelled": "Буюртма бекор қилинди",
+    "loadFailed": "Буюртмаларни юклаб бўлмади",
+    "trackPackage": "Етказишни кузатиш",
+    "barcode": "Штрих-код",
+    "sticker": "Стикер",
+    "cancelOrder": "Буюртмани бекор қилиш",
+    "confirmCancel": "Бу буюртма бекор қилинсинми?",
+    "error": {
+      "statusFailed": "Статусни янгилаб бўлмади",
+      "noteFailed": "Изоҳ қўшиб бўлмади",
+      "cancelFailed": "Буюртмани бекор қилиб бўлмади"
+    }
   },
   "discounts": {
     "title": "Чегирмалар",
@@ -448,13 +461,23 @@
       "cityRequired": "Шаҳар/туманни танланг",
       "streetRequired": "Кўча номини киритинг",
       "houseRequired": "Уй рақамини киритинг"
-    }
+    },
+    "comingSoon": "Тез орада"
   },
   "checkoutSuccess": {
     "title": "Буюртма муваффақиятли расмийлаштирилди!",
     "orderNumber": "Буюртма рақамингиз",
     "goToOrders": "Буюртмаларимга ўтиш",
     "continueShopping": "Харид давом эттириш"
+  },
+  "payment": {
+    "processing": "Тўлов амалга оширилмоқда…",
+    "processingDesc": "Тўловингиз тасдиқланмоқда, илтимос кутинг.",
+    "failedTitle": "Тўлов амалга ошмади",
+    "failedDesc": "Тўловни якунлаб бўлмади. Илтимос, қайта уриниб кўринг.",
+    "tryAgain": "Қайта уриниш",
+    "backToCart": "Саватга қайтиш",
+    "paymentFailed": "Тўлов амалга ошмади. Қайта уриниб кўринг."
   },
   "categoryPage": {
     "allProducts": "Маҳсулотлар",
@@ -632,6 +655,19 @@
     "rejected": "Рад этилган",
     "active": "Фаол",
     "inactive": "Нофаол",
-    "blocked": "Блокланган"
+    "blocked": "Блокланган",
+    "refunded": "Қайтарилди"
+  },
+  "orderStatus": {
+    "New": "Янги",
+    "Accepted": "Қабул қилинди",
+    "Preparing": "Тайёрланмоқда",
+    "Shipped": "Жўнатилди",
+    "InTransit": "Йўлда",
+    "OutForDelivery": "Етказилмоқда",
+    "Delivered": "Етказилди",
+    "Cancelled": "Бекор қилинди",
+    "ReturnRequested": "Қайтариш сўралди",
+    "Returned": "Қайтарилди"
   }
 }

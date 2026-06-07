@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 import StorefrontLayout from '@/components/layout/StorefrontLayout';
 import { PageMeta } from '@/lib/seo'
 import { trackBeginCheckout, trackAddPaymentInfo } from '@/lib/analytics'
@@ -8,10 +8,9 @@ import type { GA4Item } from '@/lib/analytics'
 import { useEffect } from 'react'
 import { useCartStore } from '@/shared/store/cartStore';
 import { useCheckoutSelectionStore } from '@/shared/store/checkoutSelectionStore';
-import { useOrderStore } from '@/shared/store/orderStore';
-import { useAuthStore } from '@/shared/store/authStore';
 import { useAddresses } from '@/features/addresses';
 import { AddressSelector } from '@/features/checkout';
+import { usePayment } from '@/features/payment';
 import { formatPrice } from '@/shared/utils';
 import { useProductPlaceholder } from '@/hooks/useProductPlaceholder';
 import { Check } from 'lucide-react';
@@ -21,12 +20,11 @@ const DELIVERY_COST = 10;
 const CheckoutPage = () => {
   const { t } = useTranslation();
   const placeholder = useProductPlaceholder();
-  const navigate = useNavigate();
-  const { items, totalAmount, clearCart } = useCartStore();
+  const { items } = useCartStore();
+  const totalAmount = items.reduce((s, i) => s + i.price * i.qty, 0);
   const { addresses } = useAddresses();
   const { selectedAddressId } = useCheckoutSelectionStore();
-  const { addOrder } = useOrderStore();
-  const { user } = useAuthStore();
+  const { loading: paying, startCheckout } = usePayment();
   const [step, setStep] = useState(1);
   const [paymentMethod, setPaymentMethod] = useState<'click' | 'payme' | 'card'>('card');
 
@@ -47,43 +45,23 @@ const CheckoutPage = () => {
   const handlePlaceOrder = () => {
     if (!selectedAddress) return;
 
-    const orderNum = `ORD-2025-${String(Date.now()).slice(-3)}`;
+    // Only card (Hamkorbank hosted page) is wired to a real provider.
+    if (paymentMethod !== 'card') {
+      toast.info(t('checkout.comingSoon'));
+      return;
+    }
 
-    addOrder({
-      id: 'o-' + Date.now(),
-      orderNumber: orderNum,
-      customerId: user?.id || 'c1',
-      items: items.map((i) => ({
-        productId: i.productId,
-        productName: i.name,
-        productImage: i.image,
-        sku: i.sku,
-        qty: i.qty,
-        priceSnapshot: i.price,
-      })),
-      status: 'new',
-      paymentStatus: 'paid',
-      paymentProvider: paymentMethod,
-      totalAmount: grandTotal,
-      deliveryAddress: {
-        city: selectedAddress.city,
-        district: selectedAddress.district,
-        street: `${selectedAddress.street}, ${selectedAddress.house}`,
-      },
-      deliveryCost: DELIVERY_COST,
-      estimatedDelivery: new Date(Date.now() + 5 * 86400000).toISOString().split('T')[0],
-      statusHistory: [{ status: 'new', date: new Date().toISOString() }],
-      createdAt: new Date().toISOString(),
-    });
-    const ga4Items: GA4Item[] = items.map(item => ({
+    const ga4ItemsForCheckout: GA4Item[] = items.map(item => ({
       item_id: item.productId,
       item_name: item.name,
       price: item.price,
       quantity: item.qty,
     }))
-    trackAddPaymentInfo(ga4Items, grandTotal, paymentMethod)
-    clearCart();
-    navigate('/checkout/success', { replace: true, state: { orderNumber: orderNum } });
+
+    // Backend creates the order and returns a hosted payment page URL;
+    // usePayment redirects the browser to the bank.
+    trackAddPaymentInfo(ga4ItemsForCheckout, grandTotal, paymentMethod)
+    startCheckout(selectedAddress.id);
   };
 
   const steps = [t('checkout.address'), t('checkout.summary'), t('checkout.payment')];
@@ -226,24 +204,28 @@ const CheckoutPage = () => {
             <div className="space-y-3 mb-6">
               {(
                 [
-                  ['click', 'Click'],
-                  ['payme', 'Payme'],
-                  ['card', t('checkout.creditCard')],
+                  ['card', t('checkout.creditCard'), true],
+                  ['click', 'Click', false],
+                  ['payme', 'Payme', false],
                 ] as const
-              ).map(([val, label]) => (
+              ).map(([val, label, enabled]) => (
                 <label
                   key={val}
-                  className={`flex items-center gap-3 p-4 border rounded-lg cursor-pointer ${
+                  className={`flex items-center gap-3 p-4 border rounded-lg ${enabled ? 'cursor-pointer' : 'cursor-not-allowed opacity-60'} ${
                     paymentMethod === val ? 'border-accent bg-accent/5' : 'border-border'
                   }`}
                 >
                   <input
                     type="radio"
                     name="payment"
+                    disabled={!enabled}
                     checked={paymentMethod === val}
-                    onChange={() => setPaymentMethod(val)}
+                    onChange={() => enabled && setPaymentMethod(val)}
                   />
                   <span className="text-[15px] font-semibold tracking-[-0.011em]">{label}</span>
+                  {!enabled && (
+                    <span className="ml-auto text-[11px] font-medium tracking-[-0.005em] text-muted-foreground">{t('checkout.comingSoon')}</span>
+                  )}
                 </label>
               ))}
             </div>
@@ -260,9 +242,10 @@ const CheckoutPage = () => {
               </button>
               <button
                 onClick={handlePlaceOrder}
-                className="flex-1 h-11 bg-accent text-accent-foreground rounded-lg font-semibold text-[15px] tracking-[-0.014em]"
+                disabled={paying}
+                className="flex-1 h-11 bg-accent text-accent-foreground rounded-lg font-semibold text-[15px] tracking-[-0.014em] disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                {t('checkout.placeOrder')}
+                {paying ? t('payment.processing') : t('checkout.placeOrder')}
               </button>
             </div>
           </div>

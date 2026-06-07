@@ -134,6 +134,7 @@ export const useAuthStore = create<AuthState>()(
           void syncCartAfterLogin();
           void syncRecentlyViewedAfterLogin();
           void syncWishlistAfterLogin();
+          void useCartStore.getState().mergeIntoServer();
           return true;
         } catch {
           set({ user: null, accessToken: null, refreshToken: null, isAuthenticated: false });
@@ -153,6 +154,7 @@ export const useAuthStore = create<AuthState>()(
           void syncCartAfterLogin();
           void syncRecentlyViewedAfterLogin();
           void syncWishlistAfterLogin();
+          void useCartStore.getState().mergeIntoServer();
           return true;
         } catch {
           set({ user: null, accessToken: null, refreshToken: null, isAuthenticated: false });
@@ -170,6 +172,7 @@ export const useAuthStore = create<AuthState>()(
           }
         }
         set({ user: null, accessToken: null, refreshToken: null, isAuthenticated: false });
+        useCartStore.getState().resetLocal();
       },
 
       updateProfile: (data) => set((state) => ({ user: state.user ? { ...state.user, ...data } : null })),

@@ -335,9 +335,22 @@
     "internalNotes": "Внутренние заметки",
     "addNotePlaceholder": "Добавить заметку...",
     "success": {
-      "statusUpdated": "Статус заказа обновлён на {{status}}"
+      "statusUpdated": "Статус заказа обновлён на {{status}}",
+      "noteAdded": "Заметка добавлена",
+      "cancelled": "Заказ отменён"
     },
-    "wasCancelled": "Заказ отменён"
+    "wasCancelled": "Заказ отменён",
+    "loadFailed": "Не удалось загрузить заказы",
+    "trackPackage": "Отследить посылку",
+    "barcode": "Штрих-код",
+    "sticker": "Стикер",
+    "cancelOrder": "Отменить заказ",
+    "confirmCancel": "Отменить этот заказ?",
+    "error": {
+      "statusFailed": "Не удалось обновить статус",
+      "noteFailed": "Не удалось добавить заметку",
+      "cancelFailed": "Не удалось отменить заказ"
+    }
   },
   "discounts": {
     "title": "Скидки",
@@ -452,13 +465,23 @@
       "cityRequired": "Выберите город/район",
       "streetRequired": "Введите название улицы",
       "houseRequired": "Введите номер дома"
-    }
+    },
+    "comingSoon": "Скоро"
   },
   "checkoutSuccess": {
     "title": "Заказ успешно оформлен!",
     "orderNumber": "Номер вашего заказа",
     "goToOrders": "Перейти к заказам",
     "continueShopping": "Продолжить покупки"
+  },
+  "payment": {
+    "processing": "Обработка платежа…",
+    "processingDesc": "Пожалуйста, подождите, мы подтверждаем ваш платёж.",
+    "failedTitle": "Платёж не прошёл",
+    "failedDesc": "Не удалось завершить платёж. Пожалуйста, попробуйте снова.",
+    "tryAgain": "Попробовать снова",
+    "backToCart": "Вернуться в корзину",
+    "paymentFailed": "Платёж не прошёл. Попробуйте снова."
   },
   "categoryPage": {
     "allProducts": "Все товары",
@@ -636,6 +659,19 @@
     "rejected": "Отклонён",
     "active": "Активный",
     "inactive": "Неактивный",
-    "blocked": "Заблокирован"
+    "blocked": "Заблокирован",
+    "refunded": "Возвращён"
+  },
+  "orderStatus": {
+    "New": "Новый",
+    "Accepted": "Принят",
+    "Preparing": "Готовится",
+    "Shipped": "Отправлен",
+    "InTransit": "В пути",
+    "OutForDelivery": "Доставляется",
+    "Delivered": "Доставлен",
+    "Cancelled": "Отменён",
+    "ReturnRequested": "Запрошен возврат",
+    "Returned": "Возвращён"
   }
 }

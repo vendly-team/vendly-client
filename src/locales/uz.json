@@ -335,9 +335,22 @@
     "internalNotes": "Ichki eslatmalar",
     "addNotePlaceholder": "Eslatma qo'shish...",
     "success": {
-      "statusUpdated": "Buyurtma holati {{status}} ga o'zgartirildi"
+      "statusUpdated": "Buyurtma holati {{status}} ga o'zgartirildi",
+      "noteAdded": "Izoh qo'shildi",
+      "cancelled": "Buyurtma bekor qilindi"
     },
-    "wasCancelled": "Buyurtma bekor qilindi"
+    "wasCancelled": "Buyurtma bekor qilindi",
+    "loadFailed": "Buyurtmalarni yuklab bo'lmadi",
+    "trackPackage": "Yetkazishni kuzatish",
+    "barcode": "Shtrix-kod",
+    "sticker": "Stiker",
+    "cancelOrder": "Buyurtmani bekor qilish",
+    "confirmCancel": "Bu buyurtma bekor qilinsinmi?",
+    "error": {
+      "statusFailed": "Statusni yangilab bo'lmadi",
+      "noteFailed": "Izoh qo'shib bo'lmadi",
+      "cancelFailed": "Buyurtmani bekor qilib bo'lmadi"
+    }
   },
   "discounts": {
     "title": "Chegirmalar",
@@ -452,13 +465,23 @@
       "cityRequired": "Shahar/tumanni tanlang",
       "streetRequired": "Ko'cha nomini kiriting",
       "houseRequired": "Uy raqamini kiriting"
-    }
+    },
+    "comingSoon": "Tez orada"
   },
   "checkoutSuccess": {
     "title": "Buyurtma muvaffaqiyatli rasmiylashtirildi!",
     "orderNumber": "Buyurtma raqamingiz",
     "goToOrders": "Buyurtmalarimga o'tish",
     "continueShopping": "Xarid davom ettirish"
+  },
+  "payment": {
+    "processing": "To'lov amalga oshirilmoqda…",
+    "processingDesc": "To'lovingiz tasdiqlanmoqda, iltimos kuting.",
+    "failedTitle": "To'lov amalga oshmadi",
+    "failedDesc": "To'lovni yakunlab bo'lmadi. Iltimos, qayta urinib ko'ring.",
+    "tryAgain": "Qayta urinish",
+    "backToCart": "Savatga qaytish",
+    "paymentFailed": "To'lov amalga oshmadi. Qayta urinib ko'ring."
   },
   "categoryPage": {
     "allProducts": "Mahsulotlar",
@@ -636,6 +659,19 @@
     "rejected": "Rad etilgan",
     "active": "Faol",
     "inactive": "Nofaol",
-    "blocked": "Bloklangan"
+    "blocked": "Bloklangan",
+    "refunded": "Qaytarildi"
+  },
+  "orderStatus": {
+    "New": "Yangi",
+    "Accepted": "Qabul qilindi",
+    "Preparing": "Tayyorlanmoqda",
+    "Shipped": "Jo'natildi",
+    "InTransit": "Yo'lda",
+    "OutForDelivery": "Yetkazilmoqda",
+    "Delivered": "Yetkazildi",
+    "Cancelled": "Bekor qilindi",
+    "ReturnRequested": "Qaytarish so'raldi",
+    "Returned": "Qaytarildi"
   }
 }
