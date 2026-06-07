@@ -1,5 +1,7 @@
 import { useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Check, ChevronLeft } from 'lucide-react';
 import { toast } from 'sonner';
 import StorefrontLayout from '@/components/layout/StorefrontLayout';
 import { PageMeta } from '@/lib/seo'
@@ -13,7 +15,6 @@ import { AddressSelector } from '@/features/checkout';
 import { usePayment } from '@/features/payment';
 import { formatPrice } from '@/shared/utils';
 import { useProductPlaceholder } from '@/hooks/useProductPlaceholder';
-import { Check } from 'lucide-react';
 
 const DELIVERY_COST = 10;
 
@@ -25,7 +26,10 @@ const CheckoutPage = () => {
   const { addresses } = useAddresses();
   const { selectedAddressId } = useCheckoutSelectionStore();
   const { loading: paying, startCheckout } = usePayment();
-  const [step, setStep] = useState(1);
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const step = Math.min(3, Math.max(1, parseInt(searchParams.get('step') ?? '1', 10)));
+  const setStep = (s: number) => setSearchParams({ step: String(s) }, { replace: true });
   const [paymentMethod, setPaymentMethod] = useState<'click' | 'payme' | 'card'>('card');
 
   const selectedAddress = addresses.find((a) => a.id === selectedAddressId);
@@ -69,13 +73,24 @@ const CheckoutPage = () => {
   return (
     <StorefrontLayout>
       <PageMeta title="Checkout — Opto Vestor" pageType="private" />
+
+      {/* Progress bar — mobile only, sticks below the sticky header */}
+      <div className="md:hidden sticky top-0 z-[49] w-full">
+        <div className="h-[3px] bg-muted">
+          <div
+            className="h-full bg-accent transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+            style={{ width: `${step === steps.length ? 90 : (step / steps.length) * 100}%` }}
+          />
+        </div>
+      </div>
+
       <div className="container py-6 animate-fade-in max-w-3xl mx-auto px-4">
-        <h1 className="text-[24px] sm:text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground mb-6">
+        <h1 className="hidden md:block text-[24px] sm:text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground mb-6">
           {t('checkout.title')}
         </h1>
 
-        {/* Step indicator */}
-        <div className="flex items-center justify-center gap-2 sm:gap-4 mb-8 flex-wrap">
+        {/* Step indicator — tablet and above only */}
+        <div className="hidden md:flex items-center justify-center gap-2 sm:gap-4 mb-8 flex-wrap">
           {steps.map((s, i) => (
             <div key={s} className="flex items-center gap-2">
               <div
@@ -101,41 +116,45 @@ const CheckoutPage = () => {
 
         {/* Step 1: Address */}
         {step === 1 && (
-          <div className="bg-card border border-border rounded-lg p-4 sm:p-6">
-            <h2 className="text-[18px] sm:text-[20px] font-semibold tracking-[-0.016em] leading-[1.2] font-display mb-4">
-              {t('checkout.deliveryAddress')}
-            </h2>
-            <AddressSelector onContinue={() => setStep(2)} />
-          </div>
+          <>
+            <div className="md:hidden relative flex items-center justify-center mb-4">
+              <button
+                onClick={() => navigate('/cart')}
+                className="absolute left-0 p-2 rounded-lg text-foreground hover:bg-muted transition-colors"
+              >
+                <ChevronLeft size={26} />
+              </button>
+              <h2 className="text-[18px] font-semibold tracking-[-0.016em] leading-[1.2] font-display text-center">
+                {t('checkout.deliveryAddress')}
+              </h2>
+            </div>
+            <div className="bg-card border border-border rounded-lg p-4 sm:p-6">
+              <h2 className="hidden md:block text-[18px] sm:text-[20px] font-semibold tracking-[-0.016em] leading-[1.2] font-display mb-4">
+                {t('checkout.deliveryAddress')}
+              </h2>
+              <AddressSelector onContinue={() => setStep(2)} />
+            </div>
+          </>
         )}
 
         {/* Step 2: Summary */}
         {step === 2 && (
+          <>
+            <div className="md:hidden relative flex items-center justify-center mb-4">
+              <button
+                onClick={() => setStep(1)}
+                className="absolute left-0 p-2 rounded-lg text-foreground hover:bg-muted transition-colors"
+              >
+                <ChevronLeft size={26} />
+              </button>
+              <h2 className="text-[18px] font-semibold tracking-[-0.016em] leading-[1.2] font-display text-center">
+                {t('checkout.orderSummary')}
+              </h2>
+            </div>
           <div className="bg-card border border-border rounded-lg p-4 sm:p-6">
-            <h2 className="text-[18px] sm:text-[20px] font-semibold tracking-[-0.016em] leading-[1.2] font-display mb-4">
+            <h2 className="hidden md:block text-[18px] sm:text-[20px] font-semibold tracking-[-0.016em] leading-[1.2] font-display mb-4">
               {t('checkout.orderSummary')}
             </h2>
-
-            {selectedAddress && (
-              <div className="mb-6 p-3 border border-border rounded-lg">
-                <div className="flex items-center gap-2 mb-1 flex-wrap">
-                  <span className="text-[13px] font-semibold tracking-[-0.006em]">{selectedAddress.label}</span>
-                  {selectedAddress.isDefault && (
-                    <span className="text-[10px] font-semibold tracking-[-0.005em] uppercase bg-success/10 text-success px-1.5 py-0.5 rounded">
-                      {t('common.default')}
-                    </span>
-                  )}
-                </div>
-                <p className="text-[13px] font-normal tracking-[-0.006em] text-muted-foreground">
-                  {selectedAddress.city}, {selectedAddress.district}, {selectedAddress.street}, {selectedAddress.house}
-                </p>
-                {selectedAddress.extra && (
-                  <p className="text-[12px] font-normal tracking-[-0.003em] text-muted-foreground mt-1">
-                    {selectedAddress.extra}
-                  </p>
-                )}
-              </div>
-            )}
 
             <div className="space-y-3 mb-6">
               {items.map((item) => (
@@ -158,6 +177,32 @@ const CheckoutPage = () => {
               ))}
             </div>
 
+            {selectedAddress && (
+              <div className="mb-4">
+                <p className="text-[12px] font-semibold uppercase tracking-[0.04em] text-muted-foreground mb-2">
+                  {t('checkout.deliveryAddress')}
+                </p>
+                <div className="p-3 border border-border rounded-lg">
+                <div className="flex items-center gap-2 mb-1 flex-wrap">
+                  <span className="text-[13px] font-semibold tracking-[-0.006em]">{selectedAddress.label}</span>
+                  {selectedAddress.isDefault && (
+                    <span className="text-[10px] font-semibold tracking-[-0.005em] uppercase bg-success/10 text-success px-1.5 py-0.5 rounded">
+                      {t('common.default')}
+                    </span>
+                  )}
+                </div>
+                <p className="text-[13px] font-normal tracking-[-0.006em] text-muted-foreground">
+                  {selectedAddress.city}, {selectedAddress.district}, {selectedAddress.street}, {selectedAddress.house}
+                </p>
+                {selectedAddress.extra && (
+                  <p className="text-[12px] font-normal tracking-[-0.003em] text-muted-foreground mt-1">
+                    {selectedAddress.extra}
+                  </p>
+                )}
+                </div>
+              </div>
+            )}
+
             <div className="space-y-2 text-[14px] font-normal tracking-[-0.006em] border-t border-border pt-4">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">{t('common.subtotal')}</span>
@@ -178,27 +223,40 @@ const CheckoutPage = () => {
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 mt-6">
+            <div className="flex gap-2 mt-6">
               <button
                 onClick={() => setStep(1)}
-                className="flex-1 h-11 border border-border rounded-lg text-[15px] font-medium tracking-[-0.011em]"
+                className="hidden md:flex flex-1 h-12 items-center justify-center border border-border rounded-xl text-[14px] font-medium tracking-[-0.011em] hover:bg-muted transition-colors"
               >
                 {t('checkout.backButton')}
               </button>
               <button
                 onClick={() => setStep(3)}
-                className="flex-1 h-11 bg-accent text-accent-foreground rounded-lg font-semibold text-[15px] tracking-[-0.014em]"
+                className="flex-1 h-12 bg-accent text-accent-foreground rounded-xl font-semibold text-[15px] tracking-[-0.014em] hover:bg-accent/90 transition-colors"
               >
                 {t('checkout.continueToPayment')}
               </button>
             </div>
           </div>
+          </>
         )}
 
         {/* Step 3: Payment */}
         {step === 3 && (
+          <>
+            <div className="md:hidden relative flex items-center justify-center mb-4">
+              <button
+                onClick={() => setStep(2)}
+                className="absolute left-0 p-2 rounded-lg text-foreground hover:bg-muted transition-colors"
+              >
+                <ChevronLeft size={26} />
+              </button>
+              <h2 className="text-[18px] font-semibold tracking-[-0.016em] leading-[1.2] font-display text-center">
+                {t('checkout.paymentMethod')}
+              </h2>
+            </div>
           <div className="bg-card border border-border rounded-lg p-4 sm:p-6">
-            <h2 className="text-[18px] sm:text-[20px] font-semibold tracking-[-0.016em] leading-[1.2] font-display mb-4">
+            <h2 className="hidden md:block text-[18px] sm:text-[20px] font-semibold tracking-[-0.016em] leading-[1.2] font-display mb-4">
               {t('checkout.paymentMethod')}
             </h2>
             <div className="space-y-3 mb-6">
@@ -233,22 +291,23 @@ const CheckoutPage = () => {
               <span>{t('common.total')}</span>
               <span className="tabular-nums">{formatPrice(grandTotal)}</span>
             </div>
-            <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex gap-2 mt-6">
               <button
                 onClick={() => setStep(2)}
-                className="flex-1 h-11 border border-border rounded-lg text-[15px] font-medium tracking-[-0.011em]"
+                className="hidden md:flex flex-1 h-12 items-center justify-center border border-border rounded-xl text-[14px] font-medium tracking-[-0.011em] hover:bg-muted transition-colors"
               >
                 {t('checkout.backButton')}
               </button>
               <button
                 onClick={handlePlaceOrder}
                 disabled={paying}
-                className="flex-1 h-11 bg-accent text-accent-foreground rounded-lg font-semibold text-[15px] tracking-[-0.014em] disabled:opacity-60 disabled:cursor-not-allowed"
+                className="flex-1 h-12 bg-accent text-accent-foreground rounded-xl font-semibold text-[15px] tracking-[-0.014em] hover:bg-accent/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {paying ? t('payment.processing') : t('checkout.placeOrder')}
               </button>
             </div>
           </div>
+          </>
         )}
       </div>
     </StorefrontLayout>
