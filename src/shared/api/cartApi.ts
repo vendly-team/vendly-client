@@ -16,6 +16,7 @@ export type CartDto = {
   id: number;
   items: CartItemDto[];
   totalAmount: number;
+  isLocked: boolean;
 };
 
 export const cartApi = {

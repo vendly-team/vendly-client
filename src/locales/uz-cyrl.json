@@ -422,7 +422,14 @@
     "title": "Сават ({{count}} та маҳсулот)",
     "orderSummary": "Буюртма хулосаси",
     "deliveryHint": "Етказиб бериш нархи расмийлаштириш вақтида ҳисобланади",
-    "proceedToCheckout": "Расмийлаштириш"
+    "delivery": "Етказиб бериш",
+    "kinds": "хил товар",
+    "pcs": "дона",
+    "deliveryNotIncluded": "етказиб бериш ҳисобга олинмаган",
+    "proceedToCheckout": "Расмийлаштириш",
+    "checkoutInProgress": "Буюртма расмийлаштирилмоқда",
+    "checkoutInProgressHint": "Саватингиздаги буюртма ҳали тугатилмаган. Давом этиш учун босинг.",
+    "continueCheckout": "Буюртмани давом эттириш"
   },
   "checkout": {
     "title": "Буюртмани расмийлаштириш",
@@ -659,6 +666,7 @@
     "refunded": "Қайтарилди"
   },
   "orderStatus": {
+    "Draft": "Қоралама",
     "New": "Янги",
     "Accepted": "Қабул қилинди",
     "Preparing": "Тайёрланмоқда",

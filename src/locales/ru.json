@@ -426,7 +426,10 @@
     "kinds": "вид товара",
     "pcs": "шт",
     "deliveryNotIncluded": "без учёта доставки",
-    "proceedToCheckout": "Оформить заказ"
+    "proceedToCheckout": "Оформить заказ",
+    "checkoutInProgress": "Оформление заказа в процессе",
+    "checkoutInProgressHint": "У вас есть незавершённый заказ. Нажмите, чтобы продолжить.",
+    "continueCheckout": "Продолжить оформление"
   },
   "checkout": {
     "title": "Оформление заказа",
@@ -663,6 +666,7 @@
     "refunded": "Возвращён"
   },
   "orderStatus": {
+    "Draft": "Черновик",
     "New": "Новый",
     "Accepted": "Принят",
     "Preparing": "Готовится",

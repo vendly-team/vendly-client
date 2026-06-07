@@ -11,6 +11,7 @@ import { useCheckoutSelectionStore } from '@/shared/store/checkoutSelectionStore
 
 export type AddressSelectorProps = {
   onContinue: () => void
+  loading?: boolean
 }
 
 type Mode =
@@ -18,9 +19,9 @@ type Mode =
   | { kind: 'create' }
   | { kind: 'edit'; address: Address }
 
-export function AddressSelector({ onContinue }: AddressSelectorProps) {
+export function AddressSelector({ onContinue, loading = false }: AddressSelectorProps) {
   const { t } = useTranslation()
-  const { addresses, loading, createAddress, updateAddress, deleteAddress } = useAddresses()
+  const { addresses, loading: addressesLoading, createAddress, updateAddress, deleteAddress } = useAddresses()
   const { selectedAddressId, setSelectedAddressId } = useCheckoutSelectionStore()
   const [mode, setMode] = useState<Mode>({ kind: 'list' })
   const [submitting, setSubmitting] = useState(false)
@@ -28,22 +29,22 @@ export function AddressSelector({ onContinue }: AddressSelectorProps) {
 
   // Auto-select default address when list loads
   useEffect(() => {
-    if (loading || selectedAddressId !== null) return
+    if (addressesLoading || selectedAddressId !== null) return
     if (addresses.length === 0) return
 
     const defaultAddr = addresses.find((a) => a.isDefault) ?? addresses[0]
     if (defaultAddr) setSelectedAddressId(defaultAddr.id)
-  }, [addresses, loading, selectedAddressId, setSelectedAddressId])
+  }, [addresses, addressesLoading, selectedAddressId, setSelectedAddressId])
 
   // If selected address was deleted, clear selection
   useEffect(() => {
     if (selectedAddressId === null) return
-    if (!loading && !addresses.some((a) => a.id === selectedAddressId)) {
+    if (!addressesLoading && !addresses.some((a) => a.id === selectedAddressId)) {
       setSelectedAddressId(null)
     }
-  }, [addresses, loading, selectedAddressId, setSelectedAddressId])
+  }, [addresses, addressesLoading, selectedAddressId, setSelectedAddressId])
 
-  const showForm = mode.kind !== 'list' || (!loading && addresses.length === 0)
+  const showForm = mode.kind !== 'list' || (!addressesLoading && addresses.length === 0)
 
   const handleCreate = async (request: CreateAddressRequest) => {
     setSubmitting(true)
@@ -80,7 +81,7 @@ export function AddressSelector({ onContinue }: AddressSelectorProps) {
     if (selectedAddressId !== null) onContinue()
   }
 
-  if (loading && addresses.length === 0) {
+  if (addressesLoading && addresses.length === 0) {
     return (
       <div className="space-y-3">
         <Skeleton className="h-16 w-full" />
@@ -183,10 +184,10 @@ export function AddressSelector({ onContinue }: AddressSelectorProps) {
           <Button
             type="button"
             className="w-full h-11"
-            disabled={selectedAddressId === null}
+            disabled={selectedAddressId === null || loading}
             onClick={handleContinueWithSelected}
           >
-            {t('common.continue')}
+            {loading ? t('common.loading') : t('common.continue')}
           </Button>
         </>
       )}

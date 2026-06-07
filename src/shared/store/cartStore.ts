@@ -9,6 +9,7 @@ interface CartState {
   items: CartItem[];
   loading: boolean;
   loaded: boolean;
+  isLocked: boolean;
   addItem: (product: Product, qty?: number) => Promise<void>;
   removeItem: (productId: string) => Promise<void>;
   updateQty: (productId: string, qty: number) => Promise<void>;
@@ -25,8 +26,9 @@ const PLACEHOLDER_CART_ITEM_ID = 0;
 
 const isAuthenticated = () => useAuthStore.getState().isAuthenticated;
 
-const mapBackendToCartItems = (cart: BackendCart): CartItem[] =>
-  cart.items.map((item) => ({
+const mapBackendToCartItems = (cart: BackendCart): { items: CartItem[]; isLocked: boolean } => ({
+  isLocked: cart.isLocked,
+  items: cart.items.map((item) => ({
     cartItemId: item.id,
     productVariantId: item.productVariantId,
     productId: `${item.productId}:${item.productVariantId}`,
@@ -36,7 +38,8 @@ const mapBackendToCartItems = (cart: BackendCart): CartItem[] =>
     qty: item.qty,
     sku: `SKU-${item.productVariantId}`,
     stock: item.stock,
-  }));
+  })),
+});
 
 export const useCartStore = create<CartState>()(
   persist(
@@ -44,6 +47,7 @@ export const useCartStore = create<CartState>()(
       items: [],
       loading: false,
       loaded: false,
+      isLocked: false,
 
       addItem: async (product: Product, qty = 1) => {
         const variantId = product.variantId;
@@ -75,7 +79,7 @@ export const useCartStore = create<CartState>()(
 
         try {
           const cart = await cartService.addItem({ productVariantId: variantId, qty });
-          set({ items: mapBackendToCartItems(cart), loaded: true });
+          set({ ...mapBackendToCartItems(cart), loaded: true });
         } catch (e) {
           // Roll back the optimistic update on failure.
           set({ items });
@@ -92,7 +96,7 @@ export const useCartStore = create<CartState>()(
 
         try {
           const cart = await cartService.removeItem(item.cartItemId);
-          set({ items: mapBackendToCartItems(cart), loaded: true });
+          set({ ...mapBackendToCartItems(cart), loaded: true });
         } catch (e) {
           set({ items: snapshot });
           throw e;
@@ -117,7 +121,7 @@ export const useCartStore = create<CartState>()(
             qty <= 0
               ? await cartService.removeItem(item.cartItemId)
               : await cartService.updateItem(item.cartItemId, { qty });
-          set({ items: mapBackendToCartItems(cart), loaded: true });
+          set({ ...mapBackendToCartItems(cart), loaded: true });
         } catch (e) {
           set({ items: snapshot });
           throw e;
@@ -144,7 +148,7 @@ export const useCartStore = create<CartState>()(
         set({ loading: true });
         try {
           const cart = await cartService.getOrCreate();
-          set({ items: mapBackendToCartItems(cart), loaded: true });
+          set({ ...mapBackendToCartItems(cart), loaded: true });
         } finally {
           set({ loading: false });
         }
@@ -166,13 +170,13 @@ export const useCartStore = create<CartState>()(
 
         try {
           const cart = await cartService.getOrCreate();
-          set({ items: mapBackendToCartItems(cart), loaded: true });
+          set({ ...mapBackendToCartItems(cart), loaded: true });
         } catch {
           // Keep current state if hydration fails.
         }
       },
 
-      resetLocal: () => set({ items: [], loaded: false }),
+      resetLocal: () => set({ items: [], loaded: false, isLocked: false }),
     }),
     {
       name: 'cart-storage',

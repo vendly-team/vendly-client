@@ -14,6 +14,7 @@ export type BackendCart = {
   id: number;
   items: BackendCartItem[];
   totalAmount: number;
+  isLocked: boolean;
 };
 
 export type AddCartItemRequest = {

@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import StorefrontLayout from '@/components/layout/StorefrontLayout';
 import { PageMeta } from '@/lib/seo';
 import { useCartStore } from '@/shared/store/cartStore';
+import { useCheckoutSelectionStore } from '@/shared/store/checkoutSelectionStore';
 import { paymentService } from '@/features/payment';
 import { CheckCircle, Loader2, XCircle } from 'lucide-react';
 
@@ -15,8 +16,9 @@ const RETRY_DELAY_MS = 2000;
 const PaymentSuccessPage = () => {
   const { t } = useTranslation();
   const [params] = useSearchParams();
-  const orderNumber = params.get('order') ?? '';
+  const orderNumber = params.get('order') || sessionStorage.getItem('pendingOrderNumber') || '';
   const { clearCart } = useCartStore();
+  const { reset: resetCheckout } = useCheckoutSelectionStore();
   const [view, setView] = useState<View>('checking');
   const clearedRef = useRef(false);
 
@@ -36,8 +38,10 @@ const PaymentSuccessPage = () => {
 
         if (status.paymentStatus === 'Paid') {
           if (!clearedRef.current) {
-            clearCart();
             clearedRef.current = true;
+            clearCart();
+            resetCheckout();
+            sessionStorage.removeItem('pendingOrderNumber');
           }
           setView('paid');
           return;
@@ -56,6 +60,12 @@ const PaymentSuccessPage = () => {
         setTimeout(check, RETRY_DELAY_MS);
       } else if (!cancelled) {
         // Webhook may still be in flight — treat as success-pending, send to orders.
+        if (!clearedRef.current) {
+          clearedRef.current = true;
+          clearCart();
+          resetCheckout();
+          sessionStorage.removeItem('pendingOrderNumber');
+        }
         setView('paid');
       }
     };

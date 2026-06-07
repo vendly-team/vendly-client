@@ -37,6 +37,7 @@ const CartPage = () => {
     navigate('/checkout');
   };
 
+
   if (items.length === 0) {
     return (
       <StorefrontLayout>

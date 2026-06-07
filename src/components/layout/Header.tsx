@@ -228,6 +228,7 @@ const Header = () => {
           {/* Katalog button */}
           <button
             type="button"
+            onMouseDown={e => e.stopPropagation()}
             onClick={() => categoryNavRef.current?.togglePanel()}
             className={`flex items-center gap-2 shrink-0 h-10 px-4 rounded-full border text-[14px] font-medium transition-colors ${
               catalogOpen
