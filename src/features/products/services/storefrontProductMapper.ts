@@ -51,6 +51,7 @@ export const mapProductDetailToStorefrontProduct = (
   return {
     id: String(product.id),
     sku: variant ? `SKU-${variant.id}` : `PRODUCT-${product.id}`,
+    variantId: variant?.id,
     name: product.name,
     slug: createProductSlug(product.name, product.id),
     categoryId: String(product.categoryId),
@@ -73,6 +74,7 @@ export const mapProductDetailToStorefrontProduct = (
 export const mapProductCardToStorefrontProduct = (product: ProductCardResponse): Product => ({
   id: String(product.id),
   sku: `PRODUCT-${product.id}`,
+  variantId: product.defaultVariantId ?? undefined,
   name: product.name,
   slug: createProductSlug(product.name, product.id),
   categoryId: String(product.categoryId),

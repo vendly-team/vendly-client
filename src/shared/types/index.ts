@@ -1,6 +1,7 @@
 export interface Product {
   id: string;
   sku: string;
+  variantId?: number;
   name: string;
   slug: string;
   categoryId: string;
@@ -28,10 +29,13 @@ export interface Category {
 
 export interface CartItem {
   productId: string;
+  variantId?: number;
+  cartItemId?: number;
   name: string;
   image: string;
   price: number;
   qty: number;
+  stock?: number;
   sku: string;
 }
 

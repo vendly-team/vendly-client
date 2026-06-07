@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { categoriesApi, mapCategoryDto } from "@/shared/api/categoriesApi";
+import { useI18nLanguage } from "@/hooks/useI18nLanguage";
 import type { Category } from "@/shared/types";
 
 type UseCategoriesOptions = {
@@ -10,6 +11,7 @@ export const useCategories = ({ activeOnly = false }: UseCategoriesOptions = {})
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const language = useI18nLanguage();
 
   useEffect(() => {
     const loadCategories = async () => {
@@ -28,7 +30,7 @@ export const useCategories = ({ activeOnly = false }: UseCategoriesOptions = {})
     };
 
     void loadCategories();
-  }, [activeOnly]);
+  }, [activeOnly, language]);
 
   return { categories, loading, error };
 };
