@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -17,6 +17,7 @@ const HeroBanner = () => {
   const { t } = useTranslation();
   const [current, setCurrent] = useState(0);
   const [animating, setAnimating] = useState(false);
+  const touchStartX = useRef<number | null>(null);
 
   const slides: Slide[] = [
     {
@@ -61,7 +62,20 @@ const HeroBanner = () => {
 
   return (
     <section className="container py-3">
-      <div className="relative rounded-2xl overflow-hidden h-[220px] sm:h-[300px] lg:h-[380px] shadow-sm">
+      <div
+        className="relative rounded-2xl overflow-hidden h-[220px] sm:h-[300px] lg:h-[380px] shadow-sm"
+        onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
+        onTouchEnd={(e) => {
+          if (touchStartX.current === null) return;
+          const diff = touchStartX.current - e.changedTouches[0].clientX;
+          if (Math.abs(diff) > 40) {
+            goTo(diff > 0
+              ? (current + 1) % slides.length
+              : (current - 1 + slides.length) % slides.length);
+          }
+          touchStartX.current = null;
+        }}
+      >
         {/* Background image */}
         <img
           src={slide.bgImage}
@@ -107,7 +121,7 @@ const HeroBanner = () => {
         {/* Left nav button */}
         <button
           onClick={() => goTo((current - 1 + slides.length) % slides.length)}
-          className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/75 hover:bg-white backdrop-blur-sm text-gray-800 flex items-center justify-center shadow transition-colors z-10"
+          className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/75 hover:bg-white backdrop-blur-sm text-gray-800 hidden sm:flex items-center justify-center shadow transition-colors z-10"
           aria-label={t("hero.previous")}
         >
           <ChevronLeft size={18} />
@@ -116,7 +130,7 @@ const HeroBanner = () => {
         {/* Right nav button */}
         <button
           onClick={() => goTo((current + 1) % slides.length)}
-          className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/75 hover:bg-white backdrop-blur-sm text-gray-800 flex items-center justify-center shadow transition-colors z-10"
+          className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/75 hover:bg-white backdrop-blur-sm text-gray-800 hidden sm:flex items-center justify-center shadow transition-colors z-10"
           aria-label={t("hero.nextSlide")}
         >
           <ChevronRight size={18} />

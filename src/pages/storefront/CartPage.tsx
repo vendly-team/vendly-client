@@ -70,7 +70,7 @@ const CartPage = () => {
           {t('cart.title', { count: items.length })}
         </h1>
 
-        <div className="flex flex-col lg:flex-row gap-6 items-start">
+        <div className="flex flex-col lg:flex-row gap-6 lg:items-start">
           {/* Items list */}
           <div className="flex-1 min-w-0 space-y-3">
             {items.map((item) => (
