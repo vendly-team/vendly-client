@@ -345,6 +345,23 @@
     "sticker": "Стикер",
     "cancelOrder": "Буюртмани бекор қилиш",
     "confirmCancel": "Бу буюртма бекор қилинсинми?",
+    "cancelReasonRequired": "Бекор қилиш сабабини киритинг.",
+    "cancelDialog": {
+      "title": "Буюртмани бекор қилиш",
+      "description": "Илтимос, бекор қилиш сабабини киритинг. Бу амални қайтариб бўлмайди.",
+      "reasonCode": "Сабаб",
+      "reasonText": "Изоҳ",
+      "reasonTextPlaceholder": "Буюртма нима сабабдан бекор қилинаётганини ёзинг…",
+      "confirm": "Бекор қилишни тасдиқлаш"
+    },
+    "cancelReasonCodes": {
+      "CustomerRequest": "Мижоз сўрови",
+      "OutOfStock": "Товар йўқ",
+      "PaymentFailed": "Тўлов хатоси",
+      "DuplicateOrder": "Такрорий буюртма",
+      "DeliveryIssue": "Етказиб беришда муаммо",
+      "Other": "Бошқа"
+    },
     "error": {
       "statusFailed": "Статусни янгилаб бўлмади",
       "noteFailed": "Изоҳ қўшиб бўлмади",

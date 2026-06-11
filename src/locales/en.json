@@ -345,6 +345,23 @@
     "sticker": "Sticker",
     "cancelOrder": "Cancel order",
     "confirmCancel": "Cancel this order?",
+    "cancelReasonRequired": "Cancellation reason is required.",
+    "cancelDialog": {
+      "title": "Cancel order",
+      "description": "Please provide a reason for cancelling this order. This cannot be undone.",
+      "reasonCode": "Reason",
+      "reasonText": "Notes",
+      "reasonTextPlaceholder": "Explain why this order is being cancelled…",
+      "confirm": "Confirm cancellation"
+    },
+    "cancelReasonCodes": {
+      "CustomerRequest": "Customer request",
+      "OutOfStock": "Out of stock",
+      "PaymentFailed": "Payment failed",
+      "DuplicateOrder": "Duplicate order",
+      "DeliveryIssue": "Delivery issue",
+      "Other": "Other"
+    },
     "error": {
       "statusFailed": "Failed to update status",
       "noteFailed": "Failed to add note",

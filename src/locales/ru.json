@@ -345,6 +345,23 @@
     "sticker": "Стикер",
     "cancelOrder": "Отменить заказ",
     "confirmCancel": "Отменить этот заказ?",
+    "cancelReasonRequired": "Укажите причину отмены.",
+    "cancelDialog": {
+      "title": "Отмена заказа",
+      "description": "Укажите причину отмены заказа. Это действие нельзя отменить.",
+      "reasonCode": "Причина",
+      "reasonText": "Комментарий",
+      "reasonTextPlaceholder": "Опишите, почему заказ отменяется…",
+      "confirm": "Подтвердить отмену"
+    },
+    "cancelReasonCodes": {
+      "CustomerRequest": "По просьбе клиента",
+      "OutOfStock": "Нет в наличии",
+      "PaymentFailed": "Ошибка оплаты",
+      "DuplicateOrder": "Дубликат заказа",
+      "DeliveryIssue": "Проблема с доставкой",
+      "Other": "Другое"
+    },
     "error": {
       "statusFailed": "Не удалось обновить статус",
       "noteFailed": "Не удалось добавить заметку",

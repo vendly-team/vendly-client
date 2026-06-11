@@ -345,6 +345,23 @@
     "sticker": "Stiker",
     "cancelOrder": "Buyurtmani bekor qilish",
     "confirmCancel": "Bu buyurtma bekor qilinsinmi?",
+    "cancelReasonRequired": "Bekor qilish sababini kiriting.",
+    "cancelDialog": {
+      "title": "Buyurtmani bekor qilish",
+      "description": "Iltimos, bekor qilish sababini kiriting. Bu amalni qaytarib bo'lmaydi.",
+      "reasonCode": "Sabab",
+      "reasonText": "Izoh",
+      "reasonTextPlaceholder": "Buyurtma nima sababdan bekor qilinayotganini yozing…",
+      "confirm": "Bekor qilishni tasdiqlash"
+    },
+    "cancelReasonCodes": {
+      "CustomerRequest": "Mijoz so'rovi",
+      "OutOfStock": "Tovar yo'q",
+      "PaymentFailed": "To'lov xatosi",
+      "DuplicateOrder": "Takroriy buyurtma",
+      "DeliveryIssue": "Yetkazib berishda muammo",
+      "Other": "Boshqa"
+    },
     "error": {
       "statusFailed": "Statusni yangilab bo'lmadi",
       "noteFailed": "Izoh qo'shib bo'lmadi",
