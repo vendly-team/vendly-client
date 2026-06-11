@@ -94,6 +94,24 @@ const attemptRefresh = (): Promise<string> => {
   return _refreshing;
 };
 
+// Javob tanasini bir marta o'qiydi (json/text ikki marta o'qish → "body stream already read" bug'ini oldini oladi)
+const readErrorMessage = async (response: Response): Promise<string> => {
+  const fallback = `Request failed with status ${response.status}`;
+  let raw = "";
+  try {
+    raw = await response.text();
+  } catch {
+    return fallback;
+  }
+  if (!raw) return fallback;
+  try {
+    const body = JSON.parse(raw);
+    return body?.detail ?? body?.title ?? body?.message ?? fallback;
+  } catch {
+    return raw;
+  }
+};
+
 // --- Core request helper ---
 
 export const apiRequest = async <T>(path: string, options: RequestInit = {}) => {
@@ -124,15 +142,7 @@ export const apiRequest = async <T>(path: string, options: RequestInit = {}) => 
     const retryResponse = await fetch(`${API_BASE_URL}${path}`, { ...options, headers: retryHeaders });
 
     if (!retryResponse.ok) {
-      let message = `Request failed with status ${retryResponse.status}`;
-      try {
-        const body = await retryResponse.json();
-        message = body?.detail ?? body?.title ?? body?.message ?? message;
-      } catch {
-        const text = await retryResponse.text();
-        if (text) message = text;
-      }
-      throw new Error(message);
+      throw new Error(await readErrorMessage(retryResponse));
     }
 
     if (retryResponse.status === 204) return undefined as T;
@@ -141,15 +151,7 @@ export const apiRequest = async <T>(path: string, options: RequestInit = {}) => 
   }
 
   if (!response.ok) {
-    let message = `Request failed with status ${response.status}`;
-
-    try {
-      const body = await response.json();
-      message = body?.detail ?? body?.title ?? body?.message ?? message;
-    } catch {
-      const text = await response.text();
-      if (text) message = text;
-    }
+    const message = await readErrorMessage(response);
 
     if (response.status >= 500) {
       _onServerError?.(path);

@@ -1,6 +1,6 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/shared/store/authStore';
-import { LayoutDashboard, Package, Grid, ShoppingBag, Users, Star, Tag, RefreshCw, Shield, LogOut, Menu, X, ChevronDown, Store } from 'lucide-react';
+import { LayoutDashboard, Package, Grid, ShoppingBag, Users, Star, Tag, RefreshCw, Shield, LogOut, Menu, X, ChevronDown, Store, RotateCcw, HelpCircle, Coins, Building2 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from "react-i18next";
@@ -43,6 +43,7 @@ const AdminLayout = () => {
       links: [
         { to: '/admin/products', icon: Package, label: t("admin.sidebar.products") },
         { to: '/admin/categories', icon: Grid, label: t("admin.sidebar.categories") },
+        { to: '/admin/category-prices', icon: Coins, label: t("admin.sidebar.categoryPrices") },
         { to: '/admin/discounts', icon: Tag, label: t("admin.sidebar.discounts") },
       ],
     },
@@ -57,6 +58,14 @@ const AdminLayout = () => {
       links: [
         { to: '/admin/customers', icon: Users, label: t("admin.sidebar.customers") },
         { to: '/admin/reviews', icon: Star, label: t("admin.sidebar.reviews") },
+      ],
+    },
+    {
+      label: t("admin.sidebar.sections.ref"),
+      links: [
+        { to: '/admin/company-info', icon: Building2, label: t("admin.sidebar.companyInfo") },
+        { to: '/admin/ref/return-reasons', icon: RotateCcw, label: t("admin.sidebar.returnReasons") },
+        { to: '/admin/ref/faqs', icon: HelpCircle, label: t("admin.sidebar.faqs") },
       ],
     },
     ...(user?.role === 'admin' ? [

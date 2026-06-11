@@ -2,9 +2,25 @@ import { Link } from "react-router-dom";
 import { categories } from "@/shared/data/categories";
 import { useTranslation } from "react-i18next";
 import { OptoLogo } from "@/components/ui/OptoLogo";
+import { useCompanyInfo } from "@/shared/hooks/useCompanyInfo";
+import { getFileUrl } from "@/shared/api/companyInfoApi";
 
 const Footer = () => {
   const { t } = useTranslation();
+  const { info } = useCompanyInfo();
+
+  const phone = info?.phone || t("header.phone");
+  const email = info?.email || "support@baytech.com";
+  const address = info?.address || t("footer.address");
+  const ofertaUrl = info?.ofertaUrl ? getFileUrl(info.ofertaUrl) : null;
+
+  const socials = [
+    { label: "Telegram", url: info?.telegram },
+    { label: "Instagram", url: info?.instagram },
+    { label: "Facebook", url: info?.facebook },
+    { label: "YouTube", url: info?.youTube },
+  ].filter((s): s is { label: string; url: string } => Boolean(s.url));
+
   return (
     <footer className="bg-zinc-900 text-white">
       <div className="container py-12">
@@ -48,6 +64,13 @@ const Footer = () => {
               <li><Link to="/cart" className="hover:text-accent transition-colors">{t("footer.shoppingCart")}</Link></li>
               <li><a href="#" className="hover:text-accent transition-colors">{t("footer.returnsExchanges")}</a></li>
               <li><a href="#" className="hover:text-accent transition-colors">{t("footer.faq")}</a></li>
+              {ofertaUrl && (
+                <li>
+                  <a href={ofertaUrl} target="_blank" rel="noreferrer" className="hover:text-accent transition-colors">
+                    {t("footer.oferta")}
+                  </a>
+                </li>
+              )}
             </ul>
           </div>
 
@@ -57,17 +80,27 @@ const Footer = () => {
               {t("footer.contactUs")}
             </h4>
             <ul className="space-y-2 text-[14px] font-normal tracking-[-0.006em] text-white/60">
-              <li>📞 {t("header.phone")}</li>
-              <li>✉️ support@baytech.com</li>
-              <li>📍 {t("footer.address")}</li>
+              <li><a href={`tel:${phone}`} className="hover:text-accent transition-colors">📞 {phone}</a></li>
+              <li><a href={`mailto:${email}`} className="hover:text-accent transition-colors">✉️ {email}</a></li>
+              <li>📍 {address}</li>
+              {info?.workingHours && <li>🕘 {info.workingHours}</li>}
             </ul>
-            <div className="flex gap-3 mt-4">
-              {["Facebook", "Instagram", "Twitter"].map((s) => (
-                <a key={s} href="#" className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-[12px] font-medium tracking-[-0.005em] text-white/60 hover:bg-accent hover:text-accent-foreground transition-colors">
-                  {s[0]}
-                </a>
-              ))}
-            </div>
+            {socials.length > 0 && (
+              <div className="flex gap-3 mt-4">
+                {socials.map((s) => (
+                  <a
+                    key={s.label}
+                    href={s.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    title={s.label}
+                    className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-[12px] font-medium tracking-[-0.005em] text-white/60 hover:bg-accent hover:text-accent-foreground transition-colors"
+                  >
+                    {s.label[0]}
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 

@@ -8,8 +8,10 @@ const PLACEHOLDER_MAP: Record<string, string> = {
 export const getProductPlaceholder = (lang: string): string =>
   PLACEHOLDER_MAP[lang] ?? '/placeholder-en.png';
 
+// Backend narxlarni allaqachon so'mga o'girib qaytaradi (CBU rate + category markup).
+// Shuning uchun bu yerda faqat formatlash: ming ajratgich + "so'm".
 export const formatPrice = (price: number): string => {
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
+  return `${new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 }).format(price)} so'm`;
 };
 
 export const getDiscountPercent = (price: number, salePrice: number): number => {
