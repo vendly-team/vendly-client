@@ -5,6 +5,8 @@ import { useProductPlaceholder } from '@/hooks/useProductPlaceholder';
 import { useTranslation } from 'react-i18next';
 import { Loader2 } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from '@/components/ui/dialog';
+import { toast } from 'sonner';
 import {
   useAdminOrder,
   ORDER_STATUS_COLORS,
@@ -12,6 +14,17 @@ import {
   isCancellable,
   orderStatusKey,
 } from '@/features/orders';
+
+// Must match backend's CancellationReasonCode enum (Domain/Enums/CancellationReasonCode.cs).
+const CANCEL_REASON_CODES = [
+  'CustomerRequest',
+  'OutOfStock',
+  'PaymentFailed',
+  'DuplicateOrder',
+  'DeliveryIssue',
+  'Other',
+] as const;
+type CancelReasonCode = (typeof CANCEL_REASON_CODES)[number];
 
 const payLabel = (s: string) => `statusLabels.${s.toLowerCase()}`;
 
@@ -23,6 +36,9 @@ const AdminOrderDetailPage = () => {
 
   const [targetStatus, setTargetStatus] = useState<string>('');
   const [noteText, setNoteText] = useState('');
+  const [cancelOpen, setCancelOpen] = useState(false);
+  const [cancelReasonCode, setCancelReasonCode] = useState<CancelReasonCode>('CustomerRequest');
+  const [cancelReasonText, setCancelReasonText] = useState('');
 
   useEffect(() => {
     if (order) setTargetStatus(order.status);
@@ -44,8 +60,20 @@ const AdminOrderDetailPage = () => {
     if (canSave) updateStatus(targetStatus, undefined);
   };
 
-  const handleCancel = () => {
-    if (window.confirm(t('orders.confirmCancel'))) cancel();
+  const openCancelDialog = () => {
+    setCancelReasonCode('CustomerRequest');
+    setCancelReasonText('');
+    setCancelOpen(true);
+  };
+
+  const handleCancelSubmit = async () => {
+    const trimmed = cancelReasonText.trim();
+    if (!trimmed) {
+      toast.error(t('orders.cancelReasonRequired'));
+      return;
+    }
+    const ok = await cancel(cancelReasonCode, trimmed);
+    if (ok) setCancelOpen(false);
   };
 
   const handleAddNote = async () => {
@@ -83,7 +111,7 @@ const AdminOrderDetailPage = () => {
             <button onClick={handleSave} disabled={!canSave || working} className="h-9 px-4 bg-accent text-accent-foreground rounded-md text-[14px] font-semibold tracking-[-0.011em] disabled:opacity-50 disabled:cursor-not-allowed">{t('common.save')}</button>
           </div>
           {isCancellable(order.status) && (
-            <button onClick={handleCancel} disabled={working} className="mt-2 h-9 w-full border border-destructive/30 text-destructive rounded-md text-[14px] font-medium tracking-[-0.011em] disabled:opacity-50">{t('orders.cancelOrder')}</button>
+            <button onClick={openCancelDialog} disabled={working} className="mt-2 h-9 w-full border border-destructive/30 text-destructive rounded-md text-[14px] font-medium tracking-[-0.011em] disabled:opacity-50">{t('orders.cancelOrder')}</button>
           )}
         </div>
 
@@ -152,6 +180,59 @@ const AdminOrderDetailPage = () => {
           </div>
         ))}
       </div>
+
+      {/* Cancel order dialog — admin must pick a reason code and supply a written reason. */}
+      <Dialog open={cancelOpen} onOpenChange={setCancelOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{t('orders.cancelDialog.title')}</DialogTitle>
+            <DialogDescription>{t('orders.cancelDialog.description')}</DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            <div className="space-y-1.5">
+              <label className="text-[13px] font-medium tracking-[-0.006em]">{t('orders.cancelDialog.reasonCode')}</label>
+              <Select value={cancelReasonCode} onValueChange={(v) => setCancelReasonCode(v as CancelReasonCode)}>
+                <SelectTrigger className="h-9"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {CANCEL_REASON_CODES.map(code => (
+                    <SelectItem key={code} value={code}>{t(`orders.cancelReasonCodes.${code}`)}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-[13px] font-medium tracking-[-0.006em]">{t('orders.cancelDialog.reasonText')}</label>
+              <textarea
+                value={cancelReasonText}
+                onChange={(e) => setCancelReasonText(e.target.value)}
+                placeholder={t('orders.cancelDialog.reasonTextPlaceholder')}
+                maxLength={2000}
+                rows={4}
+                className="w-full p-2 glass-input rounded-md text-[14px] font-normal tracking-[-0.011em] resize-none"
+              />
+            </div>
+          </div>
+
+          <DialogFooter>
+            <button
+              onClick={() => setCancelOpen(false)}
+              disabled={working}
+              className="h-9 px-4 border border-border rounded-md text-[14px] font-medium tracking-[-0.011em] disabled:opacity-50"
+            >
+              {t('common.cancel')}
+            </button>
+            <button
+              onClick={handleCancelSubmit}
+              disabled={working || !cancelReasonText.trim()}
+              className="h-9 px-4 bg-destructive text-destructive-foreground rounded-md text-[14px] font-semibold tracking-[-0.011em] disabled:opacity-50"
+            >
+              {working ? <Loader2 className="animate-spin" size={14} /> : t('orders.cancelDialog.confirm')}
+            </button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
