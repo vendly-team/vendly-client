@@ -81,6 +81,7 @@
     "shoppingCart": "Shopping Cart",
     "returnsExchanges": "Returns & Exchanges",
     "faq": "FAQ",
+    "oferta": "Public offer",
     "contactUs": "Contact Us",
     "address": "123 Tech Avenue, Suite 100",
     "copyright": "© {{year}} baytech. All rights reserved."
@@ -295,6 +296,89 @@
     "imageUrl": "Image URL",
     "deleteConfirm": "Delete this category?",
     "products": "Products"
+  },
+  "companyInfo": {
+    "title": "Company Info",
+    "chooseImage": "Choose image",
+    "uploadPdf": "Upload PDF",
+    "viewPdf": "View",
+    "ofertaHint": "A PDF file per language.",
+    "sections": {
+      "branding": "Branding",
+      "contact": "Contact",
+      "legal": "Legal requisites",
+      "social": "Social networks",
+      "oferta": "Public offer (Oferta)"
+    },
+    "fields": {
+      "brandName": "Brand name",
+      "logo": "Logo",
+      "name": "Company name",
+      "phone": "Phone",
+      "email": "Email",
+      "address": "Address",
+      "workingHours": "Working hours",
+      "inn": "INN (STIR)",
+      "mfo": "MFO",
+      "bankName": "Bank name",
+      "accountNumber": "Account number"
+    },
+    "success": {
+      "saved": "Saved"
+    },
+    "errors": {
+      "loadFailed": "Failed to load",
+      "saveFailed": "Failed to save",
+      "email": "Invalid email",
+      "logoType": "Logo must be an image",
+      "pdfType": "Oferta must be a PDF"
+    }
+  },
+  "categoryPrices": {
+    "title": "Category Prices",
+    "addRule": "Add rule",
+    "editRule": "Edit rule",
+    "deleteConfirm": "Delete this rule?",
+    "defaultLabel": "default",
+    "currency": "UZS",
+    "col": {
+      "category": "Category",
+      "type": "Type",
+      "value": "Value",
+      "rounding": "Rounding",
+      "range": "Active range"
+    },
+    "type": {
+      "percent": "Percent",
+      "fixed": "Fixed"
+    },
+    "typeOption": {
+      "percent": "Percent (%)",
+      "fixed": "Fixed (UZS)"
+    },
+    "form": {
+      "category": "Category",
+      "type": "Type",
+      "valuePercent": "Value (%)",
+      "valueFixed": "Value (UZS)",
+      "roundingStep": "Rounding step (UZS)",
+      "roundingPlaceholder": "default (app settings)",
+      "roundingHint": "Leave empty to use default app settings.",
+      "startDate": "Start date",
+      "endDate": "End date"
+    },
+    "errors": {
+      "categoryRequired": "Category is required",
+      "valueInvalid": "Value must be zero or greater",
+      "dateRange": "End date must be on or after start date",
+      "loadFailed": "Failed to load",
+      "saveFailed": "Failed to save",
+      "deleteFailed": "Failed to delete"
+    },
+    "success": {
+      "created": "Created",
+      "updated": "Updated"
+    }
   },
   "customers": {
     "title": "Customers",
@@ -623,6 +707,7 @@
       "dashboard": "Dashboard",
       "products": "Products",
       "categories": "Categories",
+      "categoryPrices": "Category Prices",
       "orders": "Orders",
       "customers": "Customers",
       "reviews": "Reviews",
@@ -631,11 +716,15 @@
       "users": "Users",
       "userSide": "User side",
       "title": "Admin Panel",
+      "returnReasons": "Return reasons",
+      "faqs": "FAQs",
+      "companyInfo": "Company Info",
       "sections": {
         "overview": "Overview",
         "catalog": "Catalog",
         "sales": "Sales",
         "customers": "Customers",
+        "ref": "Reference",
         "system": "System"
       }
     }

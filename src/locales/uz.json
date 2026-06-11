@@ -81,6 +81,7 @@
     "shoppingCart": "Savat",
     "returnsExchanges": "Qaytarish va almashtirish",
     "faq": "Ko'p so'raladigan savollar",
+    "oferta": "Ommaviy oferta",
     "contactUs": "Biz bilan bog'lanish",
     "address": "123 Tech Avenue, Suite 100",
     "copyright": "© {{year}} baytech. Barcha huquqlar himoyalangan."
@@ -295,6 +296,89 @@
     "imageUrl": "Rasm URL",
     "deleteConfirm": "Bu kategoriyani o'chirishni xohlaysizmi?",
     "products": "Mahsulotlar"
+  },
+  "companyInfo": {
+    "title": "Kompaniya ma'lumotlari",
+    "chooseImage": "Rasm tanlash",
+    "uploadPdf": "PDF yuklash",
+    "viewPdf": "Ko'rish",
+    "ofertaHint": "Har til uchun alohida PDF fayl.",
+    "sections": {
+      "branding": "Brending",
+      "contact": "Kontakt",
+      "legal": "Yuridik rekvizitlar",
+      "social": "Ijtimoiy tarmoqlar",
+      "oferta": "Ommaviy oferta"
+    },
+    "fields": {
+      "brandName": "Brend nomi",
+      "logo": "Logo",
+      "name": "Kompaniya nomi",
+      "phone": "Telefon",
+      "email": "Email",
+      "address": "Manzil",
+      "workingHours": "Ish vaqti",
+      "inn": "STIR (INN)",
+      "mfo": "MFO",
+      "bankName": "Bank nomi",
+      "accountNumber": "Hisob raqami"
+    },
+    "success": {
+      "saved": "Saqlandi"
+    },
+    "errors": {
+      "loadFailed": "Yuklab bo'lmadi",
+      "saveFailed": "Saqlab bo'lmadi",
+      "email": "Email noto'g'ri",
+      "logoType": "Logo rasm bo'lishi kerak",
+      "pdfType": "Oferta PDF bo'lishi kerak"
+    }
+  },
+  "categoryPrices": {
+    "title": "Kategoriya narxlari",
+    "addRule": "Qoida qo'shish",
+    "editRule": "Qoidani tahrirlash",
+    "deleteConfirm": "Bu qoida o'chirilsinmi?",
+    "defaultLabel": "default",
+    "currency": "so'm",
+    "col": {
+      "category": "Kategoriya",
+      "type": "Tur",
+      "value": "Qiymat",
+      "rounding": "Yaxlitlash",
+      "range": "Amal muddati"
+    },
+    "type": {
+      "percent": "Foiz",
+      "fixed": "Belgilangan"
+    },
+    "typeOption": {
+      "percent": "Foiz (%)",
+      "fixed": "Belgilangan (so'm)"
+    },
+    "form": {
+      "category": "Kategoriya",
+      "type": "Tur",
+      "valuePercent": "Qiymat (%)",
+      "valueFixed": "Qiymat (so'm)",
+      "roundingStep": "Yaxlitlash qadami (so'm)",
+      "roundingPlaceholder": "default (app settings)",
+      "roundingHint": "Bo'sh qoldiring — default app settings ishlatiladi.",
+      "startDate": "Boshlanish sanasi",
+      "endDate": "Tugash sanasi"
+    },
+    "errors": {
+      "categoryRequired": "Kategoriya tanlanishi shart",
+      "valueInvalid": "Qiymat noldan kichik bo'lmasligi kerak",
+      "dateRange": "Tugash sanasi boshlanish sanasidan keyin bo'lishi kerak",
+      "loadFailed": "Yuklab bo'lmadi",
+      "saveFailed": "Saqlab bo'lmadi",
+      "deleteFailed": "O'chirib bo'lmadi"
+    },
+    "success": {
+      "created": "Yaratildi",
+      "updated": "Yangilandi"
+    }
   },
   "customers": {
     "title": "Mijozlar",
@@ -623,6 +707,7 @@
       "dashboard": "Boshqaruv paneli",
       "products": "Mahsulotlar",
       "categories": "Kategoriyalar",
+      "categoryPrices": "Kategoriya narxlari",
       "orders": "Buyurtmalar",
       "customers": "Mijozlar",
       "reviews": "Sharhlar",
@@ -631,11 +716,15 @@
       "users": "Foydalanuvchilar",
       "userSide": "Foydalanuvchi tomoniga",
       "title": "Admin panel",
+      "returnReasons": "Qaytarish sabablari",
+      "faqs": "Ko'p so'raladigan savollar",
+      "companyInfo": "Kompaniya ma'lumotlari",
       "sections": {
         "overview": "Umumiy",
         "catalog": "Katalog",
         "sales": "Savdo",
         "customers": "Mijozlar",
+        "ref": "Ma'lumotnoma",
         "system": "Tizim"
       }
     }
