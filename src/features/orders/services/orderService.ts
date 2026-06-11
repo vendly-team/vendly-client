@@ -26,10 +26,12 @@ export const orderService = {
       body: JSON.stringify({ addressId }),
     }),
 
-  getMyDraft: () =>
-    apiRequest<CreateOrderResponse>('/api/orders/draft'),
-  cancelDraft: () =>
-    apiRequest<void>('/api/orders/draft', { method: 'DELETE' }),
+  // Active (non-terminal) orders: the single unpaid draft/new + any in-fulfillment ones.
+  getActiveOrders: () =>
+    apiRequest<OrderListItem[]>('/api/orders/active'),
+  // Cancel an unpaid (draft/new) order by id.
+  cancelDraft: (orderId: number) =>
+    apiRequest<void>(`/api/orders/${orderId}`, { method: 'DELETE' }),
 
   // ── Customer — read ──
   getMyOrders: (filter?: OrderFilter) =>
