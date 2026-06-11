@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useI18nLanguage } from '@/hooks/useI18nLanguage';
 import { useProductPlaceholder } from '@/hooks/useProductPlaceholder';
 import StorefrontLayout from '@/components/layout/StorefrontLayout';
 import { PageMeta } from '@/lib/seo'
@@ -31,6 +32,7 @@ const ProductPage = () => {
   const { t } = useTranslation();
   const placeholder = useProductPlaceholder();
   const { slug } = useParams();
+  const language = useI18nLanguage();
   const addItem = useCartStore((s) => s.addItem);
   const updateQty = useCartStore((s) => s.updateQty);
   const { toggle, isWishlisted: checkWishlisted } = useWishlistToggle();
@@ -77,7 +79,7 @@ const ProductPage = () => {
     };
 
     void loadProduct();
-  }, [productId]);
+  }, [productId, language]);
 
   useEffect(() => {
     if (product?.id) trackProductView(product.id);

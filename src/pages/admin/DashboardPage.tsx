@@ -3,6 +3,7 @@ import { orders } from '@/shared/data/orders';
 import { products } from '@/shared/data/products';
 import { formatPrice } from '@/shared/utils';
 import { ShoppingCart, DollarSign, Clock, Package, TrendingUp, TrendingDown, ChevronDown } from 'lucide-react';
+import { useUsdRate } from '@/hooks/useUsdRate';
 import { AreaChart, Area, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
@@ -47,6 +48,7 @@ const COLOR = {
 
 const DashboardPage = () => {
   const { t } = useTranslation();
+  const { data: usdRate, loading: usdLoading } = useUsdRate();
   const [dateRange, setDateRange] = useState<DateRange | undefined>(() => {
     const to = new Date(); to.setHours(0, 0, 0, 0);
     const from = new Date(to); from.setDate(from.getDate() - 6);
@@ -123,6 +125,32 @@ const DashboardPage = () => {
           </p>
         </div>
         <DateRangePicker value={dateRange} onChange={setDateRange} />
+      </div>
+
+      {/* ── USD Rate card ─────────────────────────────────── */}
+      <div className="bg-card border border-border rounded-xl px-5 py-4 shadow-sm flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-success/10 flex items-center justify-center shrink-0">
+            <DollarSign size={18} className="text-success" />
+          </div>
+          <div>
+            <p className="text-[12px] font-medium tracking-[-0.005em] text-muted-foreground">1 USD</p>
+            <p className="text-[22px] font-bold tracking-[-0.022em] leading-[1.2] text-foreground font-display tabular-nums">
+              {usdLoading ? '...' : usdRate ? `${usdRate.rate.toLocaleString('uz-UZ')} so'm` : '—'}
+            </p>
+          </div>
+        </div>
+        {usdRate && (
+          <div className="flex items-center gap-1.5">
+            {usdRate.diff >= 0
+              ? <TrendingUp size={14} className="text-success" />
+              : <TrendingDown size={14} className="text-destructive" />}
+            <span className={`text-[13px] font-semibold ${usdRate.diff >= 0 ? 'text-success' : 'text-destructive'}`}>
+              {usdRate.diff >= 0 ? '+' : ''}{usdRate.diff}
+            </span>
+            <span className="text-muted-foreground text-[12px]">{usdRate.date}</span>
+          </div>
+        )}
       </div>
 
       {/* ── KPI cards ─────────────────────────────────────── */}

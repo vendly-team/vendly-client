@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 const MobileBottomNav = () => {
   const { t } = useTranslation();
   const { pathname } = useLocation();
-  const totalItems = useCartStore((s) => s.items.reduce((sum, i) => sum + i.qty, 0));
+  const totalItems = useCartStore((s) => s.items.length);
 
   const items = [
     { to: "/", icon: Home, label: t("nav.home") },

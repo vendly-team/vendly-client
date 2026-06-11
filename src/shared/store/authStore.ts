@@ -4,6 +4,7 @@ import { authApi, mapServerUser } from '@/shared/api/authApi';
 import { configureTokenRefresh } from '@/shared/api/http';
 import { recentlyViewedService } from '@/features/recently-viewed/services/recentlyViewedService';
 import { wishlistService } from '@/features/wishlist/services/wishlistService';
+import { cartApi } from '@/shared/api/cartApi';
 import { useRecentlyViewedStore } from './recentlyViewedStore';
 import { useWishlistStore } from './wishlistStore';
 import { useCartStore } from './cartStore';
@@ -39,6 +40,38 @@ const syncWishlistAfterLogin = async () => {
     hydrateFromServer(merged);
   } catch {
     // Keep local list as-is if hydration fails.
+  }
+};
+
+const syncCartAfterLogin = async () => {
+  // Snapshot local items BEFORE any server calls
+  const localItems = [...useCartStore.getState().items];
+
+  // Push each syncable item to server
+  for (const item of localItems) {
+    if (item.variantId) {
+      try {
+        await cartApi.addItem(item.variantId, item.qty);
+      } catch {
+        // Out of stock or unavailable — skip
+      }
+    }
+  }
+
+  // Fetch authoritative server cart
+  try {
+    const serverCart = await cartApi.get();
+    useCartStore.getState().hydrateFromServer(serverCart);
+
+    // Re-add local items that couldn't be synced (no variantId) and aren't on server
+    const serverProductIds = new Set(serverCart.items.map(i => String(i.productId)));
+    const unsynced = localItems.filter(i => !i.variantId && !serverProductIds.has(i.productId));
+    if (unsynced.length > 0) {
+      useCartStore.setState(state => ({ items: [...state.items, ...unsynced] }));
+    }
+  } catch {
+    // Server unreachable — restore local snapshot
+    useCartStore.setState({ items: localItems });
   }
 };
 
@@ -98,6 +131,7 @@ export const useAuthStore = create<AuthState>()(
             refreshToken: auth.refreshToken,
             isAuthenticated: true,
           });
+          void syncCartAfterLogin();
           void syncRecentlyViewedAfterLogin();
           void syncWishlistAfterLogin();
           void useCartStore.getState().mergeIntoServer();
@@ -117,6 +151,7 @@ export const useAuthStore = create<AuthState>()(
             refreshToken: auth.refreshToken,
             isAuthenticated: true,
           });
+          void syncCartAfterLogin();
           void syncRecentlyViewedAfterLogin();
           void syncWishlistAfterLogin();
           void useCartStore.getState().mergeIntoServer();

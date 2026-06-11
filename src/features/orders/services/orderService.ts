@@ -9,8 +9,29 @@ const toQuery = (filter?: OrderFilter): string => {
   return s ? `?${s}` : '';
 };
 
+export type CreateOrderResponse = { id: number; orderNumber: string }
+
 export const orderService = {
-  // ── Customer ──
+  // ── Customer — checkout flow ──
+  createDraft: (addressId: number) =>
+    apiRequest<CreateOrderResponse>('/api/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ addressId }),
+    }),
+  setAddress: (orderId: number, addressId: number) =>
+    apiRequest<void>(`/api/orders/${orderId}/address`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ addressId }),
+    }),
+
+  getMyDraft: () =>
+    apiRequest<CreateOrderResponse>('/api/orders/draft'),
+  cancelDraft: () =>
+    apiRequest<void>('/api/orders/draft', { method: 'DELETE' }),
+
+  // ── Customer — read ──
   getMyOrders: (filter?: OrderFilter) =>
     apiRequest<OrderListItem[]>(`/api/orders${toQuery(filter)}`),
   getMyOrder: (id: number) => apiRequest<Order>(`/api/orders/${id}`),

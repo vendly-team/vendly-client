@@ -57,7 +57,8 @@
     "profile": "Профиль",
     "adminPanel": "Админ панель",
     "myOrders": "Мои заказы",
-    "toggleMenu": "Меню"
+    "toggleMenu": "Меню",
+    "more": "Ещё"
   },
   "header": {
     "freeShipping": "Бесплатная доставка при заказе от $500",
@@ -80,6 +81,7 @@
     "shoppingCart": "Корзина",
     "returnsExchanges": "Возврат и обмен",
     "faq": "Вопросы и ответы",
+    "oferta": "Публичная оферта",
     "contactUs": "Связаться с нами",
     "address": "123 Tech Avenue, Suite 100",
     "copyright": "© {{year}} baytech. Все права защищены."
@@ -295,6 +297,89 @@
     "deleteConfirm": "Удалить эту категорию?",
     "products": "Товары"
   },
+  "companyInfo": {
+    "title": "Информация о компании",
+    "chooseImage": "Выбрать изображение",
+    "uploadPdf": "Загрузить PDF",
+    "viewPdf": "Открыть",
+    "ofertaHint": "PDF-файл для каждого языка.",
+    "sections": {
+      "branding": "Брендинг",
+      "contact": "Контакты",
+      "legal": "Юридические реквизиты",
+      "social": "Соцсети",
+      "oferta": "Публичная оферта"
+    },
+    "fields": {
+      "brandName": "Название бренда",
+      "logo": "Логотип",
+      "name": "Название компании",
+      "phone": "Телефон",
+      "email": "Email",
+      "address": "Адрес",
+      "workingHours": "Часы работы",
+      "inn": "ИНН",
+      "mfo": "МФО",
+      "bankName": "Банк",
+      "accountNumber": "Расчётный счёт"
+    },
+    "success": {
+      "saved": "Сохранено"
+    },
+    "errors": {
+      "loadFailed": "Не удалось загрузить",
+      "saveFailed": "Не удалось сохранить",
+      "email": "Неверный email",
+      "logoType": "Логотип должен быть изображением",
+      "pdfType": "Оферта должна быть PDF"
+    }
+  },
+  "categoryPrices": {
+    "title": "Цены категорий",
+    "addRule": "Добавить правило",
+    "editRule": "Изменить правило",
+    "deleteConfirm": "Удалить это правило?",
+    "defaultLabel": "по умолчанию",
+    "currency": "сум",
+    "col": {
+      "category": "Категория",
+      "type": "Тип",
+      "value": "Значение",
+      "rounding": "Округление",
+      "range": "Срок действия"
+    },
+    "type": {
+      "percent": "Процент",
+      "fixed": "Фиксированная"
+    },
+    "typeOption": {
+      "percent": "Процент (%)",
+      "fixed": "Фиксированная (сум)"
+    },
+    "form": {
+      "category": "Категория",
+      "type": "Тип",
+      "valuePercent": "Значение (%)",
+      "valueFixed": "Значение (сум)",
+      "roundingStep": "Шаг округления (сум)",
+      "roundingPlaceholder": "по умолчанию (настройки)",
+      "roundingHint": "Оставьте пустым — будут использованы настройки по умолчанию.",
+      "startDate": "Дата начала",
+      "endDate": "Дата окончания"
+    },
+    "errors": {
+      "categoryRequired": "Категория обязательна",
+      "valueInvalid": "Значение должно быть не меньше нуля",
+      "dateRange": "Дата окончания должна быть не раньше даты начала",
+      "loadFailed": "Не удалось загрузить",
+      "saveFailed": "Не удалось сохранить",
+      "deleteFailed": "Не удалось удалить"
+    },
+    "success": {
+      "created": "Создано",
+      "updated": "Обновлено"
+    }
+  },
   "customers": {
     "title": "Клиенты",
     "searchPlaceholder": "Поиск...",
@@ -437,8 +522,15 @@
     "continueShopping": "Продолжить покупки",
     "title": "Корзина ({{count}} товаров)",
     "orderSummary": "Итого заказа",
-    "deliveryHint": "Стоимость доставки рассчитывается при оформлении",
-    "proceedToCheckout": "Оформить заказ"
+    "deliveryHint": "Стоимость зависит от адреса и способа доставки, рассчитывается при оформлении",
+    "delivery": "Доставка",
+    "kinds": "вид товара",
+    "pcs": "шт",
+    "deliveryNotIncluded": "без учёта доставки",
+    "proceedToCheckout": "Оформить заказ",
+    "checkoutInProgress": "Оформление заказа в процессе",
+    "checkoutInProgressHint": "У вас есть незавершённый заказ. Нажмите, чтобы продолжить.",
+    "continueCheckout": "Продолжить оформление"
   },
   "checkout": {
     "title": "Оформление заказа",
@@ -632,6 +724,7 @@
       "dashboard": "Панель управления",
       "products": "Товары",
       "categories": "Категории",
+      "categoryPrices": "Цены категорий",
       "orders": "Заказы",
       "customers": "Клиенты",
       "reviews": "Отзывы",
@@ -640,11 +733,15 @@
       "users": "Пользователи",
       "userSide": "На сторону пользователя",
       "title": "Админ панель",
+      "returnReasons": "Причины возврата",
+      "faqs": "Частые вопросы",
+      "companyInfo": "Информация о компании",
       "sections": {
         "overview": "Обзор",
         "catalog": "Каталог",
         "sales": "Продажи",
         "customers": "Клиенты",
+        "ref": "Справочник",
         "system": "Система"
       }
     }
@@ -675,6 +772,7 @@
     "refunded": "Возвращён"
   },
   "orderStatus": {
+    "Draft": "Черновик",
     "New": "Новый",
     "Accepted": "Принят",
     "Preparing": "Готовится",

@@ -4,6 +4,7 @@ import { useAuthStore } from '@/shared/store/authStore';
 import { productService } from '@/features/products/services/productService';
 import { mapProductDetailToStorefrontProduct } from '@/features/products/services/storefrontProductMapper';
 import { recentlyViewedService } from '../services/recentlyViewedService';
+import { useI18nLanguage } from '@/hooks/useI18nLanguage';
 import type { Product } from '@/shared/types';
 
 interface UseRecentlyViewedOptions {
@@ -17,6 +18,7 @@ export const useRecentlyViewed = ({ excludeProductId, limit = 8 }: UseRecentlyVi
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const language = useI18nLanguage();
 
   useEffect(() => {
     if (!isAuthenticated) return;
@@ -75,7 +77,7 @@ export const useRecentlyViewed = ({ excludeProductId, limit = 8 }: UseRecentlyVi
     return () => {
       cancelled = true;
     };
-  }, [items, excludeProductId, limit]);
+  }, [items, excludeProductId, limit, language]);
 
   return { products, isLoading };
 };

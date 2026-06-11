@@ -12,6 +12,7 @@ export const ORDER_TIMELINE: OrderStatusName[] = [
 ];
 
 export const ORDER_STATUS_COLORS: Record<OrderStatusName, string> = {
+  Draft: 'bg-muted text-muted-foreground',
   New: 'bg-info/10 text-info',
   Accepted: 'bg-purple-100 text-purple-700',
   Preparing: 'bg-purple-100 text-purple-700',

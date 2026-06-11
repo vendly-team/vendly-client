@@ -8,14 +8,15 @@ export function usePayment() {
   const [loading, setLoading] = useState(false);
 
   /**
-   * Creates the order on the backend and redirects the browser to the
+   * Initiates payment for a draft order and redirects the browser to the
    * bank-hosted payment page. On failure shows a toast and resets loading.
    */
-  const startCheckout = useCallback(async (addressId: number) => {
+  const startPayment = useCallback(async (orderId: number) => {
     setLoading(true);
     try {
-      const res = await paymentService.checkout(addressId);
-      // Leave the SPA — go to Hamkorbank's hosted payment page.
+      const res = await paymentService.initiatePayment(orderId);
+      // Persist order number before leaving the SPA — Hamkorbank may not echo it back.
+      sessionStorage.setItem('pendingOrderNumber', res.orderNumber);
       window.location.href = res.paymentUrl;
     } catch (e) {
       toast.error(e instanceof Error ? e.message : t('payment.paymentFailed'));
@@ -23,5 +24,5 @@ export function usePayment() {
     }
   }, [t]);
 
-  return { loading, startCheckout };
+  return { loading, startPayment };
 }
