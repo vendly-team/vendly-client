@@ -19,6 +19,13 @@ import { useProductPlaceholder } from '@/hooks/useProductPlaceholder';
 
 const DELIVERY_COST = 10;
 
+// CheckoutPage radio qiymatini backend PaymentProvider enum'iga maplaydi.
+const PROVIDER_BY_METHOD = {
+  card: 'Hamkor',
+  click: 'Click',
+  payme: 'Payme',
+} as const;
+
 const CheckoutPage = () => {
   const { t } = useTranslation();
   const placeholder = useProductPlaceholder();
@@ -91,11 +98,6 @@ const CheckoutPage = () => {
       return;
     }
 
-    if (paymentMethod !== 'card') {
-      toast.info(t('checkout.comingSoon'));
-      return;
-    }
-
     const ga4ItemsForCheckout: GA4Item[] = items.map(item => ({
       item_id: item.productId,
       item_name: item.name,
@@ -104,7 +106,7 @@ const CheckoutPage = () => {
     }))
 
     trackAddPaymentInfo(ga4ItemsForCheckout, grandTotal, paymentMethod)
-    startPayment(effectiveOrderId);
+    startPayment(effectiveOrderId, PROVIDER_BY_METHOD[paymentMethod]);
   };
 
   const steps = [t('checkout.address'), t('checkout.summary'), t('checkout.payment')];
@@ -313,8 +315,8 @@ const CheckoutPage = () => {
               {(
                 [
                   ['card', t('checkout.creditCard'), true],
-                  ['click', 'Click', false],
-                  ['payme', 'Payme', false],
+                  ['click', 'Click', true],
+                  ['payme', 'Payme', true],
                 ] as const
               ).map(([val, label, enabled]) => (
                 <label
