@@ -7,6 +7,7 @@ export type Address = {
   house: string
   extra?: string | null
   btsCityCode: string
+  btsBranchCode?: string | null
   isDefault: boolean
   createdAt: string
 }
@@ -19,6 +20,7 @@ export type CreateAddressRequest = {
   house: string
   extra?: string | null
   btsCityCode: string
+  btsBranchCode?: string | null
   isDefault: boolean
 }
 

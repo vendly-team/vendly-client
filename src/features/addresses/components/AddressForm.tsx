@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useTranslation } from 'react-i18next'
-import { useBtsRegions, useBtsCities } from '@/features/bts-ref'
+import { useBtsRegions, useBtsCities, BtsBranchPicker } from '@/features/bts-ref'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
@@ -29,6 +29,7 @@ type AddressFormValues = {
   label: string
   btsRegionCode: string
   btsCityCode: string
+  btsBranchCode?: string
   street: string
   house: string
   extra?: string
@@ -47,6 +48,7 @@ const buildSchema = (t: (key: string) => string) =>
     label: z.string().min(1, t('checkout.errors.labelRequired')).max(50),
     btsRegionCode: z.string().min(1, t('checkout.errors.regionRequired')),
     btsCityCode: z.string().min(1, t('checkout.errors.cityRequired')),
+    btsBranchCode: z.string().optional(),
     street: z.string().min(1, t('checkout.errors.streetRequired')).max(255),
     house: z.string().min(1, t('checkout.errors.houseRequired')).max(50),
     extra: z.string().max(255).optional(),
@@ -70,6 +72,7 @@ export function AddressForm({
       label: initialAddress?.label ?? t('checkout.defaultLabel'),
       btsRegionCode: '',
       btsCityCode: initialAddress?.btsCityCode ?? '',
+      btsBranchCode: initialAddress?.btsBranchCode ?? '',
       street: initialAddress?.street ?? '',
       house: initialAddress?.house ?? '',
       extra: initialAddress?.extra ?? '',
@@ -78,6 +81,7 @@ export function AddressForm({
   })
 
   const watchedRegionCode = form.watch('btsRegionCode')
+  const watchedCityCode = form.watch('btsCityCode')
   const { cities, loading: citiesLoading } = useBtsCities(watchedRegionCode || null)
 
   // When editing, derive region from initial city's region code once cities load
@@ -107,6 +111,7 @@ export function AddressForm({
       house: values.house,
       extra: values.extra?.trim() ? values.extra.trim() : null,
       btsCityCode: city.code,
+      btsBranchCode: values.btsBranchCode?.trim() ? values.btsBranchCode : null,
       isDefault: values.isDefault,
     }
 
@@ -145,8 +150,9 @@ export function AddressForm({
                   value={field.value || undefined}
                   onValueChange={(v) => {
                     field.onChange(v)
-                    // Reset city when region changes
+                    // Reset city and branch when region changes
                     form.setValue('btsCityCode', '')
+                    form.setValue('btsBranchCode', '')
                   }}
                   disabled={regionsLoading}
                 >
@@ -178,7 +184,11 @@ export function AddressForm({
                 </FormLabel>
                 <Select
                   value={field.value || undefined}
-                  onValueChange={field.onChange}
+                  onValueChange={(v) => {
+                    field.onChange(v)
+                    // Reset branch when city changes
+                    form.setValue('btsBranchCode', '')
+                  }}
                   disabled={!watchedRegionCode || citiesLoading}
                 >
                   <FormControl>
@@ -237,6 +247,15 @@ export function AddressForm({
             )}
           />
         </div>
+
+        <BtsBranchPicker
+          regionCode={watchedRegionCode || null}
+          cityCode={watchedCityCode || null}
+          value={form.watch('btsBranchCode') || null}
+          onChange={(code) =>
+            form.setValue('btsBranchCode', code, { shouldDirty: true, shouldValidate: true })
+          }
+        />
 
         <FormField
           control={form.control}
