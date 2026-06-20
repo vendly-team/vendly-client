@@ -145,6 +145,7 @@ const App = () => (
           <Route path="/checkout" element={<AuthRoute><CheckoutPage /></AuthRoute>} />
           <Route path="/checkout/success" element={<AuthRoute><CheckoutSuccessPage /></AuthRoute>} />
           <Route path="/payment/success" element={<AuthRoute><PaymentSuccessPage /></AuthRoute>} />
+          <Route path="/payment/status" element={<AuthRoute><PaymentSuccessPage /></AuthRoute>} />
           <Route path="/payment/fail" element={<AuthRoute><PaymentFailedPage /></AuthRoute>} />
 
           {/* Profile hub — mobile landing */}

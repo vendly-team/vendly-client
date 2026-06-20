@@ -549,6 +549,10 @@
     "selectCity": "Shahar/tuman tanlang",
     "selectRegionFirst": "Avval viloyatni tanlang",
     "city": "Shahar/Tuman",
+    "branch": "Filial (BTS)",
+    "selectBranch": "Filialni tanlang",
+    "noBranches": "Bu shaharda filiallar topilmadi",
+    "yourLocation": "Siz",
     "district": "Tuman",
     "street": "Ko'cha",
     "house": "Uy",
@@ -568,7 +572,11 @@
       "regionRequired": "Viloyatni tanlang",
       "cityRequired": "Shahar/tumanni tanlang",
       "streetRequired": "Ko'cha nomini kiriting",
-      "houseRequired": "Uy raqamini kiriting"
+      "houseRequired": "Uy raqamini kiriting",
+      "branchesFailed": "Filiallarni yuklab bo'lmadi",
+      "routeUnavailable": "Bu manzilga yetkazib berish mavjud emas",
+      "weightMissing": "Mahsulotlardan birining og'irligi ko'rsatilmagan. Iltimos, qo'llab-quvvatlash xizmatiga murojaat qiling",
+      "deliveryCalcFailed": "Yetkazib berish narxini hisoblab bo'lmadi. Iltimos, keyinroq urinib ko'ring"
     },
     "comingSoon": "Tez orada"
   },
