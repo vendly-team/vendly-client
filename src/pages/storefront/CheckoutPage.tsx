@@ -11,13 +11,12 @@ import { useEffect } from 'react'
 import { useCartStore } from '@/shared/store/cartStore';
 import { useCheckoutSelectionStore } from '@/shared/store/checkoutSelectionStore';
 import { useAddresses } from '@/features/addresses';
-import { AddressSelector } from '@/features/checkout';
+import { AddressSelector, useShippingQuote } from '@/features/checkout';
 import { usePayment } from '@/features/payment';
 import { orderService, useMyOrder } from '@/features/orders';
 import { formatPrice } from '@/shared/utils';
 import { useProductPlaceholder } from '@/hooks/useProductPlaceholder';
-
-const DELIVERY_COST = 10;
+import { ApiError } from '@/shared/api/http';
 
 // CheckoutPage radio qiymatini backend PaymentProvider enum'iga maplaydi.
 const PROVIDER_BY_METHOD = {
@@ -56,10 +55,18 @@ const CheckoutPage = () => {
     total: i.price * i.qty,
   }));
   const subtotal = fetchedOrder?.subtotal ?? items.reduce((s, i) => s + i.price * i.qty, 0);
-  const deliveryCost = fetchedOrder?.deliveryCost ?? DELIVERY_COST;
+  const deliveryCost = fetchedOrder?.deliveryCost ?? 0;
   const grandTotal = fetchedOrder?.totalAmount ?? (subtotal + deliveryCost);
 
   const selectedAddress = addresses.find((a) => a.id === selectedAddressId);
+
+  // Live delivery-cost preview on the address step (cart weight computed server-side).
+  const {
+    quote: liveQuote,
+    loading: quoteLoading,
+    error: quoteError,
+  } = useShippingQuote(step === 1 ? selectedAddressId : null);
+  const step1Subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
 
   // Sync URL orderId → store on refresh (store is not persisted).
   useEffect(() => {
@@ -85,7 +92,16 @@ const CheckoutPage = () => {
       setDraftOrderId(res.id);
       setSearchParams({ step: '2', orderId: String(res.id) }, { replace: true });
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : t('common.error'));
+      // Yetkazib berish narxini hisoblab bo'lmasa — summary qadamiga O'TMAYMIZ.
+      const code = e instanceof ApiError ? e.code : null;
+      const messageByCode: Record<string, string> = {
+        'Shipping.RouteUnavailable': t('checkout.errors.routeUnavailable'),
+        'Shipping.WeightMissing': t('checkout.errors.weightMissing'),
+        'Shipping.CalculateFailed': t('checkout.errors.deliveryCalcFailed'),
+      };
+      const message = (code && messageByCode[code])
+        ?? (e instanceof Error ? e.message : t('common.error'));
+      toast.error(message);
     } finally {
       setCreatingOrder(false);
     }
@@ -175,6 +191,37 @@ const CheckoutPage = () => {
               </h2>
               <AddressSelector onContinue={handleContinueToSummary} loading={creatingOrder} />
             </div>
+
+            {/* Live delivery cost preview once an address is selected */}
+            {selectedAddressId && (
+              <div className="bg-card border border-border rounded-lg p-4 sm:p-6 mt-4">
+                <div className="space-y-2 text-[14px] font-normal tracking-[-0.006em]">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">{t('common.subtotal')}</span>
+                    <span className="tabular-nums">{formatPrice(step1Subtotal)}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-muted-foreground">{t('common.delivery')}</span>
+                    {quoteLoading ? (
+                      <Loader2 className="text-accent animate-spin" size={16} />
+                    ) : quoteError ? (
+                      <span className="text-[13px] text-destructive">{quoteError}</span>
+                    ) : liveQuote ? (
+                      <span className="tabular-nums">{formatPrice(liveQuote.cost)}</span>
+                    ) : (
+                      <span className="text-muted-foreground">—</span>
+                    )}
+                  </div>
+                  <hr className="border-border" />
+                  <div className="flex justify-between text-[16px] font-bold tracking-[-0.014em] text-foreground">
+                    <span>{t('common.total')}</span>
+                    <span className="tabular-nums">
+                      {liveQuote ? formatPrice(step1Subtotal + liveQuote.cost) : formatPrice(step1Subtotal)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
           </>
         )}
 

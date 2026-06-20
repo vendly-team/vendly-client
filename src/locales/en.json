@@ -549,6 +549,10 @@
     "selectCity": "Select city/district",
     "selectRegionFirst": "Select a region first",
     "city": "City/District",
+    "branch": "Branch (BTS)",
+    "selectBranch": "Select branch",
+    "noBranches": "No branches found in this city",
+    "yourLocation": "You",
     "district": "District",
     "street": "Street",
     "house": "House",
@@ -568,7 +572,11 @@
       "regionRequired": "Region is required",
       "cityRequired": "City/district is required",
       "streetRequired": "Street is required",
-      "houseRequired": "House is required"
+      "houseRequired": "House is required",
+      "branchesFailed": "Failed to load branches",
+      "routeUnavailable": "Delivery is not available for this address",
+      "weightMissing": "One of the products is missing a weight. Please contact support",
+      "deliveryCalcFailed": "Could not calculate the delivery cost. Please try again later"
     },
     "comingSoon": "Coming soon"
   },
