@@ -17,6 +17,13 @@ export type AuthResponse = {
   user: ServerUserInfo;
 };
 
+// Register endi token bermaydi — OTP yuboriladi.
+export type RegisterResponse = {
+  phone: string;
+  expiresInSeconds: number;
+  message: string;
+};
+
 type JwtPayload = {
   user_id?: string;
   email?: string;
@@ -59,18 +66,32 @@ export const mapServerUser = (info: ServerUserInfo): User => ({
   role: normalizeRole(info.role),
 });
 
+export type LoginResponse = AuthResponse | RegisterResponse;
+
 export const authApi = {
   login: (login: string, password: string) =>
-    apiRequest<AuthResponse>("/api/auth/login", {
+    apiRequest<LoginResponse>("/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ login, password }),
     }),
   register: (payload: RegisterPayload) =>
-    apiRequest<AuthResponse>("/api/auth/register", {
+    apiRequest<RegisterResponse>("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
+    }),
+  verifyOtp: (phone: string, code: string) =>
+    apiRequest<AuthResponse>("/api/auth/verify-otp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone, code }),
+    }),
+  resendOtp: (phone: string) =>
+    apiRequest<RegisterResponse>("/api/auth/resend-otp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone }),
     }),
   refresh: (refreshToken: string) =>
     apiRequest<AuthResponse>("/api/auth/refresh", {

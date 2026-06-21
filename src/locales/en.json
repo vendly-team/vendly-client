@@ -47,7 +47,9 @@
     "refresh": "Refresh",
     "saving": "Saving...",
     "signOut": "Sign Out",
-    "language": "Language"
+    "language": "Language",
+    "optional": "(optional)",
+    "expires": "Expires in:"
   },
   "nav": {
     "home": "Home",
@@ -118,6 +120,17 @@
       "welcome": "Welcome back!",
       "accountCreated": "Account created successfully!",
       "resetSent": "If this email exists, you will receive a reset link."
+    },
+    "otp": {
+      "title": "Verify your phone",
+      "description": "Enter the 6-digit code sent to {{phone}}",
+      "verify": "Verify",
+      "resend": "Resend code",
+      "changeNumber": "Change number",
+      "sent": "Verification code sent",
+      "resent": "Code resent",
+      "resendFailed": "Could not resend code",
+      "invalid": "Invalid or expired code"
     }
   },
   "dashboard": {
