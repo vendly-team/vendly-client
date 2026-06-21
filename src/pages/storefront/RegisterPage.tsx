@@ -47,7 +47,7 @@ const RegisterPage = () => {
     if (Object.keys(errs).length > 0) return;
     setLoading(true);
     const phoneDigits = getPhoneDigits(form.phone);
-    const success = await register({ firstName: form.firstName, lastName: form.lastName, phone: phoneDigits, password: form.password });
+    const success = await register({ firstName: form.firstName, lastName: form.lastName, email: '', phone: phoneDigits, password: form.password });
     setLoading(false);
 
     if (success) {
