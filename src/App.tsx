@@ -26,6 +26,7 @@ import PaymentSuccessPage from "./pages/storefront/PaymentSuccessPage";
 import PaymentFailedPage from "./pages/storefront/PaymentFailedPage";
 import LoginPage from "./pages/storefront/LoginPage";
 import RegisterPage from "./pages/storefront/RegisterPage";
+import VerifyOtpPage from "./pages/storefront/VerifyOtpPage";
 import ForgotPasswordPage from "./pages/storefront/ForgotPasswordPage";
 import ProfileInfoPage from "./pages/storefront/ProfileInfoPage";
 import ProfileOrdersPage from "./pages/storefront/ProfileOrdersPage";
@@ -139,6 +140,7 @@ const App = () => (
           <Route path="/cart" element={<CartPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/verify-otp" element={<VerifyOtpPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
           {/* Storefront - auth required */}

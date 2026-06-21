@@ -47,7 +47,9 @@
     "refresh": "Yangilash",
     "saving": "Saqlanmoqda...",
     "signOut": "Chiqish",
-    "language": "Til"
+    "language": "Til",
+    "optional": "(ixtiyoriy)",
+    "expires": "Muddati tugaydi:"
   },
   "nav": {
     "home": "Asosiy",
@@ -118,6 +120,17 @@
       "welcome": "Xush kelibsiz!",
       "accountCreated": "Hisob muvaffaqiyatli yaratildi!",
       "resetSent": "Agar bu email tizimda mavjud bo'lsa, tiklash havolasini olasiz."
+    },
+    "otp": {
+      "title": "Telefonni tasdiqlash",
+      "description": "{{phone}} raqamiga yuborilgan 6 xonali kodni kiriting",
+      "verify": "Tasdiqlash",
+      "resend": "Kodni qayta yuborish",
+      "changeNumber": "Raqamni o'zgartirish",
+      "sent": "Tasdiqlash kodi yuborildi",
+      "resent": "Kod qayta yuborildi",
+      "resendFailed": "Kodni yuborib bo'lmadi",
+      "invalid": "Noto'g'ri yoki muddati o'tgan kod"
     }
   },
   "dashboard": {
