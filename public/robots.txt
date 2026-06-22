@@ -7,4 +7,4 @@ Disallow: /login
 Disallow: /register
 Disallow: /forgot-password
 
-Sitemap: https://optovestor.com/sitemap.xml
+Sitemap: https://optoweek.uz/sitemap.xml

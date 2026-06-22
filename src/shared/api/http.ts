@@ -1,7 +1,7 @@
 import { i18n } from "@/lib/i18n";
 
 export const API_BASE_URL = (
-  import.meta.env.VITE_API_BASE_URL ?? "https://api-stage-opto.vestor.uz"
+  import.meta.env.VITE_API_BASE_URL ?? "https://stage-api.optoweek.uz"
 ).replace(/\/$/, "");
 
 const langToAcceptLanguage: Record<string, string> = {
