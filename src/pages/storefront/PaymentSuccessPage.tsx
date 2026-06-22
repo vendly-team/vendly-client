@@ -78,7 +78,7 @@ const PaymentSuccessPage = () => {
 
   return (
     <StorefrontLayout>
-      <PageMeta title="Payment — Opto Vestor" pageType="private" />
+      <PageMeta title="Payment — Optoweek" pageType="private" />
       <div className="container py-20 text-center animate-fade-in">
         {view === 'checking' && (
           <>
