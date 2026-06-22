@@ -88,7 +88,7 @@ const VerifyOtpPage = () => {
 
   return (
     <StorefrontLayout>
-      <PageMeta title="Verify OTP — Opto Vestor" pageType="private" />
+      <PageMeta title="Verify OTP — Optoweek" pageType="private" />
       <div className="container py-12 max-w-md mx-auto animate-fade-in">
         <h1 className="text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground mb-2 text-center">
           {t('auth.otp.title')}

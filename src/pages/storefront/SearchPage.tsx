@@ -84,7 +84,7 @@ const SearchPage = () => {
 
   return (
     <StorefrontLayout>
-      <PageMeta title="Search — Opto Vestor" pageType="private" />
+      <PageMeta title="Search — Optoweek" pageType="private" />
       <div className="container py-6 animate-fade-in px-4">
         <form
           onSubmit={(e) => {

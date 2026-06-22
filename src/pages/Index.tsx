@@ -63,7 +63,7 @@ const Index = () => {
   return (
     <StorefrontLayout>
       <PageMeta
-        title="Opto Vestor — Wholesale Marketplace"
+        title="Optoweek — Wholesale Marketplace"
         description="Buy wholesale products at the best prices. Browse thousands of products across all categories."
         canonical="/"
         pageType="public"

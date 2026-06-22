@@ -74,7 +74,7 @@ const LoginPage = () => {
 
   return (
     <StorefrontLayout>
-      <PageMeta title="Sign In — Opto Vestor" pageType="private" />
+      <PageMeta title="Sign In — Optoweek" pageType="private" />
       <div className="container py-12 max-w-md mx-auto animate-fade-in">
         <h1 className="text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground mb-6 text-center">{t('auth.signIn')}</h1>
         <form onSubmit={handleSubmit} className="bg-card border border-border rounded-lg p-6 space-y-4">

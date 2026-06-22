@@ -35,7 +35,7 @@ const ProfileOrdersPage = () => {
 
   return (
     <div>
-      <PageMeta title="My Orders — Opto Vestor" pageType="private" />
+      <PageMeta title="My Orders — Optoweek" pageType="private" />
       <h1 className="text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground mb-6">{t('profileOrders.title')}</h1>
       <div className="space-y-4">
         {orders.map((order) => {

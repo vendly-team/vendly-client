@@ -33,7 +33,7 @@ const ProfileWishlistPage = () => {
 
   return (
     <div>
-      <PageMeta title="My Wishlist — Opto Vestor" pageType="private" />
+      <PageMeta title="My Wishlist — Optoweek" pageType="private" />
       <h1 className="text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground mb-6">{t('wishlist.title')}</h1>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
         {wishlistProducts.map((p) => (
