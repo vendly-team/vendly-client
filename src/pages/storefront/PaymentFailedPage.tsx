@@ -11,7 +11,7 @@ const PaymentFailedPage = () => {
 
   return (
     <StorefrontLayout>
-      <PageMeta title="Payment Failed — Opto Vestor" pageType="private" />
+      <PageMeta title="Payment Failed — Optoweek" pageType="private" />
       <div className="container py-20 text-center animate-fade-in">
         <XCircle className="mx-auto mb-6 text-destructive" size={80} />
         <h1 className="text-[34px] font-bold tracking-[-0.024em] leading-[1.08] font-display text-foreground mb-2">

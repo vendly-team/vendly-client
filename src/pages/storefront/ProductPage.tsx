@@ -172,8 +172,8 @@ const ProductPage = () => {
   return (
     <StorefrontLayout>
       <PageMeta
-        title={storeProduct ? `${storeProduct.name} — Opto Vestor` : 'Product — Opto Vestor'}
-        description={storeProduct ? `Buy ${storeProduct.name} at wholesale price on Opto Vestor.` : undefined}
+        title={storeProduct ? `${storeProduct.name} — Optoweek` : 'Product — Optoweek'}
+        description={storeProduct ? `Buy ${storeProduct.name} at wholesale price on Optoweek.` : undefined}
         canonical={storeProduct ? `/product/${slug}` : undefined}
         ogType="product"
         pageType="public"

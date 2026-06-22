@@ -32,7 +32,7 @@ const ProfileOrderDetailPage = () => {
 
   return (
     <div>
-      <PageMeta title="Order Detail — Opto Vestor" pageType="private" />
+      <PageMeta title="Order Detail — Optoweek" pageType="private" />
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground tabular-nums">{order.orderNumber}</h1>
         <span className={`text-[11px] font-semibold tracking-[-0.005em] px-2 py-1 rounded ${ORDER_STATUS_COLORS[order.status] || ''}`}>{t(orderStatusKey(order.status))}</span>

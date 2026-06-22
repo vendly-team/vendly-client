@@ -66,7 +66,7 @@
     "freeShipping": "$500 дан ортиқ буюртмаларга бепул етказиб бериш",
     "phone": "+1 (800) 123-4567",
     "searchPlaceholder": "Маиший техника қидириш...",
-    "brand": "baytech"
+    "brand": "Optoweek"
   },
   "home": {
     "newArrivals": "Янги маҳсулотлар"
@@ -75,7 +75,7 @@
     "title": "Яқинда кўрилганлар"
   },
   "footer": {
-    "brand": "baytech",
+    "brand": "Optoweek",
     "tagline": "Сифатли маиший техника дўкони. Арзон нархларда энг яхши маҳсулотлар.",
     "categories": "Категориялар",
     "customerService": "Мижозларга хизмат",
@@ -86,7 +86,7 @@
     "oferta": "Оммавий оферта",
     "contactUs": "Биз билан боғланиш",
     "address": "123 Tech Avenue, Suite 100",
-    "copyright": "© {{year}} baytech. Барча ҳуқуқлар ҳимояланган."
+    "copyright": "© {{year}} Optoweek. Барча ҳуқуқлар ҳимояланган."
   },
   "auth": {
     "signIn": "Кириш",
@@ -741,7 +741,7 @@
   },
   "admin": {
     "sidebar": {
-      "brand": "baytech",
+      "brand": "Optoweek",
       "dashboard": "Бошқарув панели",
       "products": "Маҳсулотлар",
       "categories": "Категориялар",

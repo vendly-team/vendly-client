@@ -30,7 +30,7 @@ export function PageMeta({
 }: PageMetaProps) {
   const robots = getRobotsDirective(pageType)
   const canonicalUrl = canonical ? getCanonicalUrl(canonical) : undefined
-  const siteName = 'Opto Vestor'
+  const siteName = 'Optoweek'
 
   return (
     <Helmet>

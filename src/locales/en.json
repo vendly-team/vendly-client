@@ -66,7 +66,7 @@
     "freeShipping": "Free shipping on orders over $500",
     "phone": "+1 (800) 123-4567",
     "searchPlaceholder": "Search for appliances...",
-    "brand": "baytech"
+    "brand": "Optoweek"
   },
   "home": {
     "newArrivals": "New arrivals"
@@ -75,7 +75,7 @@
     "title": "Recently viewed"
   },
   "footer": {
-    "brand": "baytech",
+    "brand": "Optoweek",
     "tagline": "Your trusted destination for premium home appliances. Quality products, competitive prices.",
     "categories": "Categories",
     "customerService": "Customer Service",
@@ -86,7 +86,7 @@
     "oferta": "Public offer",
     "contactUs": "Contact Us",
     "address": "123 Tech Avenue, Suite 100",
-    "copyright": "© {{year}} baytech. All rights reserved."
+    "copyright": "© {{year}} Optoweek. All rights reserved."
   },
   "auth": {
     "signIn": "Sign In",
@@ -741,7 +741,7 @@
   },
   "admin": {
     "sidebar": {
-      "brand": "baytech",
+      "brand": "Optoweek",
       "dashboard": "Dashboard",
       "products": "Products",
       "categories": "Categories",

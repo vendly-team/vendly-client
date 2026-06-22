@@ -41,7 +41,7 @@ const CartPage = () => {
   if (items.length === 0) {
     return (
       <StorefrontLayout>
-        <PageMeta title="Cart — Opto Vestor" pageType="private" />
+        <PageMeta title="Cart — Optoweek" pageType="private" />
         <div className="container py-24 flex flex-col items-center text-center animate-fade-in">
           <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center mb-5">
             <ShoppingCart className="text-muted-foreground" size={36} />
@@ -65,7 +65,7 @@ const CartPage = () => {
 
   return (
     <StorefrontLayout>
-      <PageMeta title="Cart — Opto Vestor" pageType="private" />
+      <PageMeta title="Cart — Optoweek" pageType="private" />
       <div className="container py-8 animate-fade-in">
         <h1 className="text-[26px] font-bold tracking-[-0.022em] text-foreground mb-6">
           {t('cart.title', { count: items.length })}

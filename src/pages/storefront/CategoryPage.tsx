@@ -193,8 +193,8 @@ const CategoryPage = () => {
   return (
     <StorefrontLayout>
       <PageMeta
-        title={category ? `${category.name} — Opto Vestor` : 'Category — Opto Vestor'}
-        description={category ? `Browse ${category.name} products at wholesale prices on Opto Vestor.` : undefined}
+        title={category ? `${category.name} — Optoweek` : 'Category — Optoweek'}
+        description={category ? `Browse ${category.name} products at wholesale prices on Optoweek.` : undefined}
         canonical={category ? `/category/${category.slug}` : undefined}
         pageType="public"
       />

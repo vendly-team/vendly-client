@@ -129,7 +129,7 @@ const CheckoutPage = () => {
 
   return (
     <StorefrontLayout>
-      <PageMeta title="Checkout — Opto Vestor" pageType="private" />
+      <PageMeta title="Checkout — Optoweek" pageType="private" />
 
       {/* Progress bar — mobile only, sticks below the sticky header */}
       <div className="md:hidden sticky top-0 z-[49] w-full">

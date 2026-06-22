@@ -40,7 +40,7 @@ const ProfileAddressesPage = () => {
 
   return (
     <div>
-      <PageMeta title="My Addresses — Opto Vestor" pageType="private" />
+      <PageMeta title="My Addresses — Optoweek" pageType="private" />
       <div className="flex items-center justify-between mb-6 gap-3 flex-wrap">
         <h1 className="text-[24px] sm:text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground">
           {t('addresses.title')}
