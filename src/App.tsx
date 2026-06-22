@@ -4,7 +4,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useAuthStore } from "@/shared/store/authStore";
-import { lazy, Suspense, useEffect, type ReactNode } from "react";
+import { useCartStore } from "@/shared/store/cartStore";
+import { lazy, Suspense, useEffect, useRef, type ReactNode } from "react";
 import { configureServerErrorHandler } from "@/shared/api/http";
 import { usePageTracking } from '@/lib/analytics'
 
@@ -21,8 +22,11 @@ import SearchPage from "./pages/storefront/SearchPage";
 import CartPage from "./pages/storefront/CartPage";
 import CheckoutPage from "./pages/storefront/CheckoutPage";
 import CheckoutSuccessPage from "./pages/storefront/CheckoutSuccessPage";
+import PaymentSuccessPage from "./pages/storefront/PaymentSuccessPage";
+import PaymentFailedPage from "./pages/storefront/PaymentFailedPage";
 import LoginPage from "./pages/storefront/LoginPage";
 import RegisterPage from "./pages/storefront/RegisterPage";
+import VerifyOtpPage from "./pages/storefront/VerifyOtpPage";
 import ForgotPasswordPage from "./pages/storefront/ForgotPasswordPage";
 import ProfileInfoPage from "./pages/storefront/ProfileInfoPage";
 import ProfileOrdersPage from "./pages/storefront/ProfileOrdersPage";
@@ -39,6 +43,8 @@ import ProductsPage from "./pages/admin/ProductsPage";
 import ProductDetailPage from "./pages/admin/ProductDetailPage";
 import { ProductFormPage } from "./pages/admin/ProductFormPage";
 import CategoriesPage from "./pages/admin/CategoriesPage";
+import CategoryPricesPage from "./pages/admin/CategoryPricesPage";
+import CompanyInfoPage from "./pages/admin/CompanyInfoPage";
 import OrdersPage from "./pages/admin/OrdersPage";
 import OrderDetailPage from "./pages/admin/OrderDetailPage";
 import CustomersPage from "./pages/admin/CustomersPage";
@@ -47,6 +53,8 @@ import ReviewsPage from "./pages/admin/ReviewsPage";
 import DiscountsPage from "./pages/admin/DiscountsPage";
 import SyncLogsPage from "./pages/admin/SyncLogsPage";
 import { UsersPage } from "./pages/admin/UsersPage";
+import { ReturnReasonsPage } from "./pages/admin/ReturnReasonsPage";
+import { FaqsPage } from "./pages/admin/FaqsPage";
 
 const queryClient = new QueryClient();
 
@@ -87,6 +95,21 @@ const AnalyticsTracker = () => {
   return null
 }
 
+const CartHydrator = () => {
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const hydrated = useRef(false);
+  useEffect(() => {
+    if (!isAuthenticated) {
+      hydrated.current = false;
+      return;
+    }
+    if (hydrated.current) return;
+    hydrated.current = true;
+    void useCartStore.getState().hydrateFromServer();
+  }, [isAuthenticated]);
+  return null;
+};
+
 const AdminOnlyRoute = ({ children }: { children: ReactNode }) => {
   const { isAuthenticated, user } = useAuthStore();
   const location = useLocation();
@@ -107,6 +130,7 @@ const App = () => (
       <BrowserRouter>
         <NavigationWatcher />
         <AnalyticsTracker />
+        <CartHydrator />
         <Routes>
           {/* Storefront - public */}
           <Route path="/" element={<Index />} />
@@ -116,11 +140,15 @@ const App = () => (
           <Route path="/cart" element={<CartPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/verify-otp" element={<VerifyOtpPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
           {/* Storefront - auth required */}
           <Route path="/checkout" element={<AuthRoute><CheckoutPage /></AuthRoute>} />
           <Route path="/checkout/success" element={<AuthRoute><CheckoutSuccessPage /></AuthRoute>} />
+          <Route path="/payment/success" element={<AuthRoute><PaymentSuccessPage /></AuthRoute>} />
+          <Route path="/payment/status" element={<AuthRoute><PaymentSuccessPage /></AuthRoute>} />
+          <Route path="/payment/fail" element={<AuthRoute><PaymentFailedPage /></AuthRoute>} />
 
           {/* Profile hub — mobile landing */}
           <Route path="/profile" element={<AuthRoute><StorefrontLayout><ProfileHubPage /></StorefrontLayout></AuthRoute>} />
@@ -146,12 +174,16 @@ const App = () => (
             <Route path="/admin/products/new" element={<ProductFormPage />} />
             <Route path="/admin/products/:id/edit" element={<ProductFormPage />} />
             <Route path="/admin/categories" element={<CategoriesPage />} />
+            <Route path="/admin/category-prices" element={<CategoryPricesPage />} />
             <Route path="/admin/orders" element={<OrdersPage />} />
             <Route path="/admin/orders/:id" element={<OrderDetailPage />} />
             <Route path="/admin/customers" element={<CustomersPage />} />
             <Route path="/admin/customers/:id" element={<CustomerDetailPage />} />
             <Route path="/admin/reviews" element={<ReviewsPage />} />
             <Route path="/admin/discounts" element={<DiscountsPage />} />
+            <Route path="/admin/company-info" element={<CompanyInfoPage />} />
+            <Route path="/admin/ref/return-reasons" element={<ReturnReasonsPage />} />
+            <Route path="/admin/ref/faqs" element={<FaqsPage />} />
             {/* Admin only */}
             <Route path="/admin/sync-logs" element={<AdminOnlyRoute><SyncLogsPage /></AdminOnlyRoute>} />
             <Route path="/admin/users" element={<AdminOnlyRoute><UsersPage /></AdminOnlyRoute>} />

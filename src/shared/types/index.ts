@@ -1,6 +1,8 @@
 export interface Product {
   id: string;
+  variantId?: number;
   sku: string;
+  variantId?: number;
   name: string;
   slug: string;
   categoryId: string;
@@ -27,12 +29,20 @@ export interface Category {
 }
 
 export interface CartItem {
+  /** Backend cart item id. 0 for pending/anonymous items (not yet synced to backend). */
+  cartItemId: number;
+  productVariantId: number;
+  /** Composite for compatibility with existing UI keys/links: `${productId}:${variantId}` or just `${productId}`. */
   productId: string;
+  variantId?: number;
+  cartItemId?: number;
   name: string;
   image: string;
   price: number;
   qty: number;
+  stock?: number;
   sku: string;
+  stock: number;
 }
 
 export interface User {

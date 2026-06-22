@@ -1,6 +1,17 @@
+import { i18n } from "@/lib/i18n";
+
 export const API_BASE_URL = (
-  import.meta.env.VITE_API_BASE_URL ?? "https://api-stage-opto.vestor.uz"
+  import.meta.env.VITE_API_BASE_URL ?? "https://stage-api.optoweek.uz"
 ).replace(/\/$/, "");
+
+const langToAcceptLanguage: Record<string, string> = {
+  uz: "UZ",
+  ru: "RU",
+  en: "EN",
+  "uz-Cyrl": "UZ-CYRL",
+};
+
+const getAcceptLanguage = () => langToAcceptLanguage[i18n.language] ?? "UZ";
 
 export const getStoredAccessToken = () => {
   const directToken =
@@ -83,6 +94,40 @@ const attemptRefresh = (): Promise<string> => {
   return _refreshing;
 };
 
+// API xatosi: ProblemDetails ichidagi domen kodini (masalan "Shipping.RouteUnavailable") ham olib yuradi.
+export class ApiError extends Error {
+  code: string | null;
+  status: number;
+
+  constructor(message: string, code: string | null, status: number) {
+    super(message);
+    this.name = "ApiError";
+    this.code = code;
+    this.status = status;
+  }
+}
+
+// Javob tanasini bir marta o'qiydi (json/text ikki marta o'qish → "body stream already read" bug'ini oldini oladi)
+const readError = async (response: Response): Promise<ApiError> => {
+  const fallback = `Request failed with status ${response.status}`;
+  let raw = "";
+  try {
+    raw = await response.text();
+  } catch {
+    return new ApiError(fallback, null, response.status);
+  }
+  if (!raw) return new ApiError(fallback, null, response.status);
+  try {
+    const body = JSON.parse(raw);
+    const domainError = Array.isArray(body?.errors) ? body.errors[0] : null;
+    const message =
+      domainError?.message ?? body?.detail ?? body?.title ?? body?.message ?? fallback;
+    return new ApiError(message, domainError?.code ?? null, response.status);
+  } catch {
+    return new ApiError(raw, null, response.status);
+  }
+};
+
 // --- Core request helper ---
 
 export const apiRequest = async <T>(path: string, options: RequestInit = {}) => {
@@ -91,6 +136,7 @@ export const apiRequest = async <T>(path: string, options: RequestInit = {}) => 
 
   if (token) headers.set("Authorization", `Bearer ${token}`);
   headers.set("ngrok-skip-browser-warning", "true");
+  if (!headers.has("Accept-Language")) headers.set("Accept-Language", getAcceptLanguage());
 
   const response = await fetch(`${API_BASE_URL}${path}`, { ...options, headers });
 
@@ -107,19 +153,12 @@ export const apiRequest = async <T>(path: string, options: RequestInit = {}) => 
     const retryHeaders = new Headers(options.headers);
     retryHeaders.set("Authorization", `Bearer ${newToken}`);
     retryHeaders.set("ngrok-skip-browser-warning", "true");
+    if (!retryHeaders.has("Accept-Language")) retryHeaders.set("Accept-Language", getAcceptLanguage());
 
     const retryResponse = await fetch(`${API_BASE_URL}${path}`, { ...options, headers: retryHeaders });
 
     if (!retryResponse.ok) {
-      let message = `Request failed with status ${retryResponse.status}`;
-      try {
-        const body = await retryResponse.json();
-        message = body?.detail ?? body?.title ?? body?.message ?? message;
-      } catch {
-        const text = await retryResponse.text();
-        if (text) message = text;
-      }
-      throw new Error(message);
+      throw await readError(retryResponse);
     }
 
     if (retryResponse.status === 204) return undefined as T;
@@ -128,21 +167,13 @@ export const apiRequest = async <T>(path: string, options: RequestInit = {}) => 
   }
 
   if (!response.ok) {
-    let message = `Request failed with status ${response.status}`;
-
-    try {
-      const body = await response.json();
-      message = body?.detail ?? body?.title ?? body?.message ?? message;
-    } catch {
-      const text = await response.text();
-      if (text) message = text;
-    }
+    const error = await readError(response);
 
     if (response.status >= 500) {
       _onServerError?.(path);
     }
 
-    throw new Error(message);
+    throw error;
   }
 
   if (response.status === 204) return undefined as T;

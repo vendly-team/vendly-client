@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDebounce } from '@/hooks/useDebounce'
+import { useI18nLanguage } from '@/hooks/useI18nLanguage'
 import { productService } from '../services/productService'
 import type { ProductSearchResponse } from '../types'
 import { PRODUCT_SEARCH_MIN_LENGTH } from '../types'
@@ -21,6 +22,7 @@ export type ProductSearchState = {
  */
 export function useProductSearch(query: string, debounceMs = 300): ProductSearchState {
   const debouncedQuery = useDebounce(query.trim(), debounceMs)
+  const language = useI18nLanguage()
 
   const [results, setResults] = useState<ProductSearchResponse[]>([])
   const [loading, setLoading] = useState(false)
@@ -62,7 +64,7 @@ export function useProductSearch(query: string, debounceMs = 300): ProductSearch
       cancelled = true
       controller.abort()
     }
-  }, [debouncedQuery])
+  }, [debouncedQuery, language])
 
   return { results, loading, error, tooShort }
 }

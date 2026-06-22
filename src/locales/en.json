@@ -47,7 +47,9 @@
     "refresh": "Refresh",
     "saving": "Saving...",
     "signOut": "Sign Out",
-    "language": "Language"
+    "language": "Language",
+    "optional": "(optional)",
+    "expires": "Expires in:"
   },
   "nav": {
     "home": "Home",
@@ -57,7 +59,8 @@
     "profile": "Profile",
     "adminPanel": "Admin Panel",
     "myOrders": "My Orders",
-    "toggleMenu": "Toggle menu"
+    "toggleMenu": "Toggle menu",
+    "more": "More"
   },
   "header": {
     "freeShipping": "Free shipping on orders over $500",
@@ -80,6 +83,7 @@
     "shoppingCart": "Shopping Cart",
     "returnsExchanges": "Returns & Exchanges",
     "faq": "FAQ",
+    "oferta": "Public offer",
     "contactUs": "Contact Us",
     "address": "123 Tech Avenue, Suite 100",
     "copyright": "© {{year}} baytech. All rights reserved."
@@ -116,6 +120,17 @@
       "welcome": "Welcome back!",
       "accountCreated": "Account created successfully!",
       "resetSent": "If this email exists, you will receive a reset link."
+    },
+    "otp": {
+      "title": "Verify your phone",
+      "description": "Enter the 6-digit code sent to {{phone}}",
+      "verify": "Verify",
+      "resend": "Resend code",
+      "changeNumber": "Change number",
+      "sent": "Verification code sent",
+      "resent": "Code resent",
+      "resendFailed": "Could not resend code",
+      "invalid": "Invalid or expired code"
     }
   },
   "dashboard": {
@@ -295,6 +310,89 @@
     "deleteConfirm": "Delete this category?",
     "products": "Products"
   },
+  "companyInfo": {
+    "title": "Company Info",
+    "chooseImage": "Choose image",
+    "uploadPdf": "Upload PDF",
+    "viewPdf": "View",
+    "ofertaHint": "A PDF file per language.",
+    "sections": {
+      "branding": "Branding",
+      "contact": "Contact",
+      "legal": "Legal requisites",
+      "social": "Social networks",
+      "oferta": "Public offer (Oferta)"
+    },
+    "fields": {
+      "brandName": "Brand name",
+      "logo": "Logo",
+      "name": "Company name",
+      "phone": "Phone",
+      "email": "Email",
+      "address": "Address",
+      "workingHours": "Working hours",
+      "inn": "INN (STIR)",
+      "mfo": "MFO",
+      "bankName": "Bank name",
+      "accountNumber": "Account number"
+    },
+    "success": {
+      "saved": "Saved"
+    },
+    "errors": {
+      "loadFailed": "Failed to load",
+      "saveFailed": "Failed to save",
+      "email": "Invalid email",
+      "logoType": "Logo must be an image",
+      "pdfType": "Oferta must be a PDF"
+    }
+  },
+  "categoryPrices": {
+    "title": "Category Prices",
+    "addRule": "Add rule",
+    "editRule": "Edit rule",
+    "deleteConfirm": "Delete this rule?",
+    "defaultLabel": "default",
+    "currency": "UZS",
+    "col": {
+      "category": "Category",
+      "type": "Type",
+      "value": "Value",
+      "rounding": "Rounding",
+      "range": "Active range"
+    },
+    "type": {
+      "percent": "Percent",
+      "fixed": "Fixed"
+    },
+    "typeOption": {
+      "percent": "Percent (%)",
+      "fixed": "Fixed (UZS)"
+    },
+    "form": {
+      "category": "Category",
+      "type": "Type",
+      "valuePercent": "Value (%)",
+      "valueFixed": "Value (UZS)",
+      "roundingStep": "Rounding step (UZS)",
+      "roundingPlaceholder": "default (app settings)",
+      "roundingHint": "Leave empty to use default app settings.",
+      "startDate": "Start date",
+      "endDate": "End date"
+    },
+    "errors": {
+      "categoryRequired": "Category is required",
+      "valueInvalid": "Value must be zero or greater",
+      "dateRange": "End date must be on or after start date",
+      "loadFailed": "Failed to load",
+      "saveFailed": "Failed to save",
+      "deleteFailed": "Failed to delete"
+    },
+    "success": {
+      "created": "Created",
+      "updated": "Updated"
+    }
+  },
   "customers": {
     "title": "Customers",
     "searchPlaceholder": "Search...",
@@ -334,9 +432,39 @@
     "internalNotes": "Internal Notes",
     "addNotePlaceholder": "Add a note...",
     "success": {
-      "statusUpdated": "Order status updated to {{status}}"
+      "statusUpdated": "Order status updated to {{status}}",
+      "noteAdded": "Note added",
+      "cancelled": "Order cancelled"
     },
-    "wasCancelled": "Order was cancelled"
+    "wasCancelled": "Order was cancelled",
+    "loadFailed": "Failed to load orders",
+    "trackPackage": "Track package",
+    "barcode": "Barcode",
+    "sticker": "Sticker",
+    "cancelOrder": "Cancel order",
+    "confirmCancel": "Cancel this order?",
+    "cancelReasonRequired": "Cancellation reason is required.",
+    "cancelDialog": {
+      "title": "Cancel order",
+      "description": "Please provide a reason for cancelling this order. This cannot be undone.",
+      "reasonCode": "Reason",
+      "reasonText": "Notes",
+      "reasonTextPlaceholder": "Explain why this order is being cancelled…",
+      "confirm": "Confirm cancellation"
+    },
+    "cancelReasonCodes": {
+      "CustomerRequest": "Customer request",
+      "OutOfStock": "Out of stock",
+      "PaymentFailed": "Payment failed",
+      "DuplicateOrder": "Duplicate order",
+      "DeliveryIssue": "Delivery issue",
+      "Other": "Other"
+    },
+    "error": {
+      "statusFailed": "Failed to update status",
+      "noteFailed": "Failed to add note",
+      "cancelFailed": "Failed to cancel order"
+    }
   },
   "discounts": {
     "title": "Discounts",
@@ -407,8 +535,15 @@
     "continueShopping": "Continue Shopping",
     "title": "Shopping Cart ({{count}} items)",
     "orderSummary": "Order Summary",
-    "deliveryHint": "Delivery cost calculated at checkout",
-    "proceedToCheckout": "Proceed to Checkout"
+    "deliveryHint": "Cost depends on address and shipping method, calculated at checkout",
+    "delivery": "Delivery",
+    "kinds": "types",
+    "pcs": "pcs",
+    "deliveryNotIncluded": "delivery not included",
+    "proceedToCheckout": "Proceed to Checkout",
+    "checkoutInProgress": "Checkout in progress",
+    "checkoutInProgressHint": "You have an unfinished order. Click below to continue.",
+    "continueCheckout": "Continue checkout"
   },
   "checkout": {
     "title": "Checkout",
@@ -427,6 +562,10 @@
     "selectCity": "Select city/district",
     "selectRegionFirst": "Select a region first",
     "city": "City/District",
+    "branch": "Branch (BTS)",
+    "selectBranch": "Select branch",
+    "noBranches": "No branches found in this city",
+    "yourLocation": "You",
     "district": "District",
     "street": "Street",
     "house": "House",
@@ -446,14 +585,28 @@
       "regionRequired": "Region is required",
       "cityRequired": "City/district is required",
       "streetRequired": "Street is required",
-      "houseRequired": "House is required"
-    }
+      "houseRequired": "House is required",
+      "branchesFailed": "Failed to load branches",
+      "routeUnavailable": "Delivery is not available for this address",
+      "weightMissing": "One of the products is missing a weight. Please contact support",
+      "deliveryCalcFailed": "Could not calculate the delivery cost. Please try again later"
+    },
+    "comingSoon": "Coming soon"
   },
   "checkoutSuccess": {
     "title": "Order Placed Successfully!",
     "orderNumber": "Your order number is",
     "goToOrders": "Go to My Orders",
     "continueShopping": "Continue Shopping"
+  },
+  "payment": {
+    "processing": "Processing your payment…",
+    "processingDesc": "Please wait while we confirm your payment.",
+    "failedTitle": "Payment Failed",
+    "failedDesc": "Your payment could not be completed. Please try again.",
+    "tryAgain": "Try Again",
+    "backToCart": "Back to Cart",
+    "paymentFailed": "Payment failed. Please try again."
   },
   "categoryPage": {
     "allProducts": "Products",
@@ -592,6 +745,7 @@
       "dashboard": "Dashboard",
       "products": "Products",
       "categories": "Categories",
+      "categoryPrices": "Category Prices",
       "orders": "Orders",
       "customers": "Customers",
       "reviews": "Reviews",
@@ -600,11 +754,15 @@
       "users": "Users",
       "userSide": "User side",
       "title": "Admin Panel",
+      "returnReasons": "Return reasons",
+      "faqs": "FAQs",
+      "companyInfo": "Company Info",
       "sections": {
         "overview": "Overview",
         "catalog": "Catalog",
         "sales": "Sales",
         "customers": "Customers",
+        "ref": "Reference",
         "system": "System"
       }
     }
@@ -631,6 +789,20 @@
     "rejected": "Rejected",
     "active": "Active",
     "inactive": "Inactive",
-    "blocked": "Blocked"
+    "blocked": "Blocked",
+    "refunded": "Refunded"
+  },
+  "orderStatus": {
+    "Draft": "Draft",
+    "New": "New",
+    "Accepted": "Accepted",
+    "Preparing": "Preparing",
+    "Shipped": "Shipped",
+    "InTransit": "In Transit",
+    "OutForDelivery": "Out for Delivery",
+    "Delivered": "Delivered",
+    "Cancelled": "Cancelled",
+    "ReturnRequested": "Return Requested",
+    "Returned": "Returned"
   }
 }

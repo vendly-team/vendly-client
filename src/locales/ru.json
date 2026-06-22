@@ -47,7 +47,9 @@
     "refresh": "Обновить",
     "saving": "Сохранение...",
     "signOut": "Выйти",
-    "language": "Язык"
+    "language": "Язык",
+    "optional": "(необязательно)",
+    "expires": "Истекает через:"
   },
   "nav": {
     "home": "Главная",
@@ -57,7 +59,8 @@
     "profile": "Профиль",
     "adminPanel": "Админ панель",
     "myOrders": "Мои заказы",
-    "toggleMenu": "Меню"
+    "toggleMenu": "Меню",
+    "more": "Ещё"
   },
   "header": {
     "freeShipping": "Бесплатная доставка при заказе от $500",
@@ -80,6 +83,7 @@
     "shoppingCart": "Корзина",
     "returnsExchanges": "Возврат и обмен",
     "faq": "Вопросы и ответы",
+    "oferta": "Публичная оферта",
     "contactUs": "Связаться с нами",
     "address": "123 Tech Avenue, Suite 100",
     "copyright": "© {{year}} baytech. Все права защищены."
@@ -116,6 +120,17 @@
       "welcome": "С возвращением!",
       "accountCreated": "Аккаунт успешно создан!",
       "resetSent": "Если эта почта зарегистрирована, вы получите ссылку для сброса."
+    },
+    "otp": {
+      "title": "Подтверждение телефона",
+      "description": "Введите 6-значный код, отправленный на номер {{phone}}",
+      "verify": "Подтвердить",
+      "resend": "Отправить код повторно",
+      "changeNumber": "Изменить номер",
+      "sent": "Код подтверждения отправлен",
+      "resent": "Код отправлен повторно",
+      "resendFailed": "Не удалось отправить код",
+      "invalid": "Неверный или просроченный код"
     }
   },
   "dashboard": {
@@ -295,6 +310,89 @@
     "deleteConfirm": "Удалить эту категорию?",
     "products": "Товары"
   },
+  "companyInfo": {
+    "title": "Информация о компании",
+    "chooseImage": "Выбрать изображение",
+    "uploadPdf": "Загрузить PDF",
+    "viewPdf": "Открыть",
+    "ofertaHint": "PDF-файл для каждого языка.",
+    "sections": {
+      "branding": "Брендинг",
+      "contact": "Контакты",
+      "legal": "Юридические реквизиты",
+      "social": "Соцсети",
+      "oferta": "Публичная оферта"
+    },
+    "fields": {
+      "brandName": "Название бренда",
+      "logo": "Логотип",
+      "name": "Название компании",
+      "phone": "Телефон",
+      "email": "Email",
+      "address": "Адрес",
+      "workingHours": "Часы работы",
+      "inn": "ИНН",
+      "mfo": "МФО",
+      "bankName": "Банк",
+      "accountNumber": "Расчётный счёт"
+    },
+    "success": {
+      "saved": "Сохранено"
+    },
+    "errors": {
+      "loadFailed": "Не удалось загрузить",
+      "saveFailed": "Не удалось сохранить",
+      "email": "Неверный email",
+      "logoType": "Логотип должен быть изображением",
+      "pdfType": "Оферта должна быть PDF"
+    }
+  },
+  "categoryPrices": {
+    "title": "Цены категорий",
+    "addRule": "Добавить правило",
+    "editRule": "Изменить правило",
+    "deleteConfirm": "Удалить это правило?",
+    "defaultLabel": "по умолчанию",
+    "currency": "сум",
+    "col": {
+      "category": "Категория",
+      "type": "Тип",
+      "value": "Значение",
+      "rounding": "Округление",
+      "range": "Срок действия"
+    },
+    "type": {
+      "percent": "Процент",
+      "fixed": "Фиксированная"
+    },
+    "typeOption": {
+      "percent": "Процент (%)",
+      "fixed": "Фиксированная (сум)"
+    },
+    "form": {
+      "category": "Категория",
+      "type": "Тип",
+      "valuePercent": "Значение (%)",
+      "valueFixed": "Значение (сум)",
+      "roundingStep": "Шаг округления (сум)",
+      "roundingPlaceholder": "по умолчанию (настройки)",
+      "roundingHint": "Оставьте пустым — будут использованы настройки по умолчанию.",
+      "startDate": "Дата начала",
+      "endDate": "Дата окончания"
+    },
+    "errors": {
+      "categoryRequired": "Категория обязательна",
+      "valueInvalid": "Значение должно быть не меньше нуля",
+      "dateRange": "Дата окончания должна быть не раньше даты начала",
+      "loadFailed": "Не удалось загрузить",
+      "saveFailed": "Не удалось сохранить",
+      "deleteFailed": "Не удалось удалить"
+    },
+    "success": {
+      "created": "Создано",
+      "updated": "Обновлено"
+    }
+  },
   "customers": {
     "title": "Клиенты",
     "searchPlaceholder": "Поиск...",
@@ -334,9 +432,39 @@
     "internalNotes": "Внутренние заметки",
     "addNotePlaceholder": "Добавить заметку...",
     "success": {
-      "statusUpdated": "Статус заказа обновлён на {{status}}"
+      "statusUpdated": "Статус заказа обновлён на {{status}}",
+      "noteAdded": "Заметка добавлена",
+      "cancelled": "Заказ отменён"
     },
-    "wasCancelled": "Заказ отменён"
+    "wasCancelled": "Заказ отменён",
+    "loadFailed": "Не удалось загрузить заказы",
+    "trackPackage": "Отследить посылку",
+    "barcode": "Штрих-код",
+    "sticker": "Стикер",
+    "cancelOrder": "Отменить заказ",
+    "confirmCancel": "Отменить этот заказ?",
+    "cancelReasonRequired": "Укажите причину отмены.",
+    "cancelDialog": {
+      "title": "Отмена заказа",
+      "description": "Укажите причину отмены заказа. Это действие нельзя отменить.",
+      "reasonCode": "Причина",
+      "reasonText": "Комментарий",
+      "reasonTextPlaceholder": "Опишите, почему заказ отменяется…",
+      "confirm": "Подтвердить отмену"
+    },
+    "cancelReasonCodes": {
+      "CustomerRequest": "По просьбе клиента",
+      "OutOfStock": "Нет в наличии",
+      "PaymentFailed": "Ошибка оплаты",
+      "DuplicateOrder": "Дубликат заказа",
+      "DeliveryIssue": "Проблема с доставкой",
+      "Other": "Другое"
+    },
+    "error": {
+      "statusFailed": "Не удалось обновить статус",
+      "noteFailed": "Не удалось добавить заметку",
+      "cancelFailed": "Не удалось отменить заказ"
+    }
   },
   "discounts": {
     "title": "Скидки",
@@ -407,8 +535,15 @@
     "continueShopping": "Продолжить покупки",
     "title": "Корзина ({{count}} товаров)",
     "orderSummary": "Итого заказа",
-    "deliveryHint": "Стоимость доставки рассчитывается при оформлении",
-    "proceedToCheckout": "Оформить заказ"
+    "deliveryHint": "Стоимость зависит от адреса и способа доставки, рассчитывается при оформлении",
+    "delivery": "Доставка",
+    "kinds": "вид товара",
+    "pcs": "шт",
+    "deliveryNotIncluded": "без учёта доставки",
+    "proceedToCheckout": "Оформить заказ",
+    "checkoutInProgress": "Оформление заказа в процессе",
+    "checkoutInProgressHint": "У вас есть незавершённый заказ. Нажмите, чтобы продолжить.",
+    "continueCheckout": "Продолжить оформление"
   },
   "checkout": {
     "title": "Оформление заказа",
@@ -427,6 +562,10 @@
     "selectCity": "Выберите город/район",
     "selectRegionFirst": "Сначала выберите регион",
     "city": "Город/Район",
+    "branch": "Филиал (BTS)",
+    "selectBranch": "Выберите филиал",
+    "noBranches": "В этом городе филиалы не найдены",
+    "yourLocation": "Вы",
     "district": "Район",
     "street": "Улица",
     "house": "Дом",
@@ -446,14 +585,28 @@
       "regionRequired": "Выберите регион",
       "cityRequired": "Выберите город/район",
       "streetRequired": "Введите название улицы",
-      "houseRequired": "Введите номер дома"
-    }
+      "houseRequired": "Введите номер дома",
+      "branchesFailed": "Не удалось загрузить филиалы",
+      "routeUnavailable": "Доставка по этому адресу недоступна",
+      "weightMissing": "У одного из товаров не указан вес. Пожалуйста, обратитесь в службу поддержки",
+      "deliveryCalcFailed": "Не удалось рассчитать стоимость доставки. Пожалуйста, попробуйте позже"
+    },
+    "comingSoon": "Скоро"
   },
   "checkoutSuccess": {
     "title": "Заказ успешно оформлен!",
     "orderNumber": "Номер вашего заказа",
     "goToOrders": "Перейти к заказам",
     "continueShopping": "Продолжить покупки"
+  },
+  "payment": {
+    "processing": "Обработка платежа…",
+    "processingDesc": "Пожалуйста, подождите, мы подтверждаем ваш платёж.",
+    "failedTitle": "Платёж не прошёл",
+    "failedDesc": "Не удалось завершить платёж. Пожалуйста, попробуйте снова.",
+    "tryAgain": "Попробовать снова",
+    "backToCart": "Вернуться в корзину",
+    "paymentFailed": "Платёж не прошёл. Попробуйте снова."
   },
   "categoryPage": {
     "allProducts": "Все товары",
@@ -592,6 +745,7 @@
       "dashboard": "Панель управления",
       "products": "Товары",
       "categories": "Категории",
+      "categoryPrices": "Цены категорий",
       "orders": "Заказы",
       "customers": "Клиенты",
       "reviews": "Отзывы",
@@ -600,11 +754,15 @@
       "users": "Пользователи",
       "userSide": "На сторону пользователя",
       "title": "Админ панель",
+      "returnReasons": "Причины возврата",
+      "faqs": "Частые вопросы",
+      "companyInfo": "Информация о компании",
       "sections": {
         "overview": "Обзор",
         "catalog": "Каталог",
         "sales": "Продажи",
         "customers": "Клиенты",
+        "ref": "Справочник",
         "system": "Система"
       }
     }
@@ -631,6 +789,20 @@
     "rejected": "Отклонён",
     "active": "Активный",
     "inactive": "Неактивный",
-    "blocked": "Заблокирован"
+    "blocked": "Заблокирован",
+    "refunded": "Возвращён"
+  },
+  "orderStatus": {
+    "Draft": "Черновик",
+    "New": "Новый",
+    "Accepted": "Принят",
+    "Preparing": "Готовится",
+    "Shipped": "Отправлен",
+    "InTransit": "В пути",
+    "OutForDelivery": "Доставляется",
+    "Delivered": "Доставлен",
+    "Cancelled": "Отменён",
+    "ReturnRequested": "Запрошен возврат",
+    "Returned": "Возвращён"
   }
 }

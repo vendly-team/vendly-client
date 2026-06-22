@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Heart, Minus, Plus, ShoppingCart, Star } from "lucide-react";
+import { Flame, Heart, Minus, Plus, ShoppingCart, Star, Zap } from "lucide-react";
 import type { Product } from "@/shared/types";
 import { useCartStore } from "@/shared/store/cartStore";
 import { useWishlistToggle } from "@/features/wishlist/hooks/useWishlistToggle";
@@ -27,6 +27,8 @@ const ProductCard = ({ product }: { product: Product }) => {
   }, [product.images, placeholder]);
   const [activeImage, setActiveImage] = useState(0);
   const [isImageHovered, setIsImageHovered] = useState(false);
+  // Composite id used by the cart store to key items (matches addItem implementation).
+  const cartItemKey = product.variantId ? `${product.id}:${product.variantId}` : product.id;
 
   useEffect(() => {
     setActiveImage(0);
@@ -47,9 +49,18 @@ const ProductCard = ({ product }: { product: Product }) => {
   return (
     <div className="group relative bg-card rounded-lg border border-border overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col">
       {discount > 0 && (
-        <span className="absolute top-3 left-3 z-10 bg-sale text-white text-[11px] font-bold tracking-[-0.005em] px-2 py-0.5 rounded-md tabular-nums">
-          −{discount}%
-        </span>
+        <div className="absolute top-2 left-2 z-10 flex flex-col gap-1">
+          <span className="inline-flex items-center gap-0.5 bg-sale text-white text-[12px] font-black px-2.5 py-1 rounded-full shadow-lg tabular-nums leading-none">
+            <Zap size={10} className="fill-white shrink-0" />
+            −{discount}%
+          </span>
+          {discount >= 20 && (
+            <span className="inline-flex items-center gap-0.5 bg-orange-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow leading-none">
+              <Flame size={9} className="fill-white shrink-0" />
+              Aktsiya
+            </span>
+          )}
+        </div>
       )}
       <button
         onClick={() => void toggle(product.id)}
@@ -88,8 +99,8 @@ const ProductCard = ({ product }: { product: Product }) => {
           </>
         )}
         {isOutOfStock && (
-          <div className="absolute inset-0 z-[3] bg-foreground/40 flex items-center justify-center">
-            <span className="bg-card text-foreground font-semibold px-4 py-2 rounded text-[13px] tracking-[-0.006em]">{t("productCard.outOfStock")}</span>
+          <div className="absolute inset-0 z-[3] bg-foreground/50 backdrop-blur-[1px] flex items-center justify-center">
+            <span className="bg-card text-foreground font-bold px-5 py-2 rounded-full text-[12px] tracking-wide shadow-lg uppercase">{t("productCard.outOfStock")}</span>
           </div>
         )}
       </Link>
@@ -106,18 +117,29 @@ const ProductCard = ({ product }: { product: Product }) => {
           </div>
           <span className="text-[11px] font-normal tracking-[-0.003em] text-muted-foreground tabular-nums">({product.reviewCount})</span>
         </div>
-        {isLowStock && <p className="text-[11px] font-semibold tracking-[-0.005em] text-warning">{t("productCard.onlyLeft", { count: product.stock })}</p>}
+        {isLowStock && (
+          <p className="inline-flex items-center gap-1.5 self-start bg-warning/10 text-warning border border-warning/30 text-[11px] font-bold px-2 py-0.5 rounded-full">
+            <span className="relative flex h-1.5 w-1.5 shrink-0">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-warning opacity-75" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-warning" />
+            </span>
+            {t("productCard.onlyLeft", { count: product.stock })}
+          </p>
+        )}
         <div className="mt-auto pt-1.5">
-          <div className="flex items-baseline gap-2">
-            {product.salePrice ? (
-              <>
+          {product.salePrice ? (
+            <div className="flex flex-col gap-0.5">
+              <div className="flex items-baseline gap-2">
                 <span className="text-[16px] font-bold tracking-[-0.014em] text-sale tabular-nums">{formatPrice(product.salePrice)}</span>
-                <span className="text-[13px] font-normal tracking-[-0.006em] text-muted-foreground line-through tabular-nums">{formatPrice(product.price)}</span>
-              </>
-            ) : (
-              <span className="text-[16px] font-bold tracking-[-0.014em] text-foreground tabular-nums">{formatPrice(product.price)}</span>
-            )}
-          </div>
+                <span className="text-[12px] font-normal text-muted-foreground line-through tabular-nums">{formatPrice(product.price)}</span>
+              </div>
+              <span className="text-[11px] font-semibold text-sale/80 tabular-nums">
+                −{formatPrice(product.price - product.salePrice)} tejaysiz
+              </span>
+            </div>
+          ) : (
+            <span className="text-[16px] font-bold tracking-[-0.014em] text-foreground tabular-nums">{formatPrice(product.price)}</span>
+          )}
         </div>
         <div className="pt-2">
           {isAddedToCart ? (
@@ -125,8 +147,8 @@ const ProductCard = ({ product }: { product: Product }) => {
               <button
                 onClick={() => {
                   const n = qty - 1;
-                  if (n <= 0) { updateQty(product.id, 0); setIsAddedToCart(false); setQty(1); }
-                  else { setQty(n); updateQty(product.id, n); }
+                  if (n <= 0) { void updateQty(cartItemKey, 0); setIsAddedToCart(false); setQty(1); }
+                  else { setQty(n); void updateQty(cartItemKey, n); }
                 }}
                 className="flex h-full w-9 shrink-0 items-center justify-center text-foreground hover:bg-muted transition-colors"
               >
@@ -137,7 +159,7 @@ const ProductCard = ({ product }: { product: Product }) => {
                 onClick={() => {
                   const n = Math.min(product.stock > 0 ? product.stock : 99, qty + 1);
                   setQty(n);
-                  updateQty(product.id, n);
+                  void updateQty(cartItemKey, n);
                 }}
                 className="flex h-full w-9 shrink-0 items-center justify-center text-foreground hover:bg-muted transition-colors"
               >
@@ -148,7 +170,7 @@ const ProductCard = ({ product }: { product: Product }) => {
             <button
               onClick={() => {
                 if (!isOutOfStock) {
-                  addItem(product);
+                  void addItem(product);
                   setIsAddedToCart(true);
                   toast.success(t("productCard.success.addedToCart", { name: product.name }));
                 }
