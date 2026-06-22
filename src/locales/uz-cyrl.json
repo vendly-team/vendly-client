@@ -551,6 +551,16 @@
     "summary": "Хулоса",
     "payment": "Тўлов",
     "deliveryAddress": "Етказиб бериш манзили",
+    "deliveryMethod": "Етказиб бериш усули",
+    "pickupPoint": "Топширіш пункти",
+    "courier": "Ўйга етказиб бериш",
+    "selectLocationOnMap": "Харитада манзилни танлаңиз",
+    "mapHint": "Етказиб бериш манзилини танлаш учун харитада босинг",
+    "confirmAddress": "Манзилни тасдиқлаңиз",
+    "detectedAddress": "Аниқланган манзил",
+    "geocodeFailed": "Манзилни аниқлаш амалга ошмади",
+    "addressSaved": "Манзил сақланди",
+    "addressSaveFailed": "Манзилни сақлаш амалга ошмади",
     "addNewAddress": "+ Янги манзил қўшиш",
     "savedAddresses": "Сақланган манзиллар",
     "newAddress": "Янги манзил қўшиш",
@@ -570,6 +580,7 @@
     "street": "Кўча",
     "house": "Уй",
     "notes": "Изоҳ",
+    "notesPlaceholder": "Хона, қавот, кириш, ва шу.к.",
     "orderSummary": "Буюртма хулосаси",
     "estDelivery": "Тахминий етказиб бериш",
     "businessDays": "3–5 иш куни",
@@ -607,6 +618,13 @@
     "tryAgain": "Қайта уриниш",
     "backToCart": "Саватга қайтиш",
     "paymentFailed": "Тўлов амалга ошмади. Қайта уриниб кўринг."
+  },
+  "catalogPage": {
+    "title": "Каталог",
+    "subtitle": "Барча маҳсулот категорияларини кўриш",
+    "products": "{{count}} маҳсулот",
+    "noCategories": "Категориялар топилмади",
+    "tryAgain": "Илтимос, кейинроқ қайта уриниб кўринг"
   },
   "categoryPage": {
     "allProducts": "Маҳсулотлар",

@@ -10,7 +10,7 @@ const MobileBottomNav = () => {
 
   const items = [
     { to: "/", icon: Home, label: t("nav.home") },
-    { to: "/category/refrigerators", icon: LayoutGrid, label: t("nav.catalog") },
+    { to: "/catalog", icon: LayoutGrid, label: t("nav.catalog") },
     { to: "/cart", icon: ShoppingCart, label: t("nav.cart"), badge: totalItems },
     { to: "/profile", icon: User, label: t("nav.profile") },
   ];

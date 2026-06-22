@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Plus, Pencil, Trash2 } from 'lucide-react'
+import { Plus, Pencil, Trash2, MapPin, Truck, ChevronLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Label } from '@/components/ui/label'
@@ -8,6 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { useAddresses, AddressForm } from '@/features/addresses'
 import type { Address, CreateAddressRequest } from '@/features/addresses'
 import { useCheckoutSelectionStore } from '@/shared/store/checkoutSelectionStore'
+import { MapAddressPicker } from './MapAddressPicker'
 
 export type AddressSelectorProps = {
   onContinue: () => void
@@ -26,6 +27,15 @@ export function AddressSelector({ onContinue, loading = false }: AddressSelector
   const [mode, setMode] = useState<Mode>({ kind: 'list' })
   const [submitting, setSubmitting] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState<Address | null>(null)
+  const [deliveryMethod, setDeliveryMethod] = useState<'pickup' | 'courier'>(() => {
+    const saved = localStorage.getItem('checkout_delivery_method')
+    return (saved as 'pickup' | 'courier') || 'courier'
+  })
+
+  // Persist delivery method to localStorage
+  useEffect(() => {
+    localStorage.setItem('checkout_delivery_method', deliveryMethod)
+  }, [deliveryMethod])
 
   // Auto-select default address when list loads
   useEffect(() => {
@@ -93,7 +103,67 @@ export function AddressSelector({ onContinue, loading = false }: AddressSelector
 
   return (
     <div className="space-y-4">
-      {!showForm && addresses.length > 0 && (
+      {/* Delivery method selection */}
+      <div className="border-b border-border pb-5">
+        <h3 className="text-[15px] font-semibold tracking-[-0.011em] text-foreground mb-3">
+          {t('checkout.deliveryMethod', { defaultValue: 'Delivery Method' })}
+        </h3>
+        <div className="grid grid-cols-2 gap-3">
+          {/* Pickup Point */}
+          <button
+            type="button"
+            onClick={() => setDeliveryMethod('pickup')}
+            className={`flex flex-col items-start gap-3 p-4 border-2 rounded-lg transition-all ${
+              deliveryMethod === 'pickup'
+                ? 'border-accent bg-accent/5'
+                : 'border-border bg-card hover:border-border/80'
+            }`}
+          >
+            <div className="flex items-center gap-3 w-full">
+              <div className={`h-5 w-5 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-colors ${
+                deliveryMethod === 'pickup' ? 'border-accent bg-accent' : 'border-border'
+              }`}>
+                {deliveryMethod === 'pickup' && <div className="h-2 w-2 bg-white rounded-full" />}
+              </div>
+              <MapPin size={16} className={deliveryMethod === 'pickup' ? 'text-accent' : 'text-muted-foreground'} />
+            </div>
+            <span className="text-[13px] font-semibold tracking-[-0.006em] text-foreground">
+              {t('checkout.pickupPoint', { defaultValue: 'Topshirish punkti' })}
+            </span>
+          </button>
+
+          {/* Home Delivery */}
+          <button
+            type="button"
+            onClick={() => setDeliveryMethod('courier')}
+            className={`flex flex-col items-start gap-3 p-4 border-2 rounded-lg transition-all ${
+              deliveryMethod === 'courier'
+                ? 'border-accent bg-accent/5'
+                : 'border-border bg-card hover:border-border/80'
+            }`}
+          >
+            <div className="flex items-center gap-3 w-full">
+              <div className={`h-5 w-5 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-colors ${
+                deliveryMethod === 'courier' ? 'border-accent bg-accent' : 'border-border'
+              }`}>
+                {deliveryMethod === 'courier' && <div className="h-2 w-2 bg-white rounded-full" />}
+              </div>
+              <Truck size={16} className={deliveryMethod === 'courier' ? 'text-accent' : 'text-muted-foreground'} />
+            </div>
+            <span className="text-[13px] font-semibold tracking-[-0.006em] text-foreground">
+              {t('checkout.courier', { defaultValue: 'Uyga yetkazib berish' })}
+            </span>
+          </button>
+        </div>
+      </div>
+
+      {/* Home Delivery - Map Picker */}
+      {deliveryMethod === 'courier' && (
+        <MapAddressPicker onAddressSelected={createAddress} />
+      )}
+
+      {/* Pickup Point - Branch Selector */}
+      {deliveryMethod === 'pickup' && !showForm && addresses.length > 0 && (
         <>
           <h3 className="text-[15px] font-semibold tracking-[-0.011em] text-foreground">
             {t('checkout.savedAddresses')}

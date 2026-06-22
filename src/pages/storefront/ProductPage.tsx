@@ -306,7 +306,7 @@ const ProductPage = () => {
                   <p className="text-[15px] font-semibold tracking-[-0.011em] text-foreground">{variant.name ?? t('products.skuNumber', { id: variant.id, defaultValue: 'SKU #{{id}}' })}</p>
                   {variant.images[0] ? <img src={resolveProductMediaUrl(variant.images[0])} alt="" className="h-10 w-10 rounded object-contain" /> : <ImagePlus size={18} className="text-muted-foreground" />}
                 </div>
-                <p className="text-[13px] font-normal tracking-[-0.006em] text-muted-foreground tabular-nums">{formatPrice(variant.price)} · {variant.quantity} {t('products.stock', { defaultValue: 'stock' })}</p>
+                <p className="text-[13px] font-normal tracking-[-0.006em] text-muted-foreground tabular-nums">{formatPrice(variant.price)}</p>
                 <div className="mt-3 flex flex-wrap gap-1.5">
                   {variant.combination.map(item => (
                     <span key={`${variant.id}-${item.optionId}`} className="rounded-md border border-border px-2 py-1 text-[11px] font-normal tracking-[-0.003em] text-muted-foreground">

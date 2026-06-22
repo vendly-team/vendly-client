@@ -16,6 +16,7 @@ import ProfileLayout from "@/components/layout/ProfileLayout";
 
 // Storefront pages
 import Index from "./pages/Index";
+import CatalogPage from "./pages/storefront/CatalogPage";
 import CategoryPage from "./pages/storefront/CategoryPage";
 import ProductPage from "./pages/storefront/ProductPage";
 import SearchPage from "./pages/storefront/SearchPage";
@@ -134,6 +135,7 @@ const App = () => (
         <Routes>
           {/* Storefront - public */}
           <Route path="/" element={<Index />} />
+          <Route path="/catalog" element={<CatalogPage />} />
           <Route path="/category/:slug" element={<CategoryPage />} />
           <Route path="/product/:slug" element={<ProductPage />} />
           <Route path="/search" element={<SearchPage />} />
