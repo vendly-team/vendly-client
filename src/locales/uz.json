@@ -60,7 +60,9 @@
     "adminPanel": "Admin panel",
     "myOrders": "Buyurtmalarim",
     "toggleMenu": "Menyu",
-    "more": "Yana"
+    "more": "Yana",
+    "signIn": "Kirish",
+    "signUp": "Ro'yxatdan o'tish"
   },
   "header": {
     "freeShipping": "$500 dan ortiq buyurtmalarga bepul yetkazib berish",
