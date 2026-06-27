@@ -2,6 +2,7 @@ import { API_BASE_URL } from '@/shared/api/http';
 import { createCategorySlug } from '@/shared/api/categoriesApi';
 import type { Product } from '@/shared/types';
 import type { ProductAdminDetailResponse, ProductCardResponse, ProductVariantResponse } from '../types';
+import { pickLanguageString } from '../types';
 
 export const resolveProductMediaUrl = (url?: string | null) => {
   if (!url) return '';
@@ -52,8 +53,8 @@ export const mapProductDetailToStorefrontProduct = (
     id: String(product.id),
     variantId: variant?.id,
     sku: variant ? `SKU-${variant.id}` : `PRODUCT-${product.id}`,
-    name: product.name,
-    slug: createProductSlug(product.name, product.id),
+    name: pickLanguageString(product.name),
+    slug: createProductSlug(pickLanguageString(product.name), product.id),
     categoryId: String(product.categoryId),
     description: product.description ?? '',
     images,
