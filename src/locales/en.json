@@ -60,7 +60,9 @@
     "adminPanel": "Admin Panel",
     "myOrders": "My Orders",
     "toggleMenu": "Toggle menu",
-    "more": "More"
+    "more": "More",
+    "signIn": "Sign in",
+    "signUp": "Sign up"
   },
   "header": {
     "freeShipping": "Free shipping on orders over $500",

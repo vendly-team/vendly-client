@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Search, ShoppingCart, User, Heart, X, ChevronDown, LogOut, Package, Shield, Globe, Loader2, LayoutGrid } from "lucide-react";
+import { Search, ShoppingCart, User, UserPlus, Heart, X, ChevronDown, LogOut, Package, Shield, Globe, Loader2, LayoutGrid } from "lucide-react";
 import { CategoryNav, type CategoryNavHandle } from "@/components/layout/CategoryNav";
 import { OptoLogo } from "@/components/ui/OptoLogo";
 import { useState, useRef, useEffect, useCallback } from "react";
@@ -389,6 +389,7 @@ const Header = () => {
                 ) : (
                   <>
                     <Link to="/login" className="flex items-center gap-2 px-4 py-2 text-[14px] font-medium tracking-[-0.006em] text-foreground hover:bg-muted" onClick={() => setProfileOpen(false)}><User size={16} /> {t("nav.signIn", { defaultValue: 'Sign in' })}</Link>
+                    <Link to="/register" className="flex items-center gap-2 px-4 py-2 text-[14px] font-medium tracking-[-0.006em] text-accent hover:bg-muted" onClick={() => setProfileOpen(false)}><UserPlus size={16} /> {t("nav.signUp", { defaultValue: 'Sign up' })}</Link>
                     <hr className="my-1 border-border" />
                     <LangSegmented onSelect={() => setProfileOpen(false)} />
                   </>
