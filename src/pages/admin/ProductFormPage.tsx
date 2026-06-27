@@ -29,6 +29,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Textarea } from '@/components/ui/textarea'
 import { productService } from '@/features/products/services/productService'
 import type { ProductAdminDetailResponse, SyncSource } from '@/features/products/types'
+import { pickLanguageString } from '@/features/products/types'
 import { API_BASE_URL } from '@/shared/api/http'
 
 type VariantRowState = {
@@ -42,7 +43,8 @@ type VariantRowState = {
 
 type CategoryItem = {
   id: number
-  name: string
+  // Backend MultiLanguageField sifatida qaytaradi; pickLanguageString bilan oddiy stringga aylantiramiz.
+  name: string | { uz?: string | null; ru?: string | null; en?: string | null; cyrl?: string | null }
 }
 
 type InfoFormState = {
@@ -222,7 +224,8 @@ export function ProductFormPage() {
       setProduct(data)
       setInfoForm({
         categoryId: String(data.categoryId),
-        name: data.name,
+        // Backend MultiLanguageField (uz/ru/en/cyrl) qaytaradi — formda string sifatida ishlatamiz.
+        name: pickLanguageString(data.name),
         description: data.description ?? '',
         syncSource: data.syncSource,
         isActive: data.isActive,
@@ -722,7 +725,7 @@ export function ProductFormPage() {
                     <SelectContent>
                       {categories.map(category => (
                         <SelectItem key={category.id} value={String(category.id)}>
-                          {category.name}
+                          {pickLanguageString(category.name)}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -1082,7 +1085,7 @@ export function ProductFormPage() {
                     <div className="min-w-0 space-y-4">
                       <div className="space-y-2 rounded-lg p-2">
                         <p className={`inline-block rounded px-1 text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground transition-all ${previewHighlightClass('category')}`}>
-                          {selectedCategory?.name ?? product?.categoryName ?? t('common.category', { defaultValue: 'Category' })}
+                          {pickLanguageString(selectedCategory?.name ?? product?.categoryName) || t('common.category', { defaultValue: 'Category' })}
                         </p>
                         <h2 className={`${previewIsHorizontal ? 'text-[24px]' : 'text-[20px]'} rounded px-1 font-display font-bold tracking-[-0.018em] leading-[1.15] transition-all ${previewHighlightClass('name')}`}>
                           {infoForm.name || t('products.productNameFallback', { defaultValue: 'Product name' })}

@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { productService } from '@/features/products/services/productService';
 import type { ProductAdminDetailResponse } from '@/features/products/types';
+import { pickLanguageString } from '@/features/products/types';
 import { API_BASE_URL } from '@/shared/api/http';
 
 const resolveMediaUrl = (url?: string | null) => {
@@ -80,7 +81,7 @@ const ProductDetailPage = () => {
           </Button>
           <div className="min-w-0">
             <h1 className="truncate text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display">{t('products.detailTitle', { defaultValue: 'Product detail' })}</h1>
-            <p className="truncate text-[14px] font-normal tracking-[-0.006em] text-muted-foreground">{product.name}</p>
+            <p className="truncate text-[14px] font-normal tracking-[-0.006em] text-muted-foreground">{pickLanguageString(product.name)}</p>
           </div>
         </div>
         <Button asChild>
@@ -103,11 +104,11 @@ const ProductDetailPage = () => {
             <CardContent className="grid gap-4 md:grid-cols-2">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground">{t('common.name', { defaultValue: 'Name' })}</p>
-                <p className="mt-1 text-[15px] font-semibold tracking-[-0.011em] text-foreground">{product.name}</p>
+                <p className="mt-1 text-[15px] font-semibold tracking-[-0.011em] text-foreground">{pickLanguageString(product.name)}</p>
               </div>
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground">{t('common.category', { defaultValue: 'Category' })}</p>
-                <p className="mt-1 text-[15px] font-medium tracking-[-0.011em] text-foreground">{product.categoryName}</p>
+                <p className="mt-1 text-[15px] font-medium tracking-[-0.011em] text-foreground">{pickLanguageString(product.categoryName)}</p>
               </div>
               <div className="flex flex-wrap gap-2">
                 <Badge variant={product.isActive ? 'default' : 'secondary'}>{product.isActive ? t('common.active', { defaultValue: 'Active' }) : t('common.inactive', { defaultValue: 'Inactive' })}</Badge>
@@ -233,8 +234,8 @@ const ProductDetailPage = () => {
                   )}
                 </div>
                 <div>
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground">{product.categoryName}</p>
-                  <p className="mt-1 text-[20px] font-bold tracking-[-0.018em] leading-[1.15] font-display">{product.name}</p>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground">{pickLanguageString(product.categoryName)}</p>
+                  <p className="mt-1 text-[20px] font-bold tracking-[-0.018em] leading-[1.15] font-display">{pickLanguageString(product.name)}</p>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <Badge variant={product.isActive ? 'default' : 'secondary'}>{product.isActive ? t('common.active', { defaultValue: 'Active' }) : t('common.inactive', { defaultValue: 'Inactive' })}</Badge>

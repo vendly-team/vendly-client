@@ -60,7 +60,9 @@
     "adminPanel": "Админ панель",
     "myOrders": "Мои заказы",
     "toggleMenu": "Меню",
-    "more": "Ещё"
+    "more": "Ещё",
+    "signIn": "Войти",
+    "signUp": "Регистрация"
   },
   "header": {
     "freeShipping": "Бесплатная доставка при заказе от $500",
