@@ -109,7 +109,7 @@ interface AuthState {
   isAuthenticated: boolean;
   login: (login: string, password: string) => Promise<{ success: boolean; otpRequired?: boolean; phone?: string }>;
   // Register endi token bermaydi — OTP yuboradi. true = OTP yuborildi.
-  register: (data: { firstName: string; lastName: string; email: string; phone: string; password: string }) => Promise<boolean>;
+  register: (data: { firstName: string; lastName: string; email?: string; phone: string; password: string }) => Promise<boolean>;
   // OTP tasdiqlangach userni login qiladi (token o'rnatadi).
   verifyOtp: (phone: string, code: string) => Promise<boolean>;
   resendOtp: (phone: string) => Promise<boolean>;

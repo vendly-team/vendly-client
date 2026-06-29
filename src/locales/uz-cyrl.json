@@ -483,6 +483,39 @@
     "byCategory": "Категория бўйича",
     "specificProducts": "Танланган маҳсулотлар"
   },
+  "banners": {
+    "title": "Баннерлар",
+    "create": "Баннер қўшиш",
+    "edit": "Баннерни таҳрирлаш",
+    "empty": "Ҳозирча баннерлар йўқ",
+    "inactive": "Нофаол",
+    "confirmDelete": "Баннерни ўчириш",
+    "deleteWarning": "Бу амални ортга қайтариб бўлмайди.",
+    "fields": {
+      "image": "Расм",
+      "uploadImage": "Расм юклаш",
+      "title": "Сарлавҳа",
+      "subtitle": "Тавсиф",
+      "badgeText": "Белги матни",
+      "ctaText": "Тугма матни",
+      "ctaLink": "Тугма ҳаволаси",
+      "sortOrder": "Тартиб рақами",
+      "active": "Фаол"
+    },
+    "errors": {
+      "loadFailed": "Баннерларни юклаб бўлмади",
+      "imageType": "Фақат расм файллари қабул қилинади",
+      "titleRequired": "Сарлавҳа (UZ) киритилиши шарт",
+      "saveFailed": "Сақлаб бўлмади",
+      "deleteFailed": "Ўчириб бўлмади",
+      "toggleFailed": "Ҳолатни ўзгартириб бўлмади"
+    },
+    "success": {
+      "updated": "Баннер янгиланди",
+      "created": "Баннер қўшилди",
+      "deleted": "Баннер ўчирилди"
+    }
+  },
   "reviews": {
     "title": "Шарҳлар",
     "pending": "Кутилмоқда",
@@ -553,6 +586,16 @@
     "summary": "Хулоса",
     "payment": "Тўлов",
     "deliveryAddress": "Етказиб бериш манзили",
+    "deliveryMethod": "Етказиб бериш усули",
+    "pickupPoint": "Топширіш пункти",
+    "courier": "Ўйга етказиб бериш",
+    "selectLocationOnMap": "Харитада манзилни танлаңиз",
+    "mapHint": "Етказиб бериш манзилини танлаш учун харитада босинг",
+    "confirmAddress": "Манзилни тасдиқлаңиз",
+    "detectedAddress": "Аниқланган манзил",
+    "geocodeFailed": "Манзилни аниқлаш амалга ошмади",
+    "addressSaved": "Манзил сақланди",
+    "addressSaveFailed": "Манзилни сақлаш амалга ошмади",
     "addNewAddress": "+ Янги манзил қўшиш",
     "savedAddresses": "Сақланган манзиллар",
     "newAddress": "Янги манзил қўшиш",
@@ -572,6 +615,7 @@
     "street": "Кўча",
     "house": "Уй",
     "notes": "Изоҳ",
+    "notesPlaceholder": "Хона, қавот, кириш, ва шу.к.",
     "orderSummary": "Буюртма хулосаси",
     "estDelivery": "Тахминий етказиб бериш",
     "businessDays": "3–5 иш куни",
@@ -609,6 +653,13 @@
     "tryAgain": "Қайта уриниш",
     "backToCart": "Саватга қайтиш",
     "paymentFailed": "Тўлов амалга ошмади. Қайта уриниб кўринг."
+  },
+  "catalogPage": {
+    "title": "Каталог",
+    "subtitle": "Барча маҳсулот категорияларини кўриш",
+    "products": "{{count}} маҳсулот",
+    "noCategories": "Категориялар топилмади",
+    "tryAgain": "Илтимос, кейинроқ қайта уриниб кўринг"
   },
   "categoryPage": {
     "allProducts": "Маҳсулотлар",
@@ -759,6 +810,7 @@
       "returnReasons": "Қайтариш сабаблари",
       "faqs": "Кўп сўраладиган саволлар",
       "companyInfo": "Компания маълумотлари",
+      "banners": "Баннерлар",
       "sections": {
         "overview": "Умумий",
         "catalog": "Каталог",

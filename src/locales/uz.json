@@ -483,6 +483,39 @@
     "byCategory": "Kategoriya bo'yicha",
     "specificProducts": "Tanlangan mahsulotlar"
   },
+  "banners": {
+    "title": "Bannerlar",
+    "create": "Banner qo'shish",
+    "edit": "Bannerni tahrirlash",
+    "empty": "Hozircha bannerlar yo'q",
+    "inactive": "Nofaol",
+    "confirmDelete": "Bannerni o'chirish",
+    "deleteWarning": "Bu amalni ortga qaytarib bo'lmaydi.",
+    "fields": {
+      "image": "Rasm",
+      "uploadImage": "Rasm yuklash",
+      "title": "Sarlavha",
+      "subtitle": "Tavsif",
+      "badgeText": "Belgi matni",
+      "ctaText": "Tugma matni",
+      "ctaLink": "Tugma havolasi",
+      "sortOrder": "Tartib raqami",
+      "active": "Faol"
+    },
+    "errors": {
+      "loadFailed": "Bannerlarni yuklab bo'lmadi",
+      "imageType": "Faqat rasm fayllari qabul qilinadi",
+      "titleRequired": "Sarlavha (UZ) kiritilishi shart",
+      "saveFailed": "Saqlab bo'lmadi",
+      "deleteFailed": "O'chirib bo'lmadi",
+      "toggleFailed": "Holatni o'zgartirib bo'lmadi"
+    },
+    "success": {
+      "updated": "Banner yangilandi",
+      "created": "Banner qo'shildi",
+      "deleted": "Banner o'chirildi"
+    }
+  },
   "reviews": {
     "title": "Sharhlar",
     "pending": "Kutilmoqda",
@@ -553,6 +586,16 @@
     "summary": "Xulosa",
     "payment": "To'lov",
     "deliveryAddress": "Yetkazib berish manzili",
+    "deliveryMethod": "Yetkazib berish usuali",
+    "pickupPoint": "Topshirish punkti",
+    "courier": "Uyga yetkazib berish",
+    "selectLocationOnMap": "Xaritada manzilni tanlang",
+    "mapHint": "Yetkazib berish manzilini tanlash uchun xaritada bosing",
+    "confirmAddress": "Manzilni tasdiqlang",
+    "detectedAddress": "Aniqlangan manzil",
+    "geocodeFailed": "Manzilni aniqlash amalga oshmadi",
+    "addressSaved": "Manzil saqlandi",
+    "addressSaveFailed": "Manzilni saqlash amalga oshmadi",
     "addNewAddress": "+ Yangi manzil qo'shish",
     "savedAddresses": "Saqlangan manzillar",
     "newAddress": "Yangi manzil qo'shish",
@@ -572,6 +615,7 @@
     "street": "Ko'cha",
     "house": "Uy",
     "notes": "Izoh",
+    "notesPlaceholder": "Xonali, qavat, kirish, va sh.k.",
     "orderSummary": "Buyurtma xulosasi",
     "estDelivery": "Taxminiy yetkazib berish",
     "businessDays": "3–5 ish kuni",
@@ -609,6 +653,13 @@
     "tryAgain": "Qayta urinish",
     "backToCart": "Savatga qaytish",
     "paymentFailed": "To'lov amalga oshmadi. Qayta urinib ko'ring."
+  },
+  "catalogPage": {
+    "title": "Katalog",
+    "subtitle": "Barcha mahsulot kategoriyalarini ko'rish",
+    "products": "{{count}} mahsulot",
+    "noCategories": "Kategoriyalar topilmadi",
+    "tryAgain": "Iltimos, keyinroq qayta urinib ko'ring"
   },
   "categoryPage": {
     "allProducts": "Mahsulotlar",
@@ -759,6 +810,7 @@
       "returnReasons": "Qaytarish sabablari",
       "faqs": "Ko'p so'raladigan savollar",
       "companyInfo": "Kompaniya ma'lumotlari",
+      "banners": "Bannerlar",
       "sections": {
         "overview": "Umumiy",
         "catalog": "Katalog",

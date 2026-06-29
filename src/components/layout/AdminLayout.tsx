@@ -1,6 +1,6 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/shared/store/authStore';
-import { LayoutDashboard, Package, Grid, ShoppingBag, Users, Star, Tag, RefreshCw, Shield, LogOut, Menu, X, ChevronDown, Store, RotateCcw, HelpCircle, Coins, Building2 } from 'lucide-react';
+import { LayoutDashboard, Package, Grid, ShoppingBag, Users, Star, Tag, RefreshCw, Shield, LogOut, Menu, X, ChevronDown, Store, RotateCcw, HelpCircle, Coins, Building2, Image } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from "react-i18next";
@@ -64,6 +64,7 @@ const AdminLayout = () => {
       label: t("admin.sidebar.sections.ref"),
       links: [
         { to: '/admin/company-info', icon: Building2, label: t("admin.sidebar.companyInfo") },
+        { to: '/admin/banners', icon: Image, label: t("admin.sidebar.banners") },
         { to: '/admin/ref/return-reasons', icon: RotateCcw, label: t("admin.sidebar.returnReasons") },
         { to: '/admin/ref/faqs', icon: HelpCircle, label: t("admin.sidebar.faqs") },
       ],

@@ -483,6 +483,39 @@
     "byCategory": "By Category",
     "specificProducts": "Specific Products"
   },
+  "banners": {
+    "title": "Banners",
+    "create": "Add Banner",
+    "edit": "Edit Banner",
+    "empty": "No banners yet",
+    "inactive": "Inactive",
+    "confirmDelete": "Delete Banner",
+    "deleteWarning": "This action cannot be undone.",
+    "fields": {
+      "image": "Image",
+      "uploadImage": "Upload Image",
+      "title": "Title",
+      "subtitle": "Subtitle",
+      "badgeText": "Badge Text",
+      "ctaText": "Button Text",
+      "ctaLink": "Button Link",
+      "sortOrder": "Sort Order",
+      "active": "Active"
+    },
+    "errors": {
+      "loadFailed": "Failed to load banners",
+      "imageType": "Only image files are allowed",
+      "titleRequired": "Title (UZ) is required",
+      "saveFailed": "Failed to save",
+      "deleteFailed": "Failed to delete",
+      "toggleFailed": "Failed to change status"
+    },
+    "success": {
+      "updated": "Banner updated",
+      "created": "Banner created",
+      "deleted": "Banner deleted"
+    }
+  },
   "reviews": {
     "title": "Reviews",
     "pending": "Pending",
@@ -553,6 +586,16 @@
     "summary": "Summary",
     "payment": "Payment",
     "deliveryAddress": "Delivery Address",
+    "deliveryMethod": "Delivery Method",
+    "pickupPoint": "Pickup Point",
+    "courier": "Home Delivery",
+    "selectLocationOnMap": "Select location on map",
+    "mapHint": "Click on the map to select your delivery location",
+    "confirmAddress": "Confirm address",
+    "detectedAddress": "Detected address",
+    "geocodeFailed": "Could not get address",
+    "addressSaved": "Address saved",
+    "addressSaveFailed": "Failed to save address",
     "addNewAddress": "+ Add new address",
     "savedAddresses": "Saved addresses",
     "newAddress": "Add new address",
@@ -572,6 +615,7 @@
     "street": "Street",
     "house": "House",
     "notes": "Notes",
+    "notesPlaceholder": "Apartment, floor, entrance, etc.",
     "orderSummary": "Order Summary",
     "estDelivery": "Est. Delivery",
     "businessDays": "3–5 business days",
@@ -587,7 +631,7 @@
       "regionRequired": "Region is required",
       "cityRequired": "City/district is required",
       "streetRequired": "Street is required",
-      "houseRequired": "House is required",
+      "houseRequired": "House number is required",
       "branchesFailed": "Failed to load branches",
       "routeUnavailable": "Delivery is not available for this address",
       "weightMissing": "One of the products is missing a weight. Please contact support",
@@ -609,6 +653,13 @@
     "tryAgain": "Try Again",
     "backToCart": "Back to Cart",
     "paymentFailed": "Payment failed. Please try again."
+  },
+  "catalogPage": {
+    "title": "Catalog",
+    "subtitle": "Browse all product categories",
+    "products": "{{count}} products",
+    "noCategories": "No categories found",
+    "tryAgain": "Please try again later"
   },
   "categoryPage": {
     "allProducts": "Products",
@@ -759,6 +810,7 @@
       "returnReasons": "Return reasons",
       "faqs": "FAQs",
       "companyInfo": "Company Info",
+      "banners": "Hero Banners",
       "sections": {
         "overview": "Overview",
         "catalog": "Catalog",
