@@ -481,6 +481,39 @@
     "byCategory": "By Category",
     "specificProducts": "Specific Products"
   },
+  "banners": {
+    "title": "Banners",
+    "create": "Add Banner",
+    "edit": "Edit Banner",
+    "empty": "No banners yet",
+    "inactive": "Inactive",
+    "confirmDelete": "Delete Banner",
+    "deleteWarning": "This action cannot be undone.",
+    "fields": {
+      "image": "Image",
+      "uploadImage": "Upload Image",
+      "title": "Title",
+      "subtitle": "Subtitle",
+      "badgeText": "Badge Text",
+      "ctaText": "Button Text",
+      "ctaLink": "Button Link",
+      "sortOrder": "Sort Order",
+      "active": "Active"
+    },
+    "errors": {
+      "loadFailed": "Failed to load banners",
+      "imageType": "Only image files are allowed",
+      "titleRequired": "Title (UZ) is required",
+      "saveFailed": "Failed to save",
+      "deleteFailed": "Failed to delete",
+      "toggleFailed": "Failed to change status"
+    },
+    "success": {
+      "updated": "Banner updated",
+      "created": "Banner created",
+      "deleted": "Banner deleted"
+    }
+  },
   "reviews": {
     "title": "Reviews",
     "pending": "Pending",
@@ -775,6 +808,7 @@
       "returnReasons": "Return reasons",
       "faqs": "FAQs",
       "companyInfo": "Company Info",
+      "banners": "Hero Banners",
       "sections": {
         "overview": "Overview",
         "catalog": "Catalog",
