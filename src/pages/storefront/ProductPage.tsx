@@ -15,6 +15,7 @@ import { Heart, ImagePlus, Minus, Plus, ShoppingCart } from 'lucide-react';
 import { toast } from 'sonner';
 import { productService } from '@/features/products/services/productService';
 import type { ProductAdminDetailResponse, ProductVariantResponse } from '@/features/products/types';
+import { pickLanguageString } from '@/features/products/types';
 import {
   getDisplayVariants,
   getProductIdFromSlug,
@@ -172,8 +173,8 @@ const ProductPage = () => {
   return (
     <StorefrontLayout>
       <PageMeta
-        title={storeProduct ? `${storeProduct.name} — Opto Vestor` : 'Product — Opto Vestor'}
-        description={storeProduct ? `Buy ${storeProduct.name} at wholesale price on Opto Vestor.` : undefined}
+        title={storeProduct ? `${storeProduct.name} — Optoweek` : 'Product — Optoweek'}
+        description={storeProduct ? `Buy ${storeProduct.name} at wholesale price on Optoweek.` : undefined}
         canonical={storeProduct ? `/product/${slug}` : undefined}
         ogType="product"
         pageType="public"
@@ -181,8 +182,8 @@ const ProductPage = () => {
       <div className="container py-6 animate-fade-in">
         <div className="mb-6 hidden md:flex items-center gap-2 text-[13px] font-normal tracking-[-0.006em] text-muted-foreground">
           <Link to="/" className="hover:text-accent">{t('nav.home')}</Link> <span>/</span>
-          <Link to={`/category/${createCategorySlug(product.categoryName)}`} className="hover:text-accent">{product.categoryName}</Link> <span>/</span>
-          <span className="line-clamp-1 text-foreground font-medium">{product.name}</span>
+          <Link to={`/category/${createCategorySlug(pickLanguageString(product.categoryName))}`} className="hover:text-accent">{pickLanguageString(product.categoryName)}</Link> <span>/</span>
+          <span className="line-clamp-1 text-foreground font-medium">{pickLanguageString(product.name)}</span>
         </div>
 
         <div className="mb-12 grid grid-cols-1 gap-8 lg:grid-cols-2">
@@ -190,7 +191,7 @@ const ProductPage = () => {
             <div className="mb-3 aspect-square overflow-hidden rounded-lg bg-muted">
               <img
                 src={currentImage || placeholder}
-                alt={product.name}
+                alt={pickLanguageString(product.name)}
                 className="h-full w-full object-contain"
               />
             </div>
@@ -206,8 +207,8 @@ const ProductPage = () => {
           </div>
 
           <div>
-            <h1 className="mb-2 text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground lg:text-[34px] lg:tracking-[-0.024em]">{product.name}</h1>
-            <p className="mb-4 text-[13px] font-medium tracking-[-0.006em] text-muted-foreground uppercase">{product.categoryName}</p>
+            <h1 className="mb-2 text-[28px] font-bold tracking-[-0.022em] leading-[1.1] font-display text-foreground lg:text-[34px] lg:tracking-[-0.024em]">{pickLanguageString(product.name)}</h1>
+            <p className="mb-4 text-[13px] font-medium tracking-[-0.006em] text-muted-foreground uppercase">{pickLanguageString(product.categoryName)}</p>
 
 
 

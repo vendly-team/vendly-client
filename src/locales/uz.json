@@ -60,13 +60,15 @@
     "adminPanel": "Admin panel",
     "myOrders": "Buyurtmalarim",
     "toggleMenu": "Menyu",
-    "more": "Yana"
+    "more": "Yana",
+    "signIn": "Kirish",
+    "signUp": "Ro'yxatdan o'tish"
   },
   "header": {
     "freeShipping": "$500 dan ortiq buyurtmalarga bepul yetkazib berish",
     "phone": "+1 (800) 123-4567",
     "searchPlaceholder": "Maishiy texnika qidirish...",
-    "brand": "baytech"
+    "brand": "Optoweek"
   },
   "home": {
     "newArrivals": "Yangi mahsulotlar"
@@ -75,7 +77,7 @@
     "title": "Yaqinda ko'rilganlar"
   },
   "footer": {
-    "brand": "baytech",
+    "brand": "Optoweek",
     "tagline": "Sifatli maishiy texnika do'koni. Arzon narxlarda eng yaxshi mahsulotlar.",
     "categories": "Kategoriyalar",
     "customerService": "Mijozlarga xizmat",
@@ -86,7 +88,7 @@
     "oferta": "Ommaviy oferta",
     "contactUs": "Biz bilan bog'lanish",
     "address": "123 Tech Avenue, Suite 100",
-    "copyright": "© {{year}} baytech. Barcha huquqlar himoyalangan."
+    "copyright": "© {{year}} Optoweek. Barcha huquqlar himoyalangan."
   },
   "auth": {
     "signIn": "Kirish",
@@ -792,7 +794,7 @@
   },
   "admin": {
     "sidebar": {
-      "brand": "baytech",
+      "brand": "Optoweek",
       "dashboard": "Boshqaruv paneli",
       "products": "Mahsulotlar",
       "categories": "Kategoriyalar",

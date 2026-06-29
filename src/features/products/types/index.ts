@@ -83,11 +83,20 @@ export type ProductVariantResponse = {
   combination: VariantCombinationItem[]
 }
 
+// Backend serializatsiyada `Product.Name` va `Category.Name` MultiLanguageField (4 tilli obyekt).
+// Frontend joylashishida string ko'rinishida ishlatamiz — pickLanguageString helper orqali.
+export type MultiLanguageField = {
+  uz?: string | null
+  ru?: string | null
+  en?: string | null
+  cyrl?: string | null
+}
+
 export type ProductAdminDetailResponse = {
   id: number
   categoryId: number
-  categoryName: string
-  name: string
+  categoryName: string | MultiLanguageField
+  name: string | MultiLanguageField
   description: string | null
   syncSource: SyncSource
   isActive: boolean
@@ -95,6 +104,15 @@ export type ProductAdminDetailResponse = {
   variants: ProductVariantResponse[]
   createdAt: string
   updatedAt: string | null
+}
+
+/** MultiLanguageField yoki string'dan ko'rinish uchun matn ajratib oladi. */
+export const pickLanguageString = (
+  value: string | MultiLanguageField | null | undefined,
+): string => {
+  if (!value) return ''
+  if (typeof value === 'string') return value
+  return value.uz ?? value.ru ?? value.en ?? value.cyrl ?? ''
 }
 
 export type CreateProductRequest = {

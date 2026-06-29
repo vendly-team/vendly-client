@@ -45,7 +45,7 @@ const CheckoutSuccessPage = () => {
 
   return (
     <StorefrontLayout>
-      <PageMeta title="Order Confirmed — Opto Vestor" pageType="private" />
+      <PageMeta title="Order Confirmed — Optoweek" pageType="private" />
       <div className="container py-20 text-center animate-fade-in">
         <CheckCircle className="mx-auto mb-6 text-success" size={80} />
         <h1 className="text-[34px] font-bold tracking-[-0.024em] leading-[1.08] font-display text-foreground mb-2">{t('checkoutSuccess.title')}</h1>

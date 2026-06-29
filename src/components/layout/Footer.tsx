@@ -10,7 +10,7 @@ const Footer = () => {
   const { info } = useCompanyInfo();
 
   const phone = info?.phone || t("header.phone");
-  const email = info?.email || "support@baytech.com";
+  const email = info?.email || "support@optoweek.uz";
   const address = info?.address || t("footer.address");
   const ofertaUrl = info?.ofertaUrl ? getFileUrl(info.ofertaUrl) : null;
 

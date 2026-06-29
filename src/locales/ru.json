@@ -60,13 +60,15 @@
     "adminPanel": "Админ панель",
     "myOrders": "Мои заказы",
     "toggleMenu": "Меню",
-    "more": "Ещё"
+    "more": "Ещё",
+    "signIn": "Войти",
+    "signUp": "Регистрация"
   },
   "header": {
     "freeShipping": "Бесплатная доставка при заказе от $500",
     "phone": "+1 (800) 123-4567",
     "searchPlaceholder": "Поиск бытовой техники...",
-    "brand": "baytech"
+    "brand": "Optoweek"
   },
   "home": {
     "newArrivals": "Новинки"
@@ -75,7 +77,7 @@
     "title": "Недавно просмотренные"
   },
   "footer": {
-    "brand": "baytech",
+    "brand": "Optoweek",
     "tagline": "Ваш надёжный магазин бытовой техники. Качественные товары по доступным ценам.",
     "categories": "Категории",
     "customerService": "Служба поддержки",
@@ -86,7 +88,7 @@
     "oferta": "Публичная оферта",
     "contactUs": "Связаться с нами",
     "address": "123 Tech Avenue, Suite 100",
-    "copyright": "© {{year}} baytech. Все права защищены."
+    "copyright": "© {{year}} Optoweek. Все права защищены."
   },
   "auth": {
     "signIn": "Войти",
@@ -792,7 +794,7 @@
   },
   "admin": {
     "sidebar": {
-      "brand": "baytech",
+      "brand": "Optoweek",
       "dashboard": "Панель управления",
       "products": "Товары",
       "categories": "Категории",
