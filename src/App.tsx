@@ -16,6 +16,7 @@ import ProfileLayout from "@/components/layout/ProfileLayout";
 
 // Storefront pages
 import Index from "./pages/Index";
+import CatalogPage from "./pages/storefront/CatalogPage";
 import CategoryPage from "./pages/storefront/CategoryPage";
 import ProductPage from "./pages/storefront/ProductPage";
 import SearchPage from "./pages/storefront/SearchPage";
@@ -55,6 +56,7 @@ import SyncLogsPage from "./pages/admin/SyncLogsPage";
 import { UsersPage } from "./pages/admin/UsersPage";
 import { ReturnReasonsPage } from "./pages/admin/ReturnReasonsPage";
 import { FaqsPage } from "./pages/admin/FaqsPage";
+import BannersPage from "./pages/admin/BannersPage";
 
 const queryClient = new QueryClient();
 
@@ -134,6 +136,7 @@ const App = () => (
         <Routes>
           {/* Storefront - public */}
           <Route path="/" element={<Index />} />
+          <Route path="/catalog" element={<CatalogPage />} />
           <Route path="/category/:slug" element={<CategoryPage />} />
           <Route path="/product/:slug" element={<ProductPage />} />
           <Route path="/search" element={<SearchPage />} />
@@ -182,6 +185,7 @@ const App = () => (
             <Route path="/admin/reviews" element={<ReviewsPage />} />
             <Route path="/admin/discounts" element={<DiscountsPage />} />
             <Route path="/admin/company-info" element={<CompanyInfoPage />} />
+            <Route path="/admin/banners" element={<BannersPage />} />
             <Route path="/admin/ref/return-reasons" element={<ReturnReasonsPage />} />
             <Route path="/admin/ref/faqs" element={<FaqsPage />} />
             {/* Admin only */}

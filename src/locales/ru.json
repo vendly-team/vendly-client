@@ -483,6 +483,39 @@
     "byCategory": "По категории",
     "specificProducts": "Определённые товары"
   },
+  "banners": {
+    "title": "Баннеры",
+    "create": "Добавить баннер",
+    "edit": "Редактировать баннер",
+    "empty": "Баннеров пока нет",
+    "inactive": "Неактивен",
+    "confirmDelete": "Удалить баннер",
+    "deleteWarning": "Это действие нельзя отменить.",
+    "fields": {
+      "image": "Изображение",
+      "uploadImage": "Загрузить изображение",
+      "title": "Заголовок",
+      "subtitle": "Подзаголовок",
+      "badgeText": "Текст бейджа",
+      "ctaText": "Текст кнопки",
+      "ctaLink": "Ссылка кнопки",
+      "sortOrder": "Порядок сортировки",
+      "active": "Активен"
+    },
+    "errors": {
+      "loadFailed": "Не удалось загрузить баннеры",
+      "imageType": "Допустимы только файлы изображений",
+      "titleRequired": "Заголовок (UZ) обязателен",
+      "saveFailed": "Не удалось сохранить",
+      "deleteFailed": "Не удалось удалить",
+      "toggleFailed": "Не удалось изменить статус"
+    },
+    "success": {
+      "updated": "Баннер обновлён",
+      "created": "Баннер создан",
+      "deleted": "Баннер удалён"
+    }
+  },
   "reviews": {
     "title": "Отзывы",
     "pending": "Ожидающие",
@@ -553,6 +586,16 @@
     "summary": "Сводка",
     "payment": "Оплата",
     "deliveryAddress": "Адрес доставки",
+    "deliveryMethod": "Способ доставки",
+    "pickupPoint": "Пункт выдачи",
+    "courier": "Доставка на дом",
+    "selectLocationOnMap": "Выберите местоположение на карте",
+    "mapHint": "Нажмите на карту, чтобы выбрать место доставки",
+    "confirmAddress": "Подтвердить адрес",
+    "detectedAddress": "Обнаруженный адрес",
+    "geocodeFailed": "Не удалось получить адрес",
+    "addressSaved": "Адрес сохранён",
+    "addressSaveFailed": "Не удалось сохранить адрес",
     "addNewAddress": "+ Добавить новый адрес",
     "savedAddresses": "Сохранённые адреса",
     "newAddress": "Добавить новый адрес",
@@ -572,6 +615,7 @@
     "street": "Улица",
     "house": "Дом",
     "notes": "Примечания",
+    "notesPlaceholder": "Квартира, этаж, подъезд и т.д.",
     "orderSummary": "Сводка заказа",
     "estDelivery": "Ожидаемая доставка",
     "businessDays": "3–5 рабочих дней",
@@ -609,6 +653,13 @@
     "tryAgain": "Попробовать снова",
     "backToCart": "Вернуться в корзину",
     "paymentFailed": "Платёж не прошёл. Попробуйте снова."
+  },
+  "catalogPage": {
+    "title": "Каталог",
+    "subtitle": "Просмотрите все категории продуктов",
+    "products": "{{count}} товар(-ов)",
+    "noCategories": "Категории не найдены",
+    "tryAgain": "Пожалуйста, попробуйте позже"
   },
   "categoryPage": {
     "allProducts": "Все товары",
@@ -759,6 +810,7 @@
       "returnReasons": "Причины возврата",
       "faqs": "Частые вопросы",
       "companyInfo": "Информация о компании",
+      "banners": "Баннеры",
       "sections": {
         "overview": "Обзор",
         "catalog": "Каталог",

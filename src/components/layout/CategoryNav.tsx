@@ -245,13 +245,23 @@ export const CategoryNav = forwardRef<CategoryNavHandle, Props>(function Categor
                     key={cat.id}
                     onMouseEnter={() => setActiveCategory(cat)}
                     onClick={() => setActiveCategory(cat)}
-                    className={`w-full flex items-center justify-between gap-2 px-4 py-2.5 text-left transition-colors ${
+                    className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors ${
                       activeCategory?.id === cat.id
                         ? 'bg-accent/10 text-accent'
                         : 'text-foreground hover:bg-muted'
                     }`}
                   >
-                    <span className="text-[14px] font-medium tracking-[-0.006em] truncate">
+                    {cat.image ? (
+                      <img
+                        src={cat.image}
+                        alt=""
+                        loading="lazy"
+                        className="w-8 h-8 shrink-0 rounded-md object-cover bg-muted"
+                      />
+                    ) : (
+                      <span className="w-8 h-8 shrink-0 rounded-md bg-muted" />
+                    )}
+                    <span className="flex-1 text-[14px] font-medium tracking-[-0.006em] truncate">
                       {cat.name}
                     </span>
                     <ChevronRight size={14} className="shrink-0 opacity-40" />
